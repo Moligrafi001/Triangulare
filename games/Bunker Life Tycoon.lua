@@ -5,7 +5,8 @@ getgenv().CollectBoxes = false
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
 local Settings = {
-  Plot = nil
+  Plot = nil,
+  Amount = 90000
 }
 
 -- Load
@@ -46,6 +47,9 @@ local function AutoSell()
     end)
   end
 end
+local function GetMoney()
+  game:GetService("ReplicatedStorage").Remotes.Tycoon_Event:FireServer("Purchase", 0 - Settings.Amount)
+end
 
 --[[
 workspace.Tycoons["Tycoon#1"].Build.Sellers.SellZoneOrigin.TouchInterest
@@ -54,6 +58,14 @@ game:GetService("Players").LocalPlayer.leaderstats.Cash
 local args = {
     [1] = workspace.Tycoons:FindFirstChild("Tycoon#1").Supplies:FindFirstChild("32")
 }
+local args = {
+    [1] = {
+        [1] = "Purchase",
+        [2] = -200000
+    }
+}
+
+game:GetService("ReplicatedStorage").Remotes.Tycoon_Event:FireServer(unpack(args))
 
 game:GetService("ReplicatedStorage").Remotes.Supply:FireServer(unpack(args))
 for _, box in pairs(workspace.Tycoons:FindFirstChild("Tycoon#1").Supplies:GetChildren()) do
@@ -64,7 +76,8 @@ Game: 7261382479 | Place: 118975157774793
 
 -- Tabs
 local Tabs = {
-  Menu = Window:Tab({ Title = "Main", Icon = "house"})
+  Menu = Window:Tab({ Title = "Main", Icon = "house"}),
+  Menu = Window:Tab({ Title = "Money", Icon = "dollar-sign"})
 }
 Window:SelectTab(1)
 
@@ -101,5 +114,24 @@ Tabs.Menu:Button({
   Desc = "Collects your boxes.",
   Callback = function()
     pcall(CollectBoxes)
+  end
+})
+
+-- Money
+Tabs.Money:Section({ Title = "Amount" })
+Tabs.Money:Input({
+  Title = "Amount to Get",
+  Value = tostring(Settings.Amount),
+  Placeholder = "Numbers only, ex.: 90000",
+  Callback = function(input)
+    Settings.Amount = tonumber(input) or 1
+  end
+})
+Tabs.Menu:Section({ Title = "Get" })
+Tabs.Menu:Button({
+  Title = "Get Money",
+  Desc = "Gives you the amount of money.",
+  Callback = function()
+    pcall(GetMoney)
   end
 })
