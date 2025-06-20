@@ -77,7 +77,7 @@ Game: 7261382479 | Place: 118975157774793
 -- Tabs
 local Tabs = {
   Menu = Window:Tab({ Title = "Main", Icon = "house"}),
-  Menu = Window:Tab({ Title = "Money", Icon = "dollar-sign"})
+  Money = Window:Tab({ Title = "Money", Icon = "dollar-sign"})
 }
 Window:SelectTab(1)
 
