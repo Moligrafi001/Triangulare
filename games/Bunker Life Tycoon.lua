@@ -127,8 +127,8 @@ Tabs.Money:Input({
     Settings.Amount = tonumber(input) or 1
   end
 })
-Tabs.Menu:Section({ Title = "Get" })
-Tabs.Menu:Button({
+Tabs.Money:Section({ Title = "Get" })
+Tabs.Money:Button({
   Title = "Get Money",
   Desc = "Gives you the amount of money.",
   Callback = function()
