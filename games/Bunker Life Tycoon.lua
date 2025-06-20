@@ -6,7 +6,7 @@ getgenv().CollectBoxes = false
 local eu = game:GetService("Players").LocalPlayer
 local Settings = {
   Plot = nil,
-  Amount = 90000
+  Amount = 200000
 }
 
 -- Load
@@ -129,7 +129,7 @@ Tabs.Money:Input({
 })
 Tabs.Money:Section({ Title = "Get" })
 Tabs.Money:Button({
-  Title = "Get Money",
+  Title = "Get Money [ DEPRECIATED ]",
   Desc = "Gives you the amount of money.",
   Callback = function()
     pcall(GetMoney)
