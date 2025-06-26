@@ -1,6 +1,7 @@
 -- Global Values
 getgenv().AutoCollect = false
 getgenv().CollectCoins = false
+getgenv().AutoBuy = false
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
