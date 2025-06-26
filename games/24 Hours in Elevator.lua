@@ -41,6 +41,11 @@ local function MobsESP()
   end
 end
 
+-- Tabs
+local Tabs = {
+  Menu = Window:Tab({ Title = "Auto Farm", Icon = "house"})
+}
+
 Tabs.Menu:Toggle({
   Title = "ESP Mobs",
   Desc = "Highlight mobs.",
