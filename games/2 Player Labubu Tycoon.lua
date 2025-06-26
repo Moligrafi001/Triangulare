@@ -90,3 +90,21 @@ Tabs.Menu:Toggle({
     AutoCollect()
   end
 })
+Tabs.Menu:Toggle({
+  Title = "Collect Coins",
+  Desc = "Automatically collects coins.",
+  Value = false,
+  Callback = function(state)
+    getgenv().CollectCoins = state
+    CollectCoins()
+  end
+})
+Tabs.Menu:Toggle({
+  Title = "Auto Buy Buttons",
+  Desc = "Automatically buys buttons.",
+  Value = false,
+  Callback = function(state)
+    getgenv().AutoBuy = state
+    AutoBuy()
+  end
+})
