@@ -34,8 +34,10 @@ local function CollectCoins()
   while getgenv().CollectCoins and task.wait(1) do
     pcall(function()
       for _, coin in pairs(workspace.Coins:GetChildren()) do
-        firetouchinterest(eu.Character.HumanoidRootPart, coin.MeshPart, 0)
-        firetouchinterest(eu.Character.HumanoidRootPart, coin.MeshPart, 1)
+        pcall(function()
+          firetouchinterest(eu.Character.HumanoidRootPart, coin.MeshPart, 0)
+          firetouchinterest(eu.Character.HumanoidRootPart, coin.MeshPart, 1)
+        end)
       end
       if not workspace.Coins:GetAttribute("Connected") then
         workspace.Coins:SetAttribute("Connected", true)
