@@ -24,7 +24,8 @@ local function SupportedList(type)
     ["Steal a Character"] = 101354156600579,
     ["Steal a Gubby"] = 79983021053282,
     ["Steal a Labubu"] = 119823419558973,
-    ["Bunker Life Tycoon"] = 118975157774793
+    ["Bunker Life Tycoon"] = 118975157774793,
+    ["2 Player Labubu Tycoon"] = 133335273076187
   }
   if type == "Names" then
     local Names = {}
