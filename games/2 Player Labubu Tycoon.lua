@@ -57,6 +57,7 @@ local function AutoBuy()
           if not button:FindFirstChild("Gamepass") and button.Head.Transparency == 0 then
             firetouchinterest(eu.Character.HumanoidRootPart, button.Head, 0)
             firetouchinterest(eu.Character.HumanoidRootPart, button.Head, 1)
+            task.wait(1)
           end
         end)
       end
