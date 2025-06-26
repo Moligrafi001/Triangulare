@@ -57,8 +57,10 @@ elseif Game == 7842205848 then
   LoadScript("games/Steal a Labubu.lua", "Steal a Labubu")
 elseif Game == 7261382479 then
   LoadScript("games/Bunker Life Tycoon.lua", "Bunker Life Tycoon")
-  elseif Game == 7294208165 then
+elseif Game == 7294208165 then
   LoadScript("games/24 Hours in Elevator.lua", "24 Hours in Elevator")
+elseif Game == 7750682571 then
+  LoadScript("games/2 Player Labubu Tycoon.lua", "2 Player Labubu Tycoon")
 else
   LoadScript("Triangulare.lua", "Universal")
 end
