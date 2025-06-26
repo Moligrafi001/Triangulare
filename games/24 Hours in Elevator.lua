@@ -1,3 +1,4 @@
+-- Functions
 local function SetESP(instance, color, boolean)
   local luz = instance:FindFirstChild("Luz")
   if luz then
@@ -13,6 +14,7 @@ local function SetESP(instance, color, boolean)
   end
 end
 
+-- Control Functions
 local function MobsESP()
   if not workspace:FindFirstChild("Mobs") then
     warn("Mobs não encontrado!")
@@ -43,9 +45,12 @@ end
 
 -- Tabs
 local Tabs = {
-  Menu = Window:Tab({ Title = "Auto Farm", Icon = "house"})
+  Menu = Window:Tab({ Title = "Main", Icon = "house"})
 }
+Window:SelectTab(1)
 
+-- Menu
+Tabs.Menu:Section({ Title = "Helpful" })
 Tabs.Menu:Toggle({
   Title = "ESP Mobs",
   Desc = "Highlight mobs.",
