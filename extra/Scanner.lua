@@ -139,7 +139,7 @@ Tabs.Script:Button({
   Desc = "Scans module scripts returning tables.",
   Callback = function()
     for _, script in pairs(ScanModules()) do
-      print(tostring(script))
+      print(script:GetFullName())
     end
   end
 })
