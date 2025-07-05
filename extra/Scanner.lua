@@ -89,6 +89,12 @@ Tabs.Game:Button({
     setclipboard("Game: " .. game.GameId .. " | Place: " .. game.PlaceId)
   end
 })
+Tabs.Game:Code({
+  Title = "Code source",
+  Code = [[
+    setclipboard("Game: " .. game.GameId .. " | Place: " .. game.PlaceId)
+  ]]
+})
 
 -- Remote
 Tabs.Remote:Section({ Title = "Remote Events" })
@@ -98,6 +104,20 @@ Tabs.Remote:Button({
   Callback = function()
     loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Simple-Spy-Mobile-Script-Restored-22732"))()
   end
+})
+Tabs.Remote:Code({
+  Title = "Example of how to use remote events",
+  Code = [[
+    local args = {
+      [1] = {
+        ["player"] = game.Players.SuperNoob, -- Attacked player
+        ["damage"] = math.huge -- Changed to inf damage
+      }
+    } -- ↑ Example args
+    
+    game:GetService("ReplicatedStorage").Remotes.HitPlayet:FireServer(unpack[args])
+    -- ↑ Fire the remote event with the selected args
+  ]]
 })
 
 -- Explorer
@@ -136,10 +156,20 @@ Tabs.Script:Dropdown({
 })
 Tabs.Script:Button({
   Title = "Scan Module Scripts",
-  Desc = "Scans module scripts returning tables.",
+  Desc = "Scans module scripts returning tables and print then on console.",
   Callback = function()
     for _, script in pairs(ScanModules()) do
       print(script:GetFullName())
     end
   end
+})
+Tabs.Script:Code({
+  Title = "Example use of module scripts",
+  Code = [[
+    local module = require(game:GetService("ReplicatedStorage").Modules.GunModule)
+    -- ↑ Path to the module script containing a table
+    
+    module.Gun.Cooldown = 0 -- Changes a value of the table
+    module.Gun.MaxAmmo = math.huge -- Inf Ammo
+  ]]
 })
