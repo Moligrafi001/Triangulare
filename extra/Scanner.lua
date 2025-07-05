@@ -70,6 +70,16 @@ Tabs.Explorer:Button({
   Title = "Load DEX [ Desktop ]",
   Desc = "Executes dex explorer.",
   Callback = function()
-    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Keyless-mobile-dex-17888"))()
+    loadstring(game:HttpGet("https://gist.githubusercontent.com/dannythehacker/1781582ab545302f2b34afc4ec53e811/raw/ee5324771f017073fc30e640323ac2a9b3bfc550/dark%2520dex%2520v4"))()
+  end
+})
+
+-- Game
+Tabs.Game:Section({ Title = "IDs" })
+Tabs.Game:Button({
+  Title = "Copy Game & Place ID",
+  Desc = "Set game & place id to ur clipboard.",
+  Callback = function()
+    setclipboard("Game: " .. game.GameId .. " | Place: " .. game.PlaceId)
   end
 })
