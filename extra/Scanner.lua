@@ -37,12 +37,18 @@ local Tabs = {
 }
 Window:SelectTab(1)
 
--- Menu
+--[[
+loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Simple-Spy-Mobile-Script-Restored-22732"))()
+loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Keyless-mobile-dex-17888"))()
+setclipboard("Game: " .. game.GameId .. " | Place: " .. game.PlaceId)
+]]--
+
+-- Remote
 Tabs.Menu:Section({ Title = "Remote Events" })
 Tabs.Menu:Button({
   Title = "Load SimpleSpy",
   Desc = "Executes simple spy.",
   Callback = function()
-    loadstring(game:HttpGet("https://rawscripts.net/raw/Uni"))
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Simple-Spy-Mobile-Script-Restored-22732"))()
   end
 })
