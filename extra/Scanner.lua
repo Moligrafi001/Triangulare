@@ -33,7 +33,8 @@ Window:SetToggleKey(Enum.KeyCode.H)
 -- Tabs
 local Tabs = {
   Remote = Window:Tab({ Title = "Remotes", Icon = "house"}),
-  Explorer = Window:Tab({ Title = "Explorer", Icon = "house"})
+  Explorer = Window:Tab({ Title = "Explorer", Icon = "house"}),
+  Game = Window:Tab({ Title = "Game", Icon = "house"})
 }
 Window:SelectTab(1)
 
@@ -50,5 +51,23 @@ Tabs.Remote:Button({
   Desc = "Executes simple spy.",
   Callback = function()
     loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Simple-Spy-Mobile-Script-Restored-22732"))()
+  end
+})
+
+-- Explorer
+Tabs.Explorer:Section({ Title = "Mobile" })
+Tabs.Explorer:Button({
+  Title = "Load DEX [ Mobile ]",
+  Desc = "Executes dex explorer.",
+  Callback = function()
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Keyless-mobile-dex-17888"))()
+  end
+})
+Tabs.Explorer:Section({ Title = "Desktop" })
+Tabs.Explorer:Button({
+  Title = "Load DEX [ Desktop ]",
+  Desc = "Executes dex explorer.",
+  Callback = function()
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Keyless-mobile-dex-17888"))()
   end
 })
