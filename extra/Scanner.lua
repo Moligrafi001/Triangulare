@@ -38,11 +38,11 @@ local Settings = {
 
 -- Functions
 local function ScanModules()
-  Scripts = {}
+  local Scripts = {}
   
   for _, script in pairs(Settings.Scan:GetDescendants()) do
     if script:IsA("ModuleScript") then
-      local sucess, result = pcall(require, module)
+      local sucess, result = pcall(require, script)
       if sucess and typeof(result) == "table" then
         local IsValid = false
         
@@ -50,8 +50,9 @@ local function ScanModules()
           local key = "__temp_test"
           result[key] = true
           result[key] = nil
-          IsValid = true
         end)
+        
+        if test then IsValid = true end
         
         if IsValid then
           table.insert(Scripts, script)
