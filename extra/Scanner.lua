@@ -1,9 +1,8 @@
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 local Window = WindUI:CreateWindow({
-  Title = "Triangulare Game Scanner",
-  Icon = "triangle",
-  Author = "by Moligrafi",
-  Folder = "Triangulare",
+  Title = "Vulnerability Scanner",
+  Icon = "bug-play",
+  Author = "Developed by Moligrafi | Version 0.01",
   Size = UDim2.fromOffset(580, 400),
   Transparent = true,
   Theme = "Dark",
@@ -12,20 +11,13 @@ local Window = WindUI:CreateWindow({
   },
   SideBarWidth = 200,
   HasOutline = true,
-
-  -- KeySystem = {
-  --   Key = { "iloveyouMoligrafi" },
-  --   Note = "Join our Discord to get the key and unlock the script:",
-  --   URL = "https://discord.gg/9Nmhn8JKjA",
-  --   SaveKey = true,
-  -- },
 })
 Window:EditOpenButton({
-  Title = "Triangulare Scanner",
-  Icon = "triangle",
+  Title = "Vulnerability Scanner",
+  Icon = "bug-play",
   CornerRadius = UDim.new(0,16),
   StrokeThickness = 2,
-  Color = ColorSequence.new(Color3.fromRGB(0, 255, 120), Color3.fromRGB(0, 120, 255)),
+  Color = ColorSequence.new(Color3.fromRGB(255, 125, 0), Color3.fromRGB(255, 0, 69)),
   Draggable = true
 })
 Window:SetToggleKey(Enum.KeyCode.H)
@@ -84,7 +76,7 @@ setclipboard("Game: " .. game.GameId .. " | Place: " .. game.PlaceId)
 Tabs.Game:Section({ Title = "IDs" })
 Tabs.Game:Button({
   Title = "Copy Game & Place ID",
-  Desc = "Set game & place id to ur clipboard.",
+  Desc = "Copies the current Game and Place ID to your clipboard.",
   Callback = function()
     setclipboard("Game: " .. game.GameId .. " | Place: " .. game.PlaceId)
   end
@@ -100,7 +92,7 @@ Tabs.Game:Code({
 Tabs.Remote:Section({ Title = "Remote Events" })
 Tabs.Remote:Button({
   Title = "Load Simple Spy",
-  Desc = "Executes simple spy.",
+  Desc = "Launches the Simple Spy tool to monitor remote event traffic.",
   Callback = function()
     loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Simple-Spy-Mobile-Script-Restored-22732"))()
   end
@@ -158,8 +150,25 @@ Tabs.Script:Button({
   Title = "Scan Module Scripts",
   Desc = "Scans module scripts returning tables and print then on console.",
   Callback = function()
-    for _, script in pairs(ScanModules()) do
-      print(script:GetFullName())
+    local result = ScanModules()
+    
+    if #result == 0 then
+      WindUI:Notify({
+        Title = "Nothing found!",
+        Content = "No vulnerabilities found in " .. Settings.Scan:GetFullName() .. ".",
+        Icon = "bug-off",
+        Duration = 5
+      })
+    else
+      for _, script in pairs(ScanModules()) do
+        print(script:GetFullName())
+      end
+      WindUI:Notify({
+        Title = "Scan complete!",
+        Content = "Valid modules printed to console.",
+        Icon = "check",
+        Duration = 5
+      })
     end
   end
 })
