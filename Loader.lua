@@ -63,6 +63,8 @@ elseif Game == 7750682571 then
   LoadScript("games/2 Player Labubu Tycoon.lua", "2 Player Labubu Tycoon")
 elseif Game == 7691800287 then
   LoadScript("games/Stick Battles.lua", "Stick Battles")
+elseif Game == 7037847546 then
+  LoadScript("games/Critical Fantasy.lua", "Critical Fantasy")
 else
   LoadScript("Triangulare.lua", "Universal")
 end
