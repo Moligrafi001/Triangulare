@@ -15,12 +15,12 @@ local function CollectChests()
     Busy = true
     for _, chest in pairs(workspace.MapComponents.Chests:GetChildren()) do
       if not chest:GetAttribute("Receiver_" .. eu.Name) then
-        eu.Character:SetAttribute("Triangulare", eu.Character.CFrame)
+        eu.Character.HumanoidRootPart:SetAttribute("Triangulare", eu.Character.HumanoidRootPart.CFrame)
         task.wait(0.1)
-        eu.Character.CFrame = chest.Giver.CFrame
+        eu.Character.HumanoidRootPart.CFrame = chest.Giver.CFrame
         task.wait(0.3)
         fireproximityprompt(chest.Giver.Chest)
-        eu.CFrame = eu:GetAttribute("Triangulare")
+        eu.Character.HumanoidRootPart.CFrame = eu.Character.HumanoidRootPart:GetAttribute("Triangulare")
         task.wait(0.1)
       end
     end
