@@ -34,7 +34,8 @@ Window:SetToggleKey(Enum.KeyCode.H)
 local Tabs = {
   Remote = Window:Tab({ Title = "Remotes", Icon = "house"}),
   Explorer = Window:Tab({ Title = "Explorer", Icon = "house"}),
-  Game = Window:Tab({ Title = "Game", Icon = "house"})
+  Game = Window:Tab({ Title = "Game", Icon = "house"}),
+  Script = Window:Tab({ Title = "Script", Icon = "house"}),
 }
 Window:SelectTab(1)
 
