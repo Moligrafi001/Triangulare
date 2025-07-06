@@ -65,6 +65,8 @@ elseif Game == 7691800287 then
   LoadScript("games/Stick Battles.lua", "Stick Battles")
 elseif Game == 7037847546 then
   LoadScript("games/Critical Fantasy.lua", "Critical Fantasy")
+elseif Game == 7911733012 then
+  LoadScript("games/Steal a magic.lua", "Steal a magic")
 else
   LoadScript("Triangulare.lua", "Universal")
 end
