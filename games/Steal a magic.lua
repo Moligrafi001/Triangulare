@@ -35,7 +35,7 @@ end
 local function AutoLock()
   while getgenv().AutoLock and task.wait(0.39) do
     pcall(function()
-      if Settings.Plot:GetAttribute("IsLocked") then
+      if not Settings.Plot:GetAttribute("IsLocked") then
         firetouchinterest(eu.Character.HumanoidRootPart, Settings.Plot.LockBase, 0)
         firetouchinterest(eu.Character.HumanoidRootPart, Settings.Plot.LockBase, 1)
       end
