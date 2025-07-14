@@ -42,6 +42,13 @@ local function AutoLock()
     end)
   end
 end
+local function ForcePrompts()
+  for _, pp in pairs(workspace:GetDescendants()) do
+    if pp:IsA("ProximityPrompt") and not pp.Enabled and not pp:IsDescendantOf(Settings.Plot) and pp.ActionText == "Steal" then
+      pp.Enabled = true
+    end
+  end
+end
 
 --[[
 Game: 7911733012 | Place: 84467557068970
@@ -74,5 +81,13 @@ Tabs.Menu:Toggle({
   Callback = function(state)
     getgenv().AutoLock = state
     AutoLock()
+  end
+})
+Tabs.Menu:Section({ Title = "Advanced" })
+Tabs.Menu:Button({
+  Title = "Forne Prompts",
+  Desc = "Force steal prompts to enable.",
+  Callback = function()
+    ForcePrompts()
   end
 })
