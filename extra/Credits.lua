@@ -62,9 +62,13 @@ CredTabs.SupportedTab:Button({
 -- Credits
 CredTabs.CreditsTab = Window:Tab({ Title = "Credits", Icon = "info"})
 CredTabs.CreditsTab:Section({ Title = "Developers" })
-  CredTabs.CreditsTab:Paragraph({
+CredTabs.CreditsTab:Paragraph({
   Title = "Founder Developer",
   Desc = "Discord: @moligrafi",
+})
+CredTabs.CreditsTab:Paragraph({
+  Title = "Co-Developers",
+  Desc = "Discord: @_prismx\nDiscord: @zylxex",
 })
 CredTabs.CreditsTab:Section({ Title = "Discord Server" })
 CredTabs.CreditsTab:Paragraph({
