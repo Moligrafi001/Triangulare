@@ -20,6 +20,7 @@ local Window = WindUI:CreateWindow({
   --   SaveKey = true,
   -- },
 })
+--[[
 Window:EditOpenButton({
   Title = "Triangulare",
   Icon = "triangle",
@@ -28,4 +29,5 @@ Window:EditOpenButton({
   Color = ColorSequence.new(Color3.fromRGB(0, 255, 120), Color3.fromRGB(0, 120, 255)),
   Draggable = true
 })
+]]--
 Window:SetToggleKey(Enum.KeyCode.H)
