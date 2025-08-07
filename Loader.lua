@@ -20,6 +20,7 @@ pcall(function()
 end)
 
 local Game = game.GameId
+local Place = game.PlaceId
 
 if Game == 7516718402 then
   LoadScript("games/Noobs Must Die.lua", "Noobs Must Die")
@@ -67,6 +68,8 @@ elseif Game == 7037847546 then
   LoadScript("games/Critical Fantasy.lua", "Critical Fantasy")
 elseif Game == 7911733012 then
   LoadScript("games/Steal a magic.lua", "Steal a magic")
+elseif Place == 3261957210 then
+  LoadScript("games/Thanos Simulator.lua", "Thanos Simulator")
 else
   LoadScript("Triangulare.lua", "Universal")
 end
