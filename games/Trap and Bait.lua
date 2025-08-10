@@ -66,7 +66,7 @@ Tabs.Rats:Button({
   end
 })
 Tabs.Rats:Toggle({
-  Title = "Auto Sell",
+  Title = "Auto Sell Cheese",
   Desc = "Auto sells your cheese.",
   Value = false,
   Callback = function(state)
