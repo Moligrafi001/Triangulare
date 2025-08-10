@@ -23,14 +23,14 @@ end)
 
 -- Functions
 local function CollectCash()
-  while getgenv().CollectCash and task.wait(0.39) do
+  while getgenv().CollectCash and task.wait(1) do
     pcall(function()
       game:GetService("ReplicatedStorage").Network.Plot.Collect:InvokeServer("Sales")
     end)
   end
 end
 local function CollectVault()
-  while getgenv().CollectVault and task.wait(0.39) do
+  while getgenv().CollectVault and task.wait(1) do
     pcall(function()
       game:GetService("ReplicatedStorage").Network.Plot.Collect:InvokeServer("Vault")
     end)
