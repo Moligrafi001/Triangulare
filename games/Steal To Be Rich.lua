@@ -53,12 +53,13 @@ workspace.Map.Plots["2"] Locked Owner
 
 -- Tabs
 local Tabs = {
-  Menu = Window:Tab({ Title = "Main", Icon = "houseMenu"})
+  Menu = Window:Tab({ Title = "Main", Icon = "house"}),
+  Vault = Window:Tab({ Title = "Vault", Icon = "vault"}),
 }
 Window:SelectTab(1)
 
 -- Menu
-Tabs.Menu:Section({ Title = "Sell" })
+Tabs.Menu:Section({ Title = "Collect" })
 Tabs.Menu:Toggle({
   Title = "Auto Collect Sales",
   Desc = "Collects the money from sales..",
@@ -66,15 +67,6 @@ Tabs.Menu:Toggle({
   Callback = function(state)
     getgenv().CollectCash = state
     CollectCash()
-  end
-})
-Tabs.Menu:Toggle({
-  Title = "Auto Collect Vault",
-  Desc = "Collects the money from vault..",
-  Value = false,
-  Callback = function(state)
-    getgenv().CollectVault = state
-    CollectVault()
   end
 })
 Tabs.Menu:Section({ Title = "Safety" })
@@ -85,5 +77,30 @@ Tabs.Menu:Toggle({
   Callback = function(state)
     getgenv().AutoLock = state
     AutoLock()
+  end
+})
+
+-- Vault
+Tabs.Vault:Section({ Title = "Collect" })
+Tabs.Vault:Toggle({
+  Title = "Auto Collect Vault",
+  Desc = "Collects the money from vault..",
+  Value = false,
+  Callback = function(state)
+    getgenv().CollectVault = state
+    CollectVault()
+  end
+})
+Tabs.Vault:Section({ Title = "Safety" })
+Tabs.Vault:Button({
+  Title = "Open Vault",
+  Callback = function()
+    game:GetService("ReplicatedStorage").Network.Plot.OpenVault:FireServer(true)
+  end
+})
+Tabs.Vault:Button({
+  Title = "Close Vault",
+  Callback = function()
+    game:GetService("ReplicatedStorage").Network.Plot.OpenVault:FireServer(false)
   end
 })
