@@ -44,9 +44,12 @@ local function AutoLock()
 end
 local function ForcePrompts()
   for _, pp in pairs(workspace:GetDescendants()) do
-    if pp:IsA("ProximityPrompt") and not pp.Enabled and not pp:IsDescendantOf(Settings.Plot) and pp.ActionText == "Steal" then
-      pp.Enabled = true
-    end
+    pcall(function()
+      if pp:IsA("ProximityPrompt") and not pp.Enabled and not pp:IsDescendantOf(Settings.Plot) and pp.ActionText == "Steal" then
+        pp.Enabled = true
+        pp.MaxActivationDistance = 11
+      end
+    end)
   end
 end
 
@@ -85,7 +88,7 @@ Tabs.Menu:Toggle({
 })
 Tabs.Menu:Section({ Title = "Advanced" })
 Tabs.Menu:Button({
-  Title = "Forne Prompts",
+  Title = "Force Prompts",
   Desc = "Force steal prompts to enable.",
   Callback = function()
     ForcePrompts()
