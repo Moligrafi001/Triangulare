@@ -72,6 +72,8 @@ elseif Place == 3261957210 then
   LoadScript("games/Thanos Simulator.lua", "Thanos Simulator")
 elseif Game == 8169094622 then
   LoadScript("games/Trap and Bait.lua", "Trap and Bait")
+elseif Game == 7778459210 then
+  LoadScript("games/Steal To Be Rich.lua", "Steal To Be Rich!")
 else
   LoadScript("Triangulare.lua", "Universal")
 end
