@@ -79,6 +79,18 @@ Tabs.Menu:Toggle({
     AutoLock()
   end
 })
+Tabs.Menu:Section({ Title = "Sell" })
+Tabs.Menu:Button({
+  Title = "Sell Furniture",
+  Desc = "Sells your stuff [RISKY]",
+  Callback = function()
+    for _, item in pairs(workspace.Debris.Items:GetChildren()) do
+      if item:GetAttribute("Owner") == eu.UserId and not item:GetAttribute("Carrying") and not item:GetAttribute("Vaulted") then
+        game:GetService("ReplicatedStorage").Network.Items.Price:InvokeServer(item:GetAttribute("UniqueId"), (item:GetAttribute("Float") * item:GetAttribute("Weight")) * 3)
+      end
+    end
+  end
+})
 
 -- Vault
 Tabs.Vault:Section({ Title = "Collect" })
