@@ -4,9 +4,6 @@ getgenv().AutoSell = false
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
-local Settings = {
-  Distance = 20
-}
 
 -- Functions
 local function StealAura()
