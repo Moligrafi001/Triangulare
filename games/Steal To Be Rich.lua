@@ -86,8 +86,7 @@ Tabs.Menu:Button({
   Callback = function()
     for _, item in pairs(workspace.Debris.Items:GetChildren()) do
       if item:GetAttribute("Owner") == eu.UserId and not item:GetAttribute("Carrying") and not item:GetAttribute("Vaulted") then
-        print("Pressed!")
-        game:GetService("ReplicatedStorage").Network.Items.Price:InvokeServer(item:GetAttribute("UniqueId"), tonumber((tonumber(item:GetAttribute("Float")) * tonumber(item:GetAttribute("Weight"))) * 10))
+        game:GetService("ReplicatedStorage").Network.Items.Price:InvokeServer(item:GetAttribute("UniqueId"), tonumber(tonumber((tonumber(item:GetAttribute("Float")) * tonumber(item:GetAttribute("Weight"))) * 3) * 10))
       end
     end
   end
