@@ -13,7 +13,7 @@ local function StealAura()
   local function GetNearby()
     local Detected = {}
     for _, prompt in pairs(workspace:GetPartBoundsInBox(eu.Character.HumanoidRootPart.CFrame, Vector3.new(Settings.Distance, 20, Settings.Distance), nil)) do
-      if prompt:IsDescendantOf(workspace["__important"].server.baits) and prompt:IsA("ProximityPrompt") and prompt.ActionText == "Steal" then
+      if prompt:IsDescendantOf(workspace.__important.server.baits) and prompt:IsA("ProximityPrompt") and prompt.ActionText == "Steal" then
         table.insert(Detected, prompt)
       end
     end
