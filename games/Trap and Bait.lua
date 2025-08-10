@@ -46,7 +46,7 @@ local Tabs = {
 }
 Window:SelectTab(1)
 
--- Blatant
+-- Rats
 Tabs.Rats:Section({ Title = "Steal" })
 Tabs.Rats:Toggle({
   Title = "Steal Aura",
