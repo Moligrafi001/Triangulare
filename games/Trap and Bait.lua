@@ -10,28 +10,27 @@ local Settings = {
 
 -- Functions
 local function StealAura()
-  local function GetNearby()
-    local Detected = {}
-    for _, prompt in pairs(workspace:GetPartBoundsInBox(eu.Character.HumanoidRootPart.CFrame, Vector3.new(Settings.Distance, 20, Settings.Distance), nil)) do
-      if prompt:IsDescendantOf(workspace.__important.server.baits) and prompt:IsA("ProximityPrompt") and prompt.ActionText == "Steal" then
-        table.insert(Detected, prompt)
-      end
-    end
-    return Detected
-  end
   while getgenv().StealAura and task.wait(0.1) do
-    if eu:GetAttribute("team") == "rats" then
-      for _, prompt in pairs(GetNearby()) do
-        fireproximityprompt(prompt)
+    pcall(function()
+      if eu:GetAttribute("team") == "rats" then
+        for _, prompt in pairs(workspace.__important.server.baits:GetDescendants()) do
+          pcall(function()
+            if prompt:IsA("ProximityPrompt") and prompt.ActionText == "Steal" then
+              fireproximityprompt(prompt)
+            end
+          end)
+        end
       end
-    end
+    end)
   end
 end
 local function AutoSell()
   while getgenv().AutoSell and task.wait(1) do
-    if eu:GetAttribute("team") == "rats" then
-      game:GetService("ReplicatedStorage").remotes.client.ui.dialogues.request_sell_all:InvokeServer()
-    end
+    pcall(function()
+      if eu:GetAttribute("team") == "rats" then
+        game:GetService("ReplicatedStorage").remotes.client.ui.dialogues.request_sell_all:InvokeServer()
+      end
+    end)
   end
 end
 
