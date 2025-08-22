@@ -15,9 +15,12 @@ getgenv().AutoTPe = false
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
 local Settings = {
+  Triggerbot = {
+    Cooldown = 3,
+    Waiting = false
+  },
   Selected = "Lobby",
   Teleport = "Everytime",
-  TriggerbotCooldown = 3,
   SlashCooldown = 0.5,
   SpamSoundCooldown = 0.2,
   KnifeCooldown = 1,
@@ -27,6 +30,44 @@ local Settings = {
 local HitSize = 5
 local IsCooldown = false
 local CorInocente = Color3.fromRGB(255, 125, 0)
+
+-- Almost
+local function GetClassOf(class)
+  local Objects = {}
+  for _, p in pairs(game:GetService("Players"):GetPlayers()) do
+    pcall(function()
+      if p ~= eu and p:GetAttribute("Game") == eu:GetAttribute("Game") then
+        if class == "Enemies" and p:GetAttribute("Team") ~= eu:GetAttribute("Team") then
+          table.insert(Objects, p)
+        elseif class == "Allies" and p:GetAttribute("Team") == eu:GetAttribute("Team") then
+          table.insert(Objects, p)
+        end
+      end
+    end)
+  end
+  return Objects
+end
+local function ReturnItem(class)
+  for _, item in pairs(eu.Backpack:GetChildren()) do
+    if item:IsA("Tool") then
+      if class == "Gun" and item:FindFirstChild("fire") and item:FindFirstChild("showBeam") and item:FindFirstChild("kill") then
+        return item
+      elseif class == "Knife" and item:FindFirstChild("Slash") then
+        return item
+      end
+    end
+  end
+  for _, item in pairs(eu.Character:GetChildren()) do
+    if item:IsA("Tool") then
+      if class == "Gun" and item:FindFirstChild("fire") and item:FindFirstChild("showBeam") and item:FindFirstChild("kill") then
+        return item
+      elseif class == "Knife" and item:FindFirstChild("Slash") then
+        return item
+      end
+    end
+  end
+  return false
+end
 
 -- Functions
 local function Teleport()
@@ -47,11 +88,8 @@ end
 local function EquipKnife()
   while getgenv().EquipKnife and task.wait(0.25) do
     pcall(function()
-      for _, tool in pairs(eu.Backpack:GetChildren()) do
-        if tool:IsA("Tool") and tool:FindFirstChild("Slash") and tool:FindFirstChild("Throw") then
-          tool.Parent = eu.Character
-        end
-      end
+      local Knife = ReturnItem("Knife")
+      Knife.Parent = eu.Character
     end)
   end
 end
@@ -75,30 +113,22 @@ local function CancelTrade()
 end
 local function KillGun()
   pcall(function()
-    for _, player in pairs(game.Players:GetPlayers()) do
-      if player ~= eu and player:GetAttribute("Game") == eu:GetAttribute("Game") and player:GetAttribute("Team") ~= eu:GetAttribute("Team") then
-        for _, tool in pairs(eu.Character:GetChildren()) do
-          if tool:IsA("Tool") then
-          tool.kill:FireServer(player, Vector3.new(player.Character.Head.Position))
-          end
-        end
-      end
+    local Gun = ReturnItem("Gun")
+    for _, enemy in pairs(GetClassOf("Enemies")) do
+      Gun.kill:FireServer(enemy, Vector3.new(enemy.Character.Head.Position))
     end
   end)
 end
 local function AutoGun()
-  while getgenv().AutoGun and wait(0.33) do
+  while getgenv().AutoGun and task.wait(0.33) do
     KillGun()
   end
 end
 local function PullGun()
   while getgenv().PullGun and task.wait(0.25) do
     pcall(function()
-      for _, tool in pairs(eu.Backpack:GetChildren()) do
-        if tool:IsA("Tool") and tool:FindFirstChild("kill") then
-          tool.Parent = eu.Character
-        end
-      end
+      local Gun = ReturnItem("Gun")
+      Gun.Parent = eu.Character
     end)
   end
 end
@@ -175,81 +205,65 @@ local function PlayerESP()
 	end
 end
 local function GunSound()
-  while getgenv().GunSound and  task.wait(Settings.SpamSoundCooldown) do
+  while getgenv().GunSound and task.wait(Settings.SpamSoundCooldown) do
     pcall(function()
-      for _, tool in pairs(eu.Character:GetChildren()) do
-        if tool:IsA("Tool") and tool:FindFirstChild("fire") then
-          tool.fire:FireServer()
+      local Gun = ReturnItem("Gun")
+      Gun.fire:FireServer()
+    end)
+  end
+end
+local function Triggerbot()
+  local function GetAlliesChar()
+    local Allies = {}
+    for _, ally in pairs(GetClassOf("Allies")) do
+      if ally.Character then
+        table.insert(Allies, ally.Character)
+      end
+    end
+    return Allies
+  end
+  local Triggerbot = Settings.Triggerbot
+  while getgenv().Triggerbot and task.wait(0.01) do
+    pcall(function()
+      local Gun = ReturnItem("Gun")
+      if Gun and Gun.Parent == eu.Character then
+        local camera = workspace.CurrentCamera
+        if camera then
+          for _, enemy in pairs(GetClassOf("Enemies")) do
+            local char = enemy.Character
+            local root = char and char:FindFirstChild("HumanoidRootPart")
+            local head = char and char:FindFirstChild("Head")
+            if root and head then
+              local GunPos = Gun.Handle.Position
+              local CamPos = camera.CFrame.Position
+              local rayParams = RaycastParams.new()
+              rayParams.FilterDescendantsInstances = {eu.Character, unpack(GetAlliesChar())}
+              rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+              local camResult = workspace:Raycast(CamPos, root.Position - CamPos, rayParams)
+              local hitResult = workspace:Raycast(GunPos, root.Position - GunPos, rayParams)
+              if not Triggerbot.Waiting and camResult and camResult.Instance:IsDescendantOf(char) and not camResult.Instance:IsA("Accessory") and hitResult and hitResult.Instance:IsDescendantOf(char) and not hitResult.Instance:IsA("Accessory") then
+                  pcall(function()
+                    Gun.fire:FireServer()
+                    Gun.showBeam:FireServer(hitResult.Position, GunPos, Gun.Handle)
+                    Gun.kill:FireServer(enemy, Vector3.new(hitResult.Position))
+                  end)
+                  Triggerbot.Waiting = true
+                  task.delay(Triggerbot.Cooldown, function()
+                    Triggerbot.Waiting = false
+                  end)
+              end
+            end
+          end
         end
       end
     end)
   end
 end
-local function Triggerbot()
-    -- Variáveis locais
-    local Players = game:GetService("Players")
-    local Workspace = game.Workspace
-    local LocalPlayer = Players.LocalPlayer
-    -- Função principal do Triggerbot
-    while getgenv().Triggerbot do
-        task.wait(0.01) -- Intervalo para evitar uso excessivo de CPU
-        -- Iterar sobre todos os jogadores
-        for _, player in ipairs(Players:GetPlayers()) do
-            if player ~= LocalPlayer 
-                and player:GetAttribute("Game") == LocalPlayer:GetAttribute("Game")
-                and player:GetAttribute("Team") ~= LocalPlayer:GetAttribute("Team") then
-                local character = player.Character
-                local rootPart = character and character:FindFirstChild("HumanoidRootPart")
-                if rootPart then
-                    -- Verificar se o raio atinge o jogador
-                    local camera = Workspace.CurrentCamera
-                    if camera then
-                        local rayOrigin = camera.CFrame.Position
-                        local rayDirection = (rootPart.Position - rayOrigin).Unit * 1000
-                        local ray = Ray.new(rayOrigin, rayDirection)
-                        local hit, _ = Workspace:FindPartOnRay(ray, LocalPlayer.Character)
-                        if hit and hit.Parent == rootPart.Parent then
-                            -- Iterar sobre as ferramentas do jogador local
-                            local localCharacter = LocalPlayer.Character
-                            if localCharacter then
-                                for _, tool in ipairs(localCharacter:GetChildren()) do
-                                    if not IsCooldown 
-                                        and tool:IsA("Tool") 
-                                        and tool:FindFirstChild("Handle") 
-                                        and tool:FindFirstChild("showBeam") 
-                                        and tool:FindFirstChild("kill") 
-                                        and tool:FindFirstChild("fire") then
-                                        local handle = tool.Handle
-                                        -- Ativar as funções da ferramenta
-                                        tool.fire:FireServer()
-                                        tool.showBeam:FireServer(character.HumanoidRootPart.Position, handle.Position, handle)
-                                        tool.kill:FireServer(player, Vector3.new(player.Character.Head.Position))
-                                        
-                                        -- Definir cooldown após o disparo
-                                        IsCooldown = true
-                                        task.spawn(function()
-                                            task.wait(Settings.TriggerbotCooldown) -- Cooldown de 3 segundos
-                                            IsCooldown = false
-                                        end)
-                                        break
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
 local function AutoSlash()
   while getgenv().AutoSlash and task.wait(Settings.SlashCooldown) do
     pcall(function()
-      for _, tool in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren() or game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
-        if tool:IsA("Tool") and tool:FindFirstChild("Slash") then
-          tool.Slash:FireServer()
-        end
-      end
+      local Knife = ReturnItem("Knife")
+      Knife.Slash:FireServer()
     end)
   end
 end
@@ -446,7 +460,7 @@ Tabs.Gun:Input({
   Value = "3",
   Placeholder = "In seconds, ex.: 3",
   Callback = function(input)
-    Settings.TriggerbotCooldown = tonumber(input) or 1
+    Settings.Triggerbot.Cooldown = tonumber(input) or 0
   end
 })
 Tabs.Gun:Section({ Title = "Blatant" })
