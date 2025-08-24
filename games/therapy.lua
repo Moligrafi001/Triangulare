@@ -12,6 +12,8 @@ local function GetItem(item)
   for _, obj in pairs(workspace:GetChildren()) do
     if item == "Yellow Key" and obj:FindFirstChild("ClickDetector") and obj:FindFirstChild("Script") and obj:FindFirstChild("Mesh") and obj.CFrame == CFrame.new(-510.158936, -18.978363, -58.810009, 0.00186401606, -0.998980701, -0.0451014228, -0.985486925, 0.00582045317, -0.169652, 0.169741586, 0.044763092, -0.98447156) then
       return fireclickdetector(obj.ClickDetector)
+    elseif item == "Coffee" and obj:FindFirstChild("ClickDetector") and obj:FindFirstChild("Script") and obj:FindFirstChild("Mesh") and obj.CFrame == CFrame.new(-441.116241, -28.7428284, -267.477356, -0.86605227, 0, -0.499954134, 0, 1, 0, 0.499954134, 0, -0.86605227) then
+      return fireclickdetector(obj.ClickDetector)
     elseif item == "Stressball" then
       if obj:FindFirstChild("ClickDetector") and obj:FindFirstChild("normal") and obj.CFrame == CFrame.new(-509.531311, 3.90429688, 9.21760178, -0.506094933, 0.341999441, 0.791773021, 0.224785, 0.938597262, -0.261738181, -0.832670271, 0.0455143377, -0.551895618) then
         return fireclickdetector(obj.ClickDetector)
@@ -62,6 +64,12 @@ Tabs.Menu:Button({
   Title = "Get Stressball",
   Callback = function()
     GetItem("Stressball")
+  end
+})
+Tabs.Menu:Button({
+  Title = "Get Coffee",
+  Callback = function()
+    GetItem("Coffee")
   end
 })
 
