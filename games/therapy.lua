@@ -40,33 +40,33 @@ CD1 workspace.Folder2.CD10.ClickDetector
 
 -- Tabs
 local Tabs = {
-  Menu = Window:Tab({ Title = "Main", Icon = "house"}),
+  Items = Window:Tab({ Title = "Items", Icon = "box"}),
   CDs = Window:Tab({ Title = "Discs", Icon = "disc-3"}),
   Doors = Window:Tab({ Title = "Doors", Icon = "door-open"})
 }
 Window:SelectTab(1)
 
--- Menu
-Tabs.Menu:Section({ Title = "Get Item" })
-Tabs.Menu:Button({
+-- Items
+Tabs.Items:Section({ Title = "Get Item" })
+Tabs.Items:Button({
   Title = "Get Cheese",
   Callback = function()
     GetItem("Cheese")
   end
 })
-Tabs.Menu:Button({
+Tabs.Items:Button({
   Title = "Get Yellow Key",
   Callback = function()
     GetItem("Yellow Key")
   end
 })
-Tabs.Menu:Button({
+Tabs.Items:Button({
   Title = "Get Stressball",
   Callback = function()
     GetItem("Stressball")
   end
 })
-Tabs.Menu:Button({
+Tabs.Items:Button({
   Title = "Get Coffee",
   Callback = function()
     GetItem("Coffee")
