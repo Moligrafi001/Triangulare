@@ -13,7 +13,7 @@ local function GetItem(item)
     if item == "Yellow Key" and obj:FindFirstChild("ClickDetector") and obj:FindFirstChild("Script") and obj:FindFirstChild("Mesh") and obj.CFrame == CFrame.new(-510.158936, -18.978363, -58.810009, 0.00186401606, -0.998980701, -0.0451014228, -0.985486925, 0.00582045317, -0.169652, 0.169741586, 0.044763092, -0.98447156) then
       return fireclickdetector(obj.ClickDetector)
     elseif item == "Stressball" then
-      if obj:FindFirstChild("ClickDetector") and obj.CFrame and obj:FindFirstChild("normal") and obj.CFrame == CFrame.new(-509.531311, 3.90429688, 9.21760178, -0.506094933, 0.341999441, 0.791773021, 0.224785, 0.938597262, -0.261738181, -0.832670271, 0.0455143377, -0.551895618) then
+      if obj:FindFirstChild("ClickDetector") and obj:FindFirstChild("normal") and obj.CFrame == CFrame.new(-509.531311, 3.90429688, 9.21760178, -0.506094933, 0.341999441, 0.791773021, 0.224785, 0.938597262, -0.261738181, -0.832670271, 0.0455143377, -0.551895618) then
         return fireclickdetector(obj.ClickDetector)
       end
     end
@@ -69,7 +69,7 @@ Tabs.Menu:Button({
 Tabs.CDs:Section({ Title = "Selected" })
 Tabs.CDs:Dropdown({
   Title = "Selected CD",
-  Values = {"CD1", "CD2", "CD3", "CD4", "CD5", "CD6", "CD7", "CD8", "CD9", "CD10"},
+  Values = {"CD1", "CD2", "CD3", "CD4", "CD5", "CD8", "CD9", "CD10"},
   Value = Settings.CD,
   Callback = function(option)
     Settings.CD = option
