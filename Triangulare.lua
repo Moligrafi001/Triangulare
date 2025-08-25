@@ -126,7 +126,7 @@ Tabs.Movement:Input({
 })
 
 -- Teleport
-Tabs.Movement:Section({ Title = "Teleport to Player" })
+Tabs.Teleport:Section({ Title = "Teleport to Player" })
 local PlayerDropdown = Tabs.Teleport:Dropdown({
   Title = "Selected Player",
   Values = ReturnPlayers(),
@@ -134,7 +134,7 @@ local PlayerDropdown = Tabs.Teleport:Dropdown({
   Callback = function(option)
     Settings.Teleport.Player = option
   end
-}
+})
 Tabs.Teleport:Button({
   Title = "Teleport to Player",
   Desc = "Teleports you to the selected player.",
