@@ -154,7 +154,7 @@ Tabs.Teleport:Button({
     print("Wainting to update...")
   end
 })
-Tabs.Movement:Section({ Title = "Teleport Tool" })
+Tabs.Teleport:Section({ Title = "Teleport Tool" })
 Tabs.Teleport:Button({
   Title = "Get Tool",
   Desc = "Gives you the teleport tool.",
