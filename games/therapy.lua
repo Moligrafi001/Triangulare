@@ -14,10 +14,8 @@ local function GetItem(item)
       return fireclickdetector(obj.ClickDetector)
     elseif item == "Coffee" and obj:FindFirstChild("ClickDetector") and obj:FindFirstChild("Script") and obj:FindFirstChild("Mesh") and obj.CFrame == CFrame.new(-441.116241, -28.7428284, -267.477356, -0.86605227, 0, -0.499954134, 0, 1, 0, 0.499954134, 0, -0.86605227) then
       return fireclickdetector(obj.ClickDetector)
-    elseif item == "Stressball" then
-      if obj:FindFirstChild("ClickDetector") and obj:FindFirstChild("normal") and obj.CFrame == CFrame.new(-509.531311, 3.90429688, 9.21760178, -0.506094933, 0.341999441, 0.791773021, 0.224785, 0.938597262, -0.261738181, -0.832670271, 0.0455143377, -0.551895618) then
-        return fireclickdetector(obj.ClickDetector)
-      end
+    elseif item == "Stressball" and obj:FindFirstChild("ClickDetector") and obj:FindFirstChild("normal") and obj.CFrame == CFrame.new(-509.531311, 3.90429688, 9.21760178, -0.506094933, 0.341999441, 0.791773021, 0.224785, 0.938597262, -0.261738181, -0.832670271, 0.0455143377, -0.551895618) then
+      return fireclickdetector(obj.ClickDetector)
     end
   end
 end
