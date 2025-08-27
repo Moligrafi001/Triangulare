@@ -115,12 +115,19 @@ local function KillGun()
   pcall(function()
     local Gun = ReturnItem("Gun")
     for _, enemy in pairs(GetClassOf("Enemies")) do
-      Gun.kill:FireServer(enemy, Vector3.new(enemy.Character.Head.Position))
+      pcall(function()
+        if Gun and Gun.Parent == eu.Character and enemy.Character then
+          repeat
+            Gun.kill:FireServer(enemy, Vector3.new(enemy.Character.Head.Position))
+            task.wait(0.1)
+          until not Gun or Gun.Parent ~= eu.Character or not enemy.Character
+        end
+      end)
     end
   end)
 end
 local function AutoGun()
-  while getgenv().AutoGun and task.wait(0.33) do
+  while getgenv().AutoGun and task.wait(1) do
     KillGun()
   end
 end
