@@ -30,7 +30,10 @@ local function SupportedList(type)
     ["Critical Fantasy"] = 124519565742104,
     ["Steal a magic"] = 84467557068970,
     ["Thanos Simulator"] = 3261957210,
-    ["Trap and Bait"] = 117957332897543
+    ["Trap and Bait"] = 117957332897543,
+    ["Steal To Be Rich!"] = 133945484297240,
+    ["Zombie Tower"] = 115338810233057,
+    ["therapy"] = 8286149869
   }
   if type == "Names" then
     local Names = {}
