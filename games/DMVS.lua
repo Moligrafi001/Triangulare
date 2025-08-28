@@ -1,6 +1,7 @@
 -- Global Values
 getgenv().AutoGun = false
 getgenv().PullGun = false
+getgenv().AutoKnife = false
 getgenv().HitBox = false
 getgenv().PlayerESP = false
 getgenv().GunSound = false
@@ -126,9 +127,21 @@ local function KillGun()
     end
   end)
 end
+local function KillKnife()
+  for _, enemy in pairs(GetClassOf("Enemies")) do
+    if enemy.Character then
+      game:GetService("ReplicatedStorage").KnifeKill:FireServer(enemy, enemy)
+    end
+  end
+end
 local function AutoGun()
   while getgenv().AutoGun and task.wait(1) do
     KillGun()
+  end
+end
+local function AutoKnife()
+  while getgenv().AutoKnife and task.wait(1) do
+    KillKnife()
   end
 end
 local function PullGun()
@@ -535,6 +548,22 @@ Tabs.Knife:Input({
   end
 })
 Tabs.Knife:Section({ Title = "Blatant" })
+Tabs.Knife:Button({
+  Title = "Kill All",
+  Desc = "Kills everyone using your knife.",
+  Callback = function()
+    KillKnife()
+  end
+})
+Tabs.Knife:Toggle({
+  Title = "Auto Kill",
+  Desc = "Auto kills everyone.",
+  Value = false,
+  Callback = function(state)
+    getgenv().AutoKnife = state
+    AutoKnife()
+  end
+})
 Tabs.Knife:Toggle({
   Title = "Auto Equip Knife",
   Desc = "Automatically equips your knife.",
