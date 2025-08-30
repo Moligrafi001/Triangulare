@@ -38,8 +38,8 @@ local function GetClassOf(class)
   local Objects = {}
   for _, p in pairs(game:GetService("Players"):GetPlayers()) do
     pcall(function()
-      if p ~= eu and p:GetAttribute("Game") == eu:GetAttribute("Game") and not table.find(Ignore, p.Name) then
-        if class == "Enemies" and p:GetAttribute("Team") ~= eu:GetAttribute("Team") then
+      if p ~= eu and p:GetAttribute("Game") == eu:GetAttribute("Game") then
+        if class == "Enemies" and p:GetAttribute("Team") ~= eu:GetAttribute("Team") and not table.find(Ignore, p.Name) then
           table.insert(Objects, p)
         elseif class == "Allies" and p:GetAttribute("Team") == eu:GetAttribute("Team") then
           table.insert(Objects, p)
