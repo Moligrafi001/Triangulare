@@ -140,7 +140,7 @@ local function AutoGun()
   end
 end
 local function AutoKnife()
-  while getgenv().AutoKnife and task.wait(1) do
+  while getgenv().AutoKnife and task.wait(0.1) do
     KillKnife()
   end
 end
