@@ -473,7 +473,7 @@ Tabs.Knife:Toggle({
 Tabs.Teleport:Section({ Title = "Teleport to Map" })
 Tabs.Teleport:Dropdown({
   Title = "Selected Map",
-  Values = {"Lobby", "Factory", "House", "Mansion", "MilBase"},
+  Values = {"Lobby", "Waiting Room", "Hotel", "Factory", "House", "Mansion", "MilBase"},
   Value = "Lobby",
   Callback = function(option)
     if option == "Lobby" then
@@ -486,6 +486,10 @@ Tabs.Teleport:Dropdown({
       Settings.Teleport.CFrame = CFrame.new(-1175, 47, 6475)
     elseif option == "MilBase" then
       Settings.Teleport.CFrame = CFrame.new(-1186, 27, 3737)
+    elseif option == "Hotel" then
+      Settings.Teleport.CFrame = CFrame.new(677.19104, 95.9535522, 4991.19287)
+    elseif option == "Waiting Room" then
+      Settings.Teleport.CFrame = CFrame.new(1888.1405, -63.8421059, 78.9331055)
     end
   end
 })
