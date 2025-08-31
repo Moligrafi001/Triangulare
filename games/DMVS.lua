@@ -473,7 +473,7 @@ Tabs.Knife:Toggle({
 Tabs.Teleport:Section({ Title = "Teleport to Map" })
 Tabs.Teleport:Dropdown({
   Title = "Selected Map",
-  Values = {"Lobby", "Waiting Room", "Hotel", "Factory", "House", "Mansion", "MilBase"},
+  Values = {"Lobby", "Hotel", "Factory", "House", "Mansion", "MilBase", "Waiting Room"},
   Value = "Lobby",
   Callback = function(option)
     if option == "Lobby" then
