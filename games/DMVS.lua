@@ -5,41 +5,38 @@ getgenv().AutoKnife = false
 getgenv().HitBox = false
 getgenv().PlayerESP = false
 getgenv().GunSound = false
-getgenv().AnnoyTrade = false
-getgenv().CancelTrade = false
 getgenv().Triggerbot = false
 getgenv().AutoSlash = false
-getgenv().KnifeTrigger = false
 getgenv().EquipKnife = false
 getgenv().AutoTPe = false
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
 local Settings = {
+  Ignore = {"Moligrafi", "HallowHub"},
   Triggerbot = {
     Cooldown = 3,
     Waiting = false
   },
-  Selected = "Lobby",
-  Teleport = "Everytime",
-  SlashCooldown = 0.5,
+  Teleport = {
+    Mode = "Everytime",
+    CFrame = CFrame.new(-337, 76, 19)
+  },
+  Slash = {
+    Cooldown = 0.5
+  },
   SpamSoundCooldown = 0.2,
-  KnifeCooldown = 1,
-  IgnoreWalls = false,
-  KnifeMethod = "Single Target"
 }
 local HitSize = 5
-local IsCooldown = false
-local CorInocente = Color3.fromRGB(255, 125, 0)
+local CorInocente = Color3.new(1, 0.5, 0)
 
 -- Almost
 local function GetClassOf(class)
-  local Ignore = { "Moligrafi", "HallowHub" }
   local Objects = {}
   for _, p in pairs(game:GetService("Players"):GetPlayers()) do
     pcall(function()
       if p ~= eu and p:GetAttribute("Game") == eu:GetAttribute("Game") then
-        if class == "Enemies" and p:GetAttribute("Team") ~= eu:GetAttribute("Team") and not table.find(Ignore, p.Name) then
+        if class == "Enemies" and p:GetAttribute("Team") ~= eu:GetAttribute("Team") and not table.find(Settings.Ignore, p.Name) then
           table.insert(Objects, p)
         elseif class == "Allies" and p:GetAttribute("Team") == eu:GetAttribute("Team") then
           table.insert(Objects, p)
@@ -72,43 +69,12 @@ local function ReturnItem(class)
 end
 
 -- Functions
-local function Teleport()
-  pcall(function()
-    if Settings.Selected == "Lobby" then
-      eu.Character.HumanoidRootPart.CFrame = CFrame.new(-337, 76, 19)
-    elseif Settings.Selected == "Factory" then
-      eu.Character.HumanoidRootPart.CFrame = CFrame.new(-1074, 113, 5437)
-    elseif Settings.Selected == "House" then
-      eu.Character.HumanoidRootPart.CFrame = CFrame.new(408, 111, 6859)
-    elseif Settings.Selected == "Mansion" then
-      eu.Character.HumanoidRootPart.CFrame = CFrame.new(-1175, 47, 6475)
-    elseif Settings.Selected == "MilBase" then
-      eu.Character.HumanoidRootPart.CFrame = CFrame.new(-1186, 27, 3737)
-    end
-  end)
-end
 local function EquipKnife()
   while getgenv().EquipKnife and task.wait(0.25) do
     pcall(function()
       local Knife = ReturnItem("Knife")
-      Knife.Parent = eu.Character
-    end)
-  end
-end
-local function AnnoyTrade()
-  while getgenv().AnnoyTrade and wait(0.25) do
-    pcall(function()
-      for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-        game:GetService("ReplicatedStorage").Trade:FireServer("SENT", player)
-      end
-    end)
-  end
-end
-local function CancelTrade()
-  while getgenv().CancelTrade and wait(0.25) do
-    pcall(function()
-      for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-        game:GetService("ReplicatedStorage").Trade:FireServer("CANCEL_TRADE", player)
+      if Knife and Knife.Parent ~= eu.Character then
+        Knife.Parent = eu.Character
       end
     end)
   end
@@ -130,7 +96,7 @@ local function KillGun()
 end
 local function KillKnife()
   for _, enemy in pairs(GetClassOf("Enemies")) do
-    if enemy.Character then
+    if eu.Character and enemy.Character then
       game:GetService("ReplicatedStorage").KnifeKill:FireServer(enemy, enemy)
     end
   end
@@ -149,7 +115,9 @@ local function PullGun()
   while getgenv().PullGun and task.wait(0.25) do
     pcall(function()
       local Gun = ReturnItem("Gun")
-      Gun.Parent = eu.Character
+      if Gun and Gun.Parent ~= eu.Character then
+        Gun.Parent = eu.Character
+      end
     end)
   end
 end
@@ -189,36 +157,34 @@ end
 local function PlayerESP()
 	while getgenv().PlayerESP and wait(0.33) do
 	  pcall(function()
-		for _, players in pairs(game.Players:GetPlayers()) do
-			local player = players.Character
-			if player and player.Parent and players:GetAttribute("Game") == eu:GetAttribute("Game") and players:GetAttribute("Team") ~= eu:GetAttribute("Team") then
-				if player ~= game.Players.LocalPlayer.Character then
-					if player:FindFirstChild("Highlight") then
-						if player.Highlight.Enabled == false then
-							player.Highlight.Enabled = true
-						end
-						if player.Highlight.FillColor ~= CorInocente or player.Highlight.OutlineColor ~= CorInocente then
-						  player.Highlight.FillColor = CorInocente
-						  player.Highlight.OutlineColor = CorInocente
-						end
-					else
-						local highlight = Instance.new("Highlight")
-						highlight.FillColor = CorInocente
-						highlight.OutlineColor = CorInocente
-						highlight.FillTransparency = 0.6
-						highlight.Adornee = player
-						highlight.Parent = player
-					end
-				end
-			end
-		end
+    	for _, players in pairs(GetClassOf("Enemies")) do
+    		local player = players.Character
+    		if player and player.Parent then
+    			if player:FindFirstChild("Highlight") then
+    				if not player.Highlight.Enabled then
+    					player.Highlight.Enabled = true
+    				end
+    				if player.Highlight.FillColor ~= CorInocente or player.Highlight.OutlineColor ~= CorInocente then
+    				  player.Highlight.FillColor = CorInocente
+    				  player.Highlight.OutlineColor = CorInocente
+    				end
+    			else
+    				local highlight = Instance.new("Highlight")
+    				highlight.FillColor = CorInocente
+    				highlight.OutlineColor = CorInocente
+    				highlight.FillTransparency = 0.6
+    				highlight.Adornee = player
+    				highlight.Parent = player
+    			end
+    		end
+    	end
 		end)
 	end
 	if not getgenv().PlayerESP then
-		for _, players in pairs(game.Players:GetPlayers()) do
+		for _, players in pairs(GetClassOf("Enemies")) do
 			local player = players.Character
-			if player and players:GetAttribute("Game") == eu:GetAttribute("Game") and players:GetAttribute("Team") ~= eu:GetAttribute("Team") and player:FindFirstChild("Highlight") then
-				if player.Highlight.Enabled == true then
+			if player and player:FindFirstChild("Highlight") then
+				if player.Highlight.Enabled then
 					player.Highlight.Enabled = false
 				end
 			end
@@ -281,66 +247,14 @@ local function Triggerbot()
   end
 end
 local function AutoSlash()
-  while getgenv().AutoSlash and task.wait(Settings.SlashCooldown) do
+  while getgenv().AutoSlash and task.wait(Settings.Slash.Cooldown) do
     pcall(function()
       local Knife = ReturnItem("Knife")
-      Knife.Slash:FireServer()
+      if Knife and Knife.Parent == eu.Character then
+        Knife.Slash:FireServer()
+      end
     end)
   end
-end
-local function KnifeTrigger()
-    while getgenv().KnifeTrigger do
-        pcall(function()
-            local players = game:GetService("Players"):GetPlayers()
-            for _, p in ipairs(players) do
-                if p ~= eu and 
-                   p:GetAttribute("Game") == eu:GetAttribute("Game") and 
-                   p:GetAttribute("Team") ~= eu:GetAttribute("Team") then
-
-                    local targetChar = p.Character
-                    local euChar = eu.Character
-                    if targetChar and euChar and 
-                       targetChar:FindFirstChild("HumanoidRootPart") and 
-                       euChar:FindFirstChild("HumanoidRootPart") then
-
-                        local targetPos = targetChar.HumanoidRootPart.Position
-                        local euPos = euChar.HumanoidRootPart.Position
-                        local canThrow = true
-
-                        if not Settings.IgnoreWalls then
-                            local direction = (targetPos - euPos).unit * 500
-                            local rayParams = RaycastParams.new()
-                            rayParams.FilterDescendantsInstances = {euChar}
-                            rayParams.FilterType = Enum.RaycastFilterType.Blacklist
-                            local rayResult = workspace:Raycast(euPos, direction, rayParams)
-                            if rayResult then
-                                canThrow = false
-                            end
-                        end
-
-                        if canThrow then
-                            -- Agrupa ferramentas do personagem e da mochila
-                            local tools = {}
-                            for _, tool in ipairs(euChar:GetChildren()) do
-                                table.insert(tools, tool)
-                            end
-
-                            for _, tool in ipairs(tools) do
-                                if tool:IsA("Tool") and tool:FindFirstChild("Throw") then
-                                    local cf = CFrame.new(targetPos)
-                                    tool.Throw:FireServer(cf, targetPos, euPos)
-                                    if Settings.KnifeMethod == "Single Target" then
-                                        break
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end)
-        task.wait(Settings.KnifeCooldown)
-    end
 end
 local function GetTP()
   pcall(function()
@@ -377,41 +291,20 @@ local function AutoTPe()
   while getgenv().AutoTPe and task.wait() do
     pcall(function()
       local function ToolsLoaded()
-        local Faca = false
-        local Arma = false
+        local Gun = ReturnItem("Gun")
+        local Knife = ReturnItem("Knife")
         
-        for _, tool in pairs(eu.Character:GetChildren()) do
-          if not Faca and tool:IsA("Tool") and tool:FindFirstChild("Slash") and tool:FindFirstChild("Throw") then
-            Faca = true
-          end
-        end
-        for _, tool in pairs(eu.Backpack:GetChildren()) do
-          if not Faca and tool:IsA("Tool") and tool:FindFirstChild("Slash") and tool:FindFirstChild("Throw") then
-            Faca = true
-          end
-        end
-        for _, tool in pairs(eu.Character:GetChildren()) do
-          if not Arma and tool:IsA("Tool") and tool:FindFirstChild("fire") and tool:FindFirstChild("showBeam") then
-            Arma = true
-          end
-        end
-        for _, tool in pairs(eu.Backpack:GetChildren()) do
-          if not Arma and tool:IsA("Tool") and tool:FindFirstChild("fire") and tool:FindFirstChild("showBeam") then
-            Arma = true
-          end
-        end
-        
-        if Faca and Arma then
+        if Gun and Knife then
           return true
         end
         return false
       end
-      if Settings.Teleport == "Tools Load" and (eu.Backpack:FindFirstChild("Teleport Tool") or eu.Character:FindFirstChild("Teleport Tool")) and not ToolsLoaded() then
+      if Settings.Teleport.Mode == "Tools Load" and (eu.Backpack:FindFirstChild("Teleport Tool") or eu.Character:FindFirstChild("Teleport Tool")) and not ToolsLoaded() then
         DelTP()
       elseif not eu.Backpack:FindFirstChild("Teleport Tool") and not eu.Character:FindFirstChild("Teleport Tool") then
-        if Settings.Teleport == "Tools Load" and ToolsLoaded() then
+        if Settings.Teleport.Mode == "Tools Load" and ToolsLoaded() then
           GetTP()
-        elseif Settings.Teleport == "Everytime" then
+        elseif Settings.Teleport.Mode == "Everytime" then
           GetTP()
         end
       end
@@ -442,8 +335,9 @@ Tabs.Menu:Toggle({
 Tabs.Menu:Colorpicker({
   Title = "ESP Color",
   Default = CorInocente,
+  Locked = true,
   Callback = function(color)
-    CorInocente = Color3.fromRGB(color)
+    CorInocente = Color3.new(color)
   end
 })
 Tabs.Menu:Section({ Title = "Hitbox Expander" })
@@ -545,7 +439,7 @@ Tabs.Knife:Input({
   Value = "0.5",
   Placeholder = "In seconds, ex.: 0.5",
   Callback = function(input)
-    Settings.SlashCooldown = tonumber(input) or 1
+    Settings.Slash.Cooldown = tonumber(input) or 1
   end
 })
 Tabs.Knife:Section({ Title = "Blatant" })
@@ -579,17 +473,29 @@ Tabs.Knife:Toggle({
 Tabs.Teleport:Section({ Title = "Teleport to Map" })
 Tabs.Teleport:Dropdown({
   Title = "Selected Map",
-  Values = { "Lobby", "Factory", "House", "Mansion", "MilBase" },
-  Value = Settings.Selected,
+  Values = {"Lobby", "Factory", "House", "Mansion", "MilBase"},
+  Value = "Lobby",
   Callback = function(option)
-    Settings.Selected = option
+    if option == "Lobby" then
+      Settings.Teleport.CFrame = CFrame.new(-337, 76, 19)
+    elseif option == "Factory" then
+      Settings.Teleport.CFrame = CFrame.new(-1074, 113, 5437)
+    elseif option == "House" then
+      Settings.Teleport.CFrame = CFrame.new(408, 111, 6859)
+    elseif option == "Mansion" then
+      Settings.Teleport.CFrame = CFrame.new(-1175, 47, 6475)
+    elseif option == "MilBase" then
+      Settings.Teleport.CFrame = CFrame.new(-1186, 27, 3737)
+    end
   end
 })
 Tabs.Teleport:Button({
   Title = "Teleport",
   Desc = "Teleports you to the selected map.",
   Callback = function()
-    Teleport()
+    pcall(function()
+      eu.Character.HumanoidRootPart.CFrame = Settings.Teleport.CFrame
+    end)
   end
 })
 Tabs.Teleport:Section({ Title = "Teleport Tool" })
@@ -619,8 +525,8 @@ Tabs.Teleport:Toggle({
 Tabs.Teleport:Dropdown({
   Title = "Get Tool When",
   Values = { "Tools Load", "Everytime" },
-  Value = Settings.Teleport,
+  Value = Settings.Teleport.Mode,
   Callback = function(option)
-    Settings.Teleport = option
+    Settings.Teleport.Mode = option
   end
 })
