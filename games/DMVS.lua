@@ -34,7 +34,7 @@ local CorInocente = Color3.fromRGB(255, 125, 0)
 
 -- Almost
 local function GetClassOf(class)
-  local Ignore = { "Moligrafi", "ImBannedAddMeBro" }
+  local Ignore = { "Moligrafi", "HallowHub" }
   local Objects = {}
   for _, p in pairs(game:GetService("Players"):GetPlayers()) do
     pcall(function()
