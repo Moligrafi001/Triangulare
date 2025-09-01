@@ -9,6 +9,7 @@ getgenv().Triggerbot = false
 getgenv().AutoSlash = false
 getgenv().EquipKnife = false
 getgenv().AutoTPe = false
+getgenv().AutoBuy = false
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
@@ -24,6 +25,10 @@ local Settings = {
   },
   Slash = {
     Cooldown = 0.5
+  },
+  Boxes = {
+    Selected = "Knife Box #1",
+    Price = 500
   },
   SpamSoundCooldown = 0.2,
 }
@@ -311,13 +316,26 @@ local function AutoTPe()
     end)
   end
 end
+local function BuyBox()
+  if eu.Cash.Value >= Settings.Boxes.Price then
+    game:GetService("ReplicatedStorage").BuyCase:InvokeServer(Settings.Boxes.Selected)
+  end
+end
+local function AutoBuy()
+  while getgenv().AutoBuy and task.wait(1) do
+    pcall(function()
+      BuyBox()
+    end)
+  end
+end
 
 -- Tabs
 local Tabs = {
   Menu = Window:Tab({ Title = "Main", Icon = "leaf"}),
   Gun = Window:Tab({ Title = "Gun", Icon = "skull"}),
   Knife = Window:Tab({ Title = "Knife", Icon = "sword"}),
-  Teleport = Window:Tab({ Title = "Teleport", Icon = "shell"})
+  Teleport = Window:Tab({ Title = "Teleport", Icon = "shell"}),
+  Boxes = Window:Tab({ Title = "Boxes", Icon = "box"})
 }
 Window:SelectTab(1)
 
@@ -532,5 +550,38 @@ Tabs.Teleport:Dropdown({
   Value = Settings.Teleport.Mode,
   Callback = function(option)
     Settings.Teleport.Mode = option
+  end
+})
+
+-- Boxes
+Tabs.Boxes:Section({ Title = "Selected Box" })
+Tabs.Boxes:Dropdown({
+  Title = "Selected Box",
+  Values = { "Knife Box #1", "Knife Box #2", "Gun Box #1", "Gun Box #2", "Mythic Box #1", "Mythic Box #2", "Mythic Box #3", "Mythic Box #4" },
+  Value = Settings.Boxes.Selected,
+  Callback = function(option)
+    Settings.Boxes.Selected = option
+    if string.find(option, "Mythic") then
+      Settings.Boxes.Price = 1500
+    else
+      Settings.Boxes.Price = 500
+    end
+  end
+})
+Tabs.Boxes:Section({ Title = "Buy Box" })
+Tabs.Boxes:Button({
+  Title = "Buy Box",
+  Desc = "Buys the selected box if you have money.",
+  Callback = function()
+    BuyBox()
+  end
+})
+Tabs.Boxes:Toggle({
+  Title = "Auto Buy",
+  Desc = "Auto buys the selected box.",
+  Value = false,
+  Callback = function(state)
+    getgenv().AutoBuy = state
+    AutoBuy()
   end
 })
