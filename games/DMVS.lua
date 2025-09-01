@@ -334,8 +334,8 @@ local Tabs = {
   Menu = Window:Tab({ Title = "Main", Icon = "leaf"}),
   Gun = Window:Tab({ Title = "Gun", Icon = "skull"}),
   Knife = Window:Tab({ Title = "Knife", Icon = "sword"}),
-  Teleport = Window:Tab({ Title = "Teleport", Icon = "shell"}),
-  Boxes = Window:Tab({ Title = "Boxes", Icon = "box"})
+  Boxes = Window:Tab({ Title = "Boxes", Icon = "box"}),
+  Teleport = Window:Tab({ Title = "Teleport", Icon = "shell"})
 }
 Window:SelectTab(1)
 
@@ -487,6 +487,39 @@ Tabs.Knife:Toggle({
   end
 })
 
+-- Boxes
+Tabs.Boxes:Section({ Title = "Selected Box" })
+Tabs.Boxes:Dropdown({
+  Title = "Selected Box",
+  Values = { "Knife Box #1", "Knife Box #2", "Gun Box #1", "Gun Box #2", "Mythic Box #1", "Mythic Box #2", "Mythic Box #3", "Mythic Box #4" },
+  Value = Settings.Boxes.Selected,
+  Callback = function(option)
+    Settings.Boxes.Selected = option
+    if string.find(option, "Mythic") then
+      Settings.Boxes.Price = 1500
+    else
+      Settings.Boxes.Price = 500
+    end
+  end
+})
+Tabs.Boxes:Section({ Title = "Buy Box" })
+Tabs.Boxes:Button({
+  Title = "Buy Box",
+  Desc = "Buys the selected box if you have money.",
+  Callback = function()
+    BuyBox()
+  end
+})
+Tabs.Boxes:Toggle({
+  Title = "Auto Buy",
+  Desc = "Auto buys the selected box.",
+  Value = false,
+  Callback = function(state)
+    getgenv().AutoBuy = state
+    AutoBuy()
+  end
+})
+
 -- Teleport
 Tabs.Teleport:Section({ Title = "Teleport to Map" })
 Tabs.Teleport:Dropdown({
@@ -550,38 +583,5 @@ Tabs.Teleport:Dropdown({
   Value = Settings.Teleport.Mode,
   Callback = function(option)
     Settings.Teleport.Mode = option
-  end
-})
-
--- Boxes
-Tabs.Boxes:Section({ Title = "Selected Box" })
-Tabs.Boxes:Dropdown({
-  Title = "Selected Box",
-  Values = { "Knife Box #1", "Knife Box #2", "Gun Box #1", "Gun Box #2", "Mythic Box #1", "Mythic Box #2", "Mythic Box #3", "Mythic Box #4" },
-  Value = Settings.Boxes.Selected,
-  Callback = function(option)
-    Settings.Boxes.Selected = option
-    if string.find(option, "Mythic") then
-      Settings.Boxes.Price = 1500
-    else
-      Settings.Boxes.Price = 500
-    end
-  end
-})
-Tabs.Boxes:Section({ Title = "Buy Box" })
-Tabs.Boxes:Button({
-  Title = "Buy Box",
-  Desc = "Buys the selected box if you have money.",
-  Callback = function()
-    BuyBox()
-  end
-})
-Tabs.Boxes:Toggle({
-  Title = "Auto Buy",
-  Desc = "Auto buys the selected box.",
-  Value = false,
-  Callback = function(state)
-    getgenv().AutoBuy = state
-    AutoBuy()
   end
 })
