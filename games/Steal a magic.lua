@@ -20,6 +20,7 @@ task.spawn(function()
   end
 end)
 
+-- Functions
 local function AutoCollect()
   while getgenv().AutoCollect and task.wait(1) do
     pcall(function()
