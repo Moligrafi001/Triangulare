@@ -62,7 +62,7 @@ end
 local function AutoPlace()
   local function IsHoldingBrainrot()
     for _, tool in pairs(eu.Character:GetChildren()) do
-      if tool:IsA("Tool") and string.find(tool.Name, "lvl") then
+      if tool:IsA("Tool") and string.find(tool.Name, "Lvl") then
         return true
       end
     end
@@ -143,3 +143,4 @@ Tabs.Menu:Toggle({
     AntiRagdoll()
   end
 })
+
