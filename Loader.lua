@@ -78,6 +78,8 @@ elseif Game == 7661577083 then
   LoadScript("games/Zombie Tower.lua", "Zombie Tower")
 elseif Game == 3177453609 then
   LoadScript("games/therapy.lua", "therapy")
+elseif Game == 8380556170 then
+  LoadScript("games/Dont Wake the Brainrots.lua", "Don't Wake the Brainrots!")
 else
   LoadScript("Triangulare.lua", "Universal")
 end
