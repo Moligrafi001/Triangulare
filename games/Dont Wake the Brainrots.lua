@@ -62,7 +62,7 @@ end
 local function AutoPlace()
   local function IsHoldingBrainrot()
     for _, tool in pairs(eu.Character:GetChildren()) do
-      if tool:IsA("Tool") and string.find(tool.Name, "Lvl") then
+      if tool:IsA("Tool") and string.find(tool.Name, "lvl") then
         return true
       end
     end
@@ -70,7 +70,7 @@ local function AutoPlace()
   end
   while getgenv().AutoPlace and task.wait(0.1) do
     pcall(function()
-      if IsIsHoldingBrainrot() then
+      if IsHoldingBrainrot() then
         for _, platform in pairs(Settings.Plot.Platforms:GetChildren()) do
           pcall(function()
             if #platform.Platform:GetChildren() == 0 then
@@ -143,4 +143,3 @@ Tabs.Menu:Toggle({
     AntiRagdoll()
   end
 })
-
