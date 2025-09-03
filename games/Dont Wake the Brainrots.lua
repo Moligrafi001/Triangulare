@@ -1,6 +1,8 @@
 -- Global Values
 getgenv().AutoCollect = false
 getgenv().SilentSteal = false
+getgenv().AntiRagdoll = false
+getgenv().AutoPlace = false
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
@@ -43,6 +45,43 @@ local function SilentSteal()
     end)
   end
 end
+local function AntiRagdoll()
+  while getgenv().AntiRagdoll and task.wait(1) do
+    pcall(function()
+      if not eu.Character:GetAttribute("AntiRagdoll") then
+        eu.Character:SetAttribute("AntiRagdoll", true)
+        eu.Character:GetAttributeChangedSignal("Ragdolled"):Connect(function()
+          if getgenv().AntiRagdoll and eu.Character:GetAttribute("Ragdolled") then
+            eu.Character:SetAttribute("Ragdolled", false)
+          end
+        end)
+      end
+    end)
+  end
+end
+local function AutoPlace()
+  local function IsHoldingBrainrot()
+    for _, tool in pairs(eu.Character:GetChildren()) do
+      if tool:IsA("Tool") and string.find(tool.Name, "lvl") then
+        return true
+      end
+    end
+    return false
+  end
+  while getgenv().AutoPlace and task.wait(0.1) do
+    pcall(function()
+      if IsIsHoldingBrainrot() then
+        for _, platform in pairs(Settings.Plot.Platforms:GetChildren()) do
+          pcall(function()
+            if #platform.Platform:GetChildren() == 0 then
+              game:GetService("ReplicatedStorage").Remotes.PlaceBrainrotEvent:FireServer(tonumber(platform.Name))
+            end
+          end)
+        end
+      end
+    end)
+  end
+end
 
 --[[
 local args = {
@@ -77,11 +116,30 @@ Tabs.Menu:Toggle({
   end
 })
 Tabs.Menu:Toggle({
+  Title = "Auto Place",
+  Desc = "Automatically places your brainrots.",
+  Value = false,
+  Callback = function(state)
+    getgenv().AutoPlace = state
+    AutoPlace()
+  end
+})
+Tabs.Menu:Toggle({
   Title = "Silent Steal",
-  Desc = "Steals in silent.",
+  Desc = "Won't wake up the brainrots.",
   Value = false,
   Callback = function(state)
     getgenv().SilentSteal = state
     SilentSteal()
+  end
+})
+Tabs.Menu:Section({ Title = "Extra" })
+Tabs.Menu:Toggle({
+  Title = "Anti Ragdoll",
+  Desc = "Prevents you from being ragdolled.",
+  Value = false,
+  Callback = function(state)
+    getgenv().AntiRagdoll = state
+    AntiRagdoll()
   end
 })
