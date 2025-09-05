@@ -37,22 +37,32 @@ local CorInocente = Color3.new(1, 0.5, 0)
 
 -- Almost
 local function GetClassOf(class)
-  local Objects = {}
+  local Objects = { Allies = {}, Enemies = {} }
   for _, p in pairs(game:GetService("Players"):GetPlayers()) do
-    pcall(function()
-      if p ~= eu and p:GetAttribute("Game") == eu:GetAttribute("Game") then
-        if class == "Enemies" and p:GetAttribute("Team") ~= eu:GetAttribute("Team") and not table.find(Settings.Ignore, p.Name) then
-          table.insert(Objects, p)
-        elseif class == "Allies" and p:GetAttribute("Team") == eu:GetAttribute("Team") then
-          table.insert(Objects, p)
+    if p ~= eu and p:GetAttribute("Game") == eu:GetAttribute("Game") then
+      if class == "Enemies" and p:GetAttribute("Team") ~= eu:GetAttribute("Team") and not table.find(Settings.Ignore, p.Name) then
+        table.insert(Objects.Enemies, p)
+      elseif class == "Allies" and p:GetAttribute("Team") == eu:GetAttribute("Team") then
+        table.insert(Objects.Allies, p)
+      elseif class == "Everyone" then
+        if p:GetAttribute("Team") == eu:GetAttribute("Team") then
+          table.insert(Objects.Allies, p)
+        else
+          table.insert(Objects.Enemies, p)
         end
       end
-    end)
+    end
   end
-  return Objects
+  if class == "Everyone" then
+    return Objects
+  elseif class == "Allies" then
+    return Objects.Allies
+  elseif class == "Enemies" then
+    return Objects.Enemies
+  end
 end
-local function ReturnItem(class)
-  for _, item in pairs(eu.Backpack:GetChildren()) do
+local function ReturnItem(class, where)
+  local function CheckedClass(item)
     if item:IsA("Tool") then
       if class == "Gun" and item:FindFirstChild("fire") and item:FindFirstChild("showBeam") and item:FindFirstChild("kill") then
         return item
@@ -60,14 +70,21 @@ local function ReturnItem(class)
         return item
       end
     end
+    return false
   end
-  for _, item in pairs(eu.Character:GetChildren()) do
-    if item:IsA("Tool") then
-      if class == "Gun" and item:FindFirstChild("fire") and item:FindFirstChild("showBeam") and item:FindFirstChild("kill") then
-        return item
-      elseif class == "Knife" and item:FindFirstChild("Slash") then
-        return item
-      end
+  if where then
+    for _, item in pairs(eu[where]:GetChildren()) do
+      local checked = CheckedClass(item)
+      if checked then return checked end
+    end
+  else
+    for _, item in pairs(eu.Backpack:GetChildren()) do
+      local checked = CheckedClass(item)
+      if checked then return checked end
+    end
+    for _, item in pairs(eu.Character:GetChildren()) do
+      local checked = CheckedClass(item)
+      if checked then return checked end
     end
   end
   return false
@@ -77,19 +94,17 @@ end
 local function EquipKnife()
   while getgenv().EquipKnife and task.wait(0.25) do
     pcall(function()
-      local Knife = ReturnItem("Knife")
-      if Knife and Knife.Parent ~= eu.Character then
-        Knife.Parent = eu.Character
-      end
+      local Knife = ReturnItem("Knife", "Backpack")
+      if Knife then Knife.Parent = eu.Character end
     end)
   end
 end
 local function KillGun()
   pcall(function()
-    local Gun = ReturnItem("Gun")
+    local Gun = ReturnItem("Gun", "Character")
     for _, enemy in pairs(GetClassOf("Enemies")) do
       pcall(function()
-        if Gun and Gun.Parent == eu.Character and enemy.Character then
+        if Gun and enemy.Character then
           repeat
             Gun.kill:FireServer(enemy, Vector3.new(enemy.Character.Head.Position))
             task.wait(0.1)
@@ -119,10 +134,8 @@ end
 local function PullGun()
   while getgenv().PullGun and task.wait(0.25) do
     pcall(function()
-      local Gun = ReturnItem("Gun")
-      if Gun and Gun.Parent ~= eu.Character then
-        Gun.Parent = eu.Character
-      end
+      local Gun = ReturnItem("Gun", "Backpack")
+      if Gun then Gun.Parent = eu.Character end
     end)
   end
 end
@@ -199,15 +212,15 @@ end
 local function GunSound()
   while getgenv().GunSound and task.wait(Settings.SpamSoundCooldown) do
     pcall(function()
-      local Gun = ReturnItem("Gun")
-      Gun.fire:FireServer()
+      local Gun = ReturnItem("Gun", "Character")
+      if Gun then Gun.fire:FireServer() end
     end)
   end
 end
 local function Triggerbot()
-  local function GetAlliesChar()
+  local function GetAlliesChar(allies)
     local Allies = {}
-    for _, ally in pairs(GetClassOf("Allies")) do
+    for _, ally in pairs(allies) do
       if ally.Character then
         table.insert(Allies, ally.Character)
       end
@@ -217,27 +230,28 @@ local function Triggerbot()
   local Triggerbot = Settings.Triggerbot
   while getgenv().Triggerbot and task.wait(0.01) do
     pcall(function()
-      local Gun = ReturnItem("Gun")
-      if Gun and Gun.Parent == eu.Character and workspace.CurrentCamera then
-        for _, enemy in pairs(GetClassOf("Enemies")) do
+      local Gun = ReturnItem("Gun", "Character")
+      if Gun and workspace.CurrentCamera then
+        local Teams = GetClassOf("Everyone")
+        for _, enemy in pairs(Teams.Enemies) do
           local char = enemy.Character
           local root = char and char:FindFirstChild("HumanoidRootPart")
           if root then
             local GunPos = Gun.Handle.Position
             local CamPos = workspace.CurrentCamera.CFrame.Position
             local rayParams = RaycastParams.new()
-            rayParams.FilterDescendantsInstances = {eu.Character, unpack(GetAlliesChar())}
+            rayParams.FilterDescendantsInstances = {eu.Character, unpack(GetAlliesChar(Teams.Allies))}
             rayParams.FilterType = Enum.RaycastFilterType.Blacklist
             local camResult = workspace:Raycast(CamPos, root.Position - CamPos, rayParams)
             local hitResult = workspace:Raycast(GunPos, root.Position - GunPos, rayParams)
             if not Triggerbot.Waiting and camResult and camResult.Instance:IsDescendantOf(char) and hitResult and hitResult.Instance:IsDescendantOf(char) then
-                Gun.fire:FireServer()
-                Gun.showBeam:FireServer(hitResult.Position, GunPos, Gun.Handle)
-                Gun.kill:FireServer(enemy, Vector3.new(hitResult.Position))
-                Triggerbot.Waiting = true
-                task.delay(Triggerbot.Cooldown, function()
-                  Triggerbot.Waiting = false
-                end)
+              Gun.fire:FireServer()
+              Gun.showBeam:FireServer(hitResult.Position, GunPos, Gun.Handle)
+              Gun.kill:FireServer(enemy, Vector3.new(hitResult.Position))
+              Triggerbot.Waiting = true
+              task.delay(Triggerbot.Cooldown, function()
+                Triggerbot.Waiting = false
+              end)
             end
           end
         end
@@ -248,10 +262,8 @@ end
 local function AutoSlash()
   while getgenv().AutoSlash and task.wait(Settings.Slash.Cooldown) do
     pcall(function()
-      local Knife = ReturnItem("Knife")
-      if Knife and Knife.Parent == eu.Character then
-        Knife.Slash:FireServer()
-      end
+      local Knife = ReturnItem("Knife", "Character")
+      if Knife then Knife.Slash:FireServer() end
     end)
   end
 end
