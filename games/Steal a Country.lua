@@ -47,7 +47,6 @@ local function AutoLock()
     pcall(function()
       if Settings.Plot:GetAttribute("LockTimer") < 1 then
         game:GetService("ReplicatedStorage").Remotes:FindFirstChild("Base:Lock"):FireServer(Settings.Plot.Floor1.Locker)
-        -- workspace["Player Bases"]["HallowHub's Base"].Floor1.Locker.LockPart.TouchInterest
       end
     end)
   end
