@@ -101,7 +101,7 @@ local function KillGun()
 end
 local function KillKnife()
   for _, enemy in pairs(GetClassOf("Enemies")) do
-    if eu.Character and enemy.Character then
+    if eu.Character then
       game:GetService("ReplicatedStorage").KnifeKill:FireServer(enemy, enemy)
     end
   end
@@ -218,32 +218,28 @@ local function Triggerbot()
   while getgenv().Triggerbot and task.wait(0.01) do
     pcall(function()
       local Gun = ReturnItem("Gun")
-      if Gun and Gun.Parent == eu.Character then
-        local camera = workspace.CurrentCamera
-        if camera then
-          for _, enemy in pairs(GetClassOf("Enemies")) do
-            local char = enemy.Character
-            local root = char and char:FindFirstChild("HumanoidRootPart")
-            local head = char and char:FindFirstChild("Head")
-            if root and head then
-              local GunPos = Gun.Handle.Position
-              local CamPos = camera.CFrame.Position
-              local rayParams = RaycastParams.new()
-              rayParams.FilterDescendantsInstances = {eu.Character, unpack(GetAlliesChar())}
-              rayParams.FilterType = Enum.RaycastFilterType.Blacklist
-              local camResult = workspace:Raycast(CamPos, root.Position - CamPos, rayParams)
-              local hitResult = workspace:Raycast(GunPos, root.Position - GunPos, rayParams)
-              if not Triggerbot.Waiting and camResult and camResult.Instance:IsDescendantOf(char) and not camResult.Instance:IsA("Accessory") and hitResult and hitResult.Instance:IsDescendantOf(char) and not hitResult.Instance:IsA("Accessory") then
-                  pcall(function()
-                    Gun.fire:FireServer()
-                    Gun.showBeam:FireServer(hitResult.Position, GunPos, Gun.Handle)
-                    Gun.kill:FireServer(enemy, Vector3.new(hitResult.Position))
-                  end)
-                  Triggerbot.Waiting = true
-                  task.delay(Triggerbot.Cooldown, function()
-                    Triggerbot.Waiting = false
-                  end)
-              end
+      if Gun and Gun.Parent == eu.Character and workspace.CurrentCamera then
+        for _, enemy in pairs(GetClassOf("Enemies")) do
+          local char = enemy.Character
+          local root = char and char:FindFirstChild("HumanoidRootPart")
+          if root then
+            local GunPos = Gun.Handle.Position
+            local CamPos = workspace.CurrentCamera.CFrame.Position
+            local rayParams = RaycastParams.new()
+            rayParams.FilterDescendantsInstances = {eu.Character, unpack(GetAlliesChar())}
+            rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+            local camResult = workspace:Raycast(CamPos, root.Position - CamPos, rayParams)
+            local hitResult = workspace:Raycast(GunPos, root.Position - GunPos, rayParams)
+            if not Triggerbot.Waiting and camResult and camResult.Instance:IsDescendantOf(char) and hitResult and hitResult.Instance:IsDescendantOf(char) then
+                pcall(function()
+                  Gun.fire:FireServer()
+                  Gun.showBeam:FireServer(hitResult.Position, GunPos, Gun.Handle)
+                  Gun.kill:FireServer(enemy, Vector3.new(hitResult.Position))
+                end)
+                Triggerbot.Waiting = true
+                task.delay(Triggerbot.Cooldown, function()
+                  Triggerbot.Waiting = false
+                end)
             end
           end
         end
