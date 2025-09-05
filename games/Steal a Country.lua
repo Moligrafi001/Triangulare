@@ -38,8 +38,9 @@ end
 local function AutoLock()
   while getgenv().AutoLock and task.wait(0.39) do
     pcall(function()
-      if not Settings.Plot:GetAttribute("LockTimer") then
+      if Settings.Plot:GetAttribute("LockTimer") < 1 then
         game:GetService("ReplicatedStorage").Remotes:FindFirstChild("Base:Lock"):FireServer(Settings.Plot.Floor1.Locker)
+        -- workspace["Player Bases"]["HallowHub's Base"].Floor1.Locker.LockPart.TouchInterest
       end
     end)
   end
