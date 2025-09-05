@@ -23,15 +23,22 @@ end)
 
 -- Functions
 local function AutoCollect()
-  while getgenv().AutoCollect and task.wait(1) do
-    pcall(function()
-      for _, slot in pairs(Settings.Plot.Floor1:GetChildren()) do
+  local function CollectFloor(floor)
+    local andar = Settings.Plot and Settings.Plot["Floor" .. floor]
+    if andar then
+      for _, slot in pairs(andar:GetChildren()) do
         pcall(function()
           if slot:GetAttribute("Balance") > 0 then
             game:GetService("ReplicatedStorage").Remotes:FindFirstChild("Base:CollectSlot"):FireServer(slot)
           end
         end)
       end
+    end
+  end
+  while getgenv().AutoCollect and task.wait(1) do
+    pcall(function()
+      CollectFloor(1)
+      CollectFloor(2)
     end)
   end
 end
