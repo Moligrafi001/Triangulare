@@ -231,11 +231,9 @@ local function Triggerbot()
             local camResult = workspace:Raycast(CamPos, root.Position - CamPos, rayParams)
             local hitResult = workspace:Raycast(GunPos, root.Position - GunPos, rayParams)
             if not Triggerbot.Waiting and camResult and camResult.Instance:IsDescendantOf(char) and hitResult and hitResult.Instance:IsDescendantOf(char) then
-                pcall(function()
-                  Gun.fire:FireServer()
-                  Gun.showBeam:FireServer(hitResult.Position, GunPos, Gun.Handle)
-                  Gun.kill:FireServer(enemy, Vector3.new(hitResult.Position))
-                end)
+                Gun.fire:FireServer()
+                Gun.showBeam:FireServer(hitResult.Position, GunPos, Gun.Handle)
+                Gun.kill:FireServer(enemy, Vector3.new(hitResult.Position))
                 Triggerbot.Waiting = true
                 task.delay(Triggerbot.Cooldown, function()
                   Triggerbot.Waiting = false
