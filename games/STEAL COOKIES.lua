@@ -49,9 +49,11 @@ local function CollectCookies()
   Settings.Busy = true
   local OldCFrame = eu.Character.HumanoidRootPart.CFrame
   for _, cookie in pairs(CookiesList) do
-    eu.Character.HumanoidRootPart.CFrame = CFrame.new(cookie.WorldPivot.Position)
-    task.wait(0.1)
-    fireproximityprompt(cookie.CookiePrompt)
+    pcall(function()
+      eu.Character.HumanoidRootPart.CFrame = CFrame.new(cookie.WorldPivot.Position)
+      task.wait(0.1)
+      fireproximityprompt(cookie.CookiePrompt)
+    end)
   end
   eu.Character.HumanoidRootPart.CFrame = OldCFrame
   WindUI:Notify({
