@@ -23,46 +23,48 @@ end
 
 -- Functions
 local function CollectCookies()
-  local CookiesList = GetCookies()
-  if Settings.Busy then
-    return WindUI:Notify({
-      Title = "Wait! I'm Busy",
-      Content = "I'm colleting, wait...",
-      Icon = "x",
-      Duration = 5
-    })
-  elseif #CookiesList == 0 then
-    return WindUI:Notify({
-      Title = "No more cookies.",
-      Content = "Already collected everything.",
-      Icon = "x",
-      Duration = 5
-    })
-  else
+  pcall(function()
+    local CookiesList = GetCookies()
+    if Settings.Busy then
+      return WindUI:Notify({
+        Title = "Wait! I'm Busy",
+        Content = "I'm colleting, wait...",
+        Icon = "x",
+        Duration = 5
+      })
+    elseif #CookiesList == 0 then
+      return WindUI:Notify({
+        Title = "No more cookies.",
+        Content = "Already collected everything.",
+        Icon = "x",
+        Duration = 5
+      })
+    else
+      WindUI:Notify({
+        Title = "Collecting cookies.",
+        Content = "Wait... Almost done.",
+        Icon = "hourglass",
+        Duration = 5
+      })
+    end
+    Settings.Busy = true
+    local OldCFrame = eu.Character.HumanoidRootPart.CFrame
+    for _, cookie in pairs(CookiesList) do
+      pcall(function()
+        eu.Character.HumanoidRootPart.CFrame = CFrame.new(cookie.WorldPivot.Position)
+        task.wait(0.3)
+        fireproximityprompt(cookie.CookiePrompt)
+      end)
+    end
+    eu.Character.HumanoidRootPart.CFrame = OldCFrame
     WindUI:Notify({
-      Title = "Collecting cookies.",
-      Content = "Wait... Almost done.",
-      Icon = "hourglass",
+      Title = "Perfect! Done!",
+      Content = "Collected all cookies!",
+      Icon = "check",
       Duration = 5
     })
-  end
-  Settings.Busy = true
-  local OldCFrame = eu.Character.HumanoidRootPart.CFrame
-  for _, cookie in pairs(CookiesList) do
-    pcall(function()
-      eu.Character.HumanoidRootPart.CFrame = CFrame.new(cookie.WorldPivot.Position)
-      task.wait(0.3)
-      fireproximityprompt(cookie.CookiePrompt)
-    end)
-  end
-  eu.Character.HumanoidRootPart.CFrame = OldCFrame
-  WindUI:Notify({
-    Title = "Perfect! Done!",
-    Content = "Collected all cookies!",
-    Icon = "check",
-    Duration = 5
-  })
-  Settings.Busy = false
+    Settings.Busy = false
+  end)
 end
 local function AutoCollect()
   while getgenv().AutoCollect and task.wait(0.1) do
@@ -77,20 +79,22 @@ local function AutoCollect()
 end
 local function CookieESP()
   local function SetESP(state)
-    for _, cookie in pairs(GetCookies()) do
-      if cookie:FindFirstChild("Highlight") then
-        if cookie.Highlight.Enabled ~= state then
-          cookie.Highlight.Enabled = state
+    pcall(function()
+      for _, cookie in pairs(GetCookies()) do
+        if cookie:FindFirstChild("Highlight") then
+          if cookie.Highlight.Enabled ~= state then
+            cookie.Highlight.Enabled = state
+          end
+        elseif state then
+          local highlight = Instance.new("Highlight")
+          highlight.FillColor = Color3.new(1, 0.5, 0)
+          highlight.OutlineColor = Color3.new(1, 0.5, 0)
+          highlight.FillTransparency = 0.7
+          highlight.Adornee = cookie
+          highlight.Parent = cookie
         end
-      elseif state then
-        local highlight = Instance.new("Highlight")
-        highlight.FillColor = Color3.new(1, 0.5, 0)
-        highlight.OutlineColor = Color3.new(1, 0.5, 0)
-        highlight.FillTransparency = 0.7
-        highlight.Adornee = cookie
-        highlight.Parent = cookie
       end
-    end
+    end)
   end
   while getgenv().CookieESP and task.wait(1) do
     SetESP(true)
