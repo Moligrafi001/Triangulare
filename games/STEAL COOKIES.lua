@@ -39,14 +39,13 @@ local function CollectCookies()
         Icon = "x",
         Duration = 5
       })
-    else
-      WindUI:Notify({
-        Title = "Collecting cookies.",
-        Content = "Wait... Almost done.",
-        Icon = "hourglass",
-        Duration = 5
-      })
     end
+    WindUI:Notify({
+      Title = "Collecting cookies.",
+      Content = "Wait... Almost done.",
+      Icon = "hourglass",
+      Duration = 5
+    })
     Settings.Busy = true
     local OldCFrame = eu.Character.HumanoidRootPart.CFrame
     for _, cookie in pairs(CookiesList) do
