@@ -47,7 +47,7 @@ local function GetClassOf(class)
       elseif class == "Everyone" then
         if p:GetAttribute("Team") == eu:GetAttribute("Team") then
           table.insert(Objects.Allies, p)
-        else
+        elseif p:GetAttribute("Team") ~= eu:GetAttribute("Team") and not table.find(Settings.Ignore, p.Name) then
           table.insert(Objects.Enemies, p)
         end
       end
