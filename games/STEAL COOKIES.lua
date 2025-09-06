@@ -31,7 +31,7 @@ local function CollectCookies()
       Icon = "x",
       Duration = 5
     })
-  elseif #GetCookiest == 0 then
+  elseif #CookiesList == 0 then
     return WindUI:Notify({
       Title = "No more cookies.",
       Content = "Already collected everything.",
@@ -47,13 +47,13 @@ local function CollectCookies()
     })
   end
   Settings.Busy = true
-  eu:SetAttribute("Triangulare", eu.Character.HumanoidRootPart.CFrame)
+  local OldCFrame = eu.Character.HumanoidRootPart.CFrame
   for _, cookie in pairs(CookiesList) do
     eu.Character.HumanoidRootPart.CFrame = CFrame.new(cookie.WorldPivot.Position)
     task.wait(0.1)
     fireproximityprompt(cookie.CookiePrompt)
   end
-  eu.Character.HumanoidRootPart.CFrame = eu:GetAttribute("Triangulare")
+  eu.Character.HumanoidRootPart.CFrame = OldCFrame
   WindUI:Notify({
     Title = "Perfect! Done!",
     Content = "Collected all cookies!",
@@ -77,10 +77,10 @@ local function CookieESP()
   local function SetESP(state)
     for _, cookie in pairs(GetCookies()) do
       if cookie:FindFirstChild("Highlight") then
-        if cookie.Highlight.Enabled ~= boolean then
-          cookie.Highlight.Enabled = boolean
+        if cookie.Highlight.Enabled ~= state then
+          cookie.Highlight.Enabled = state
         end
-      elseif boolean then
+      elseif state then
         local highlight = Instance.new("Highlight")
         highlight.FillColor = Color3.new(1, 0.5, 0)
         highlight.OutlineColor = Color3.new(1, 0.5, 0)
