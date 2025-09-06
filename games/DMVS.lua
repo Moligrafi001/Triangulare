@@ -134,37 +134,29 @@ local function PullGun()
   end
 end
 local function HitBox()
-	while getgenv().HitBox and wait() do
-	  pcall(function()
-		for _, player in pairs(game.Players:GetPlayers()) do
-			if player ~= eu and player:GetAttribute("Game") == eu:GetAttribute("Game") and player:GetAttribute("Team") ~= eu:GetAttribute("Team") then
-				if player.Character then
-					if player.Character:FindFirstChild("HumanoidRootPart") then
-						if player.Character.HumanoidRootPart.Size ~= Vector3.new(HitSize, HitSize, HitSize) or player.Character.HumanoidRootPart.Transparency ~= 0.6 then
-							player.Character.HumanoidRootPart.Size = Vector3.new(HitSize, HitSize, HitSize)
-							player.Character.HumanoidRootPart.Transparency = 0.6
-							player.Character.HumanoidRootPart.CanCollide = false
-						end
-					end
-				end
-			end
-		end
-	  end)
-	end
-	if not getgenv().HitBox then
-		for _, player in pairs(game.Players:GetPlayers()) do
-			if player ~= game.Players.LocalPlayer then
-				if player.Character and game.Players.LocalPlayer.Character then
-					if player.Character:FindFirstChild("HumanoidRootPart") then
-						if player.Character.HumanoidRootPart.Size ~= Vector3.new(2, 2, 1) or player.Character.HumanoidRootPart.Transparency ~= 0 then
-							player.Character.HumanoidRootPart.Size = Vector3.new(2, 2, 1)
-							player.Character.HumanoidRootPart.Transparency = 0
-						end
-					end
-				end
-			end
-		end
-	end
+  while getgenv().HitBox and wait(1) do
+    pcall(function()
+      for _, enemy in pairs(GetClassOf("Enemies")) do
+        local char = enemy.Character
+        local root = char and char:FindFirstChild("HumanoidRootPart")
+        local finSize = Vector3.new(HitSize, HitSize, HitSize)
+        if root and (root.Size ~= finSize or root.Transparency ~= 0.6) then
+          root.Size = finSize
+          root.Transparency = 0.6
+        end
+      end
+    end)
+  end
+  if not getgenv().HitBox then
+    for _, enemy in pairs(GetClassOf("Enemies")) do
+      local char = enemy.Character
+      local root = char and char:FindFirstChild("HumanoidRootPart")
+      if root then 
+        root.Transparency = 1 
+        root.Size = Vector3.new(2, 2, 1)
+      end
+    end
+  end
 end
 local function PlayerESP()
 	while getgenv().PlayerESP and wait(0.33) do
