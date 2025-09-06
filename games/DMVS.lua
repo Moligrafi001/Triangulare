@@ -40,16 +40,10 @@ local function GetClassOf(class)
   local Objects = { Allies = {}, Enemies = {} }
   for _, p in pairs(game:GetService("Players"):GetPlayers()) do
     if p ~= eu and p:GetAttribute("Game") == eu:GetAttribute("Game") then
-      if class == "Enemies" and p:GetAttribute("Team") ~= eu:GetAttribute("Team") and not table.find(Settings.Ignore, p.Name) then
+      if (class == "Enemies" or class == "Everyone") and p:GetAttribute("Team") ~= eu:GetAttribute("Team") and not table.find(Settings.Ignore, p.Name) then
         table.insert(Objects.Enemies, p)
-      elseif class == "Allies" and p:GetAttribute("Team") == eu:GetAttribute("Team") then
+      elseif (class == "Allies" or class == "Everyone") and p:GetAttribute("Team") == eu:GetAttribute("Team") then
         table.insert(Objects.Allies, p)
-      elseif class == "Everyone" then
-        if p:GetAttribute("Team") == eu:GetAttribute("Team") then
-          table.insert(Objects.Allies, p)
-        elseif p:GetAttribute("Team") ~= eu:GetAttribute("Team") and not table.find(Settings.Ignore, p.Name) then
-          table.insert(Objects.Enemies, p)
-        end
       end
     end
   end
