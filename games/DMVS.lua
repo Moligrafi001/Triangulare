@@ -152,8 +152,8 @@ local function HitBox()
       local char = enemy.Character
       local root = char and char:FindFirstChild("HumanoidRootPart")
       if root then 
-        root.Transparency = 1 
         root.Size = Vector3.new(2, 2, 1)
+        root.Transparency = 1 
       end
     end
   end
