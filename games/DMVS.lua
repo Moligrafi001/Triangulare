@@ -14,7 +14,7 @@ getgenv().AutoBuy = false
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
 local Settings = {
-  Ignore = {"Moligrafi", "HallowHub"},
+  Ignore = {"Moligrafi", "VladmirNine"},
   Triggerbot = {
     Cooldown = 3,
     Waiting = false
