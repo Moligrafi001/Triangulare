@@ -51,7 +51,7 @@ local function CollectCookies()
   for _, cookie in pairs(CookiesList) do
     pcall(function()
       eu.Character.HumanoidRootPart.CFrame = CFrame.new(cookie.WorldPivot.Position)
-      task.wait(0.1)
+      task.wait(0.3)
       fireproximityprompt(cookie.CookiePrompt)
     end)
   end
