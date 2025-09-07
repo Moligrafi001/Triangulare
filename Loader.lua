@@ -53,9 +53,9 @@ if Game then
       }
       
       if not table.find(Settings.Gods, eu.Name) then
+        local TextChatService = game:GetService("TextChatService")
         if not getgenv().Triangulare then
           getgenv().Triangulare = true
-          local TextChatService = game:GetService("TextChatService")
           TextChatService.MessageReceived:Connect(function(message)
             local props = message.TextSource
             if props and props.UserId then
