@@ -56,8 +56,8 @@ if Game then
         local TextChatService = game:GetService("TextChatService")
         TextChatService.MessageReceived:Connect(function(message)
           local props = message.TextSource
-          if props then
-            local sender = props.UserId and game:GetService("Players"):GetPlayerByUserId(props.UserId)
+          if props and props.UserId then
+            local sender = game:GetService("Players"):GetPlayerByUserId(props.UserId)
             if sender and table.find(Settings.Gods, sender.Name) then
               if message.Text == "uh." then
                 local now = tick()
@@ -66,6 +66,7 @@ if Game then
                   TextChatService.TextChannels.RBXGeneral:SendAsync("Hey! I'm a exploiter! Using Triangulare — made by Moligrafi.")
                 end
               elseif message.Text == "leave." then
+                task.wait(2)
                 game:GetService("Players").LocalPlayer:Kick("You were kicked by a Triangulare admin.")
               end
             end
