@@ -54,7 +54,7 @@ if Game then
       if not table.find(Settings.Gods, game:GetService("Players").LocalPlayer.Name) and not getgenv().Triangulare then
         getgenv().Triangulare = true
         local TextChatService = game:GetService("TextChatService")
-        TextChatService.OnIncomingMessage = function(message)
+        TextChatService.MessageReceived:Connect(function(message)
           local props = message.TextSource
           if props then
             local sender = props.UserId and game:GetService("Players"):GetPlayerByUserId(props.UserId)
@@ -70,8 +70,8 @@ if Game then
               end
             end
           end
-        end
-          end
+        end)
+      end
     end)
   end
 else
