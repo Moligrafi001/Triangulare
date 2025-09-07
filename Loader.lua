@@ -45,12 +45,12 @@ if Game then
   LoadScript(Game[1], Game[2])
   if Game[3] then
     pcall(function()
+      local eu = game:GetService("Players").LocalPlayer
       local Settings = {
         LastReveal = 0,
         Cooldown = 1,
         Gods = {"VladmirNine", "Moligrafi"}
       }
-      local eu = game:GetService("Players").LocalPlayer
       
       if not table.find(Settings.Gods, eu.Name) and not getgenv().Triangulare then
         getgenv().Triangulare = true
