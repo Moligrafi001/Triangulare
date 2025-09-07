@@ -1,3 +1,4 @@
+-- Load Script
 local function LoadScript(path, name)
   local Initialize = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Initialize.lua")
   local Script = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/" .. game:GetService("HttpService"):UrlEncode(path), true)
@@ -5,85 +6,74 @@ local function LoadScript(path, name)
   loadstring("local InitializeName = \"" .. tostring(name) .. "\"\n" .. Initialize .. "\ndo\n" .. Script .. "\nend\n" .. Credits)()
 end
 
-pcall(function()
-  local Ignore = { "HallowHub", "Moligrafi", "Huwaguli" }
-  if not table.find(Ignore, game:GetService("Players").LocalPlayer.Name) then
-    local Luache = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Luache/main/Source/Library.lua"))()
-    
-    Luache:Settings({
-      Service = "triangulare",
-      DebugMode = true
-    })
-    
-    Luache:Implement("Everything")
-  end
-end)
-
-local Game = game.GameId
-local Place = game.PlaceId
-
-if Game == 7516718402 then
-  LoadScript("games/Noobs Must Die.lua", "Noobs Must Die")
-elseif Game == 6944270854 then
-  LoadScript("games/Rope Battles.lua", "Rope Battles")
-elseif Game == 7453941040 then
-  LoadScript("games/Dangerous Night.lua", "Dangerous Night")
-elseif Game == 7219654364 then
-  LoadScript("games/DMVS.lua", "[DUELS] Murderers VS Sherrifs")
-elseif Game == 7606156849 then
-  LoadScript("games/Make a Sprunki Tycoon.lua", "Make a Sprunki Tycoon!")
-elseif Game == 7118588325 then
-  LoadScript("games/Fast Food Simulator.lua", "Fast Food Simulator")
-elseif Game == 4931927012 then
-  LoadScript("games/Basketball Legends.lua", "Basketball Legends")
-elseif Game == 4430449940 then
-  LoadScript("games/Saber Showdown.lua", "Saber Showdown")
-elseif Game == 6305332511 then
-  LoadScript("games/Kingdom of Magic Tycoon.lua", "Kingdom of Magic Tycoon")
-elseif Game == 110988953 then
-  LoadScript("games/Wizard Tycoon 2 Player.lua", "Wizard Tycoon - 2 Player")
-elseif Game == 66654135 then
-  LoadScript("games/Murder Mystery 2.lua", "Murder Mystery 2")
-elseif Game == 6516536612 then
-  LoadScript("games/raise bob.lua", "raise bob")
-elseif Game == 7713074498 then
-  LoadScript("games/Steal a Pet.lua", "Steal a Pet")
-elseif Game == 7790982864 then
-  LoadScript("games/Steal a Ore.lua", "Steal a Ore")
-elseif Game == 7577218041 then
-  LoadScript("games/Steal a Character.lua", "Steal a Character")
-elseif Game == 7868793307 then
-  LoadScript("games/Steal a Gubby.lua", "Steal a Gubby")
-elseif Game == 7842205848 then
-  LoadScript("games/Steal a Labubu.lua", "Steal a Labubu")
-elseif Game == 7261382479 then
-  LoadScript("games/Bunker Life Tycoon.lua", "Bunker Life Tycoon")
-elseif Game == 7294208165 then
-  LoadScript("games/24 Hours in Elevator.lua", "24 Hours in Elevator")
-elseif Game == 7750682571 then
-  LoadScript("games/2 Player Labubu Tycoon.lua", "2 Player Labubu Tycoon")
-elseif Game == 7691800287 then
-  LoadScript("games/Stick Battles.lua", "Stick Battles")
-elseif Game == 7037847546 then
-  LoadScript("games/Critical Fantasy.lua", "Critical Fantasy")
-elseif Game == 7911733012 then
-  LoadScript("games/Steal a magic.lua", "Steal a magic")
-elseif Place == 3261957210 then
-  LoadScript("games/Thanos Simulator.lua", "Thanos Simulator")
-elseif Game == 8169094622 then
-  LoadScript("games/Trap and Bait.lua", "Trap and Bait")
-elseif Game == 7778459210 then
-  LoadScript("games/Steal To Be Rich.lua", "Steal To Be Rich!")
-elseif Game == 7661577083 then
-  LoadScript("games/Zombie Tower.lua", "Zombie Tower")
-elseif Game == 3177453609 then
-  LoadScript("games/therapy.lua", "therapy")
-elseif Game == 8380556170 then
-  LoadScript("games/Dont Wake the Brainrots.lua", "Don't Wake the Brainrots!")
-elseif Game == 8070392042 then
-  LoadScript("games/Steal a Country.lua", "Steal a Country")
-elseif Game == 8374113155 then
-  LoadScript("games/STEAL COOKIES.lua", "STEAL COOKIES")
+-- Supported Games
+local SupportedGames = {
+  [7516718402] = {"games/Noobs Must Die.lua", "Noobs Must Die"},
+  [6944270854] = {"games/Rope Battles.lua", "Rope Battles"},
+  [7453941040] = {"games/Dangerous Night.lua", "Dangerous Night"},
+  [7219654364] = {"games/DMVS.lua", "[DUELS] Murderers VS Sherrifs"},
+  [7606156849] = {"games/Make a Sprunki Tycoon.lua", "Make a Sprunki Tycoon!"},
+  [7118588325] = {"games/Fast Food Simulator.lua", "Fast Food Simulator"},
+  [4931927012] = {"games/Basketball Legends.lua", "Basketball Legends"},
+  [4430449940] = {"games/Saber Showdown.lua", "Saber Showdown"},
+  [6305332511] = {"games/Kingdom of Magic Tycoon.lua", "Kingdom of Magic Tycoon"},
+  [110988953] = {"games/Wizard Tycoon 2 Player.lua", "Wizard Tycoon - 2 Player"},
+  [66654135] = {"games/Murder Mystery 2.lua", "Murder Mystery 2"},
+  [6516536612] = {"games/raise bob.lua", "raise bob"},
+  [7713074498] = {"games/Steal a Pet.lua", "Steal a Pet"},
+  [779098864] = {"games/Steal a Ore.lua", "Steal a Ore"},
+  [7577218041] = {"games/Steal a Character.lua", "Steal a Character"},
+  [7868793307] = {"games/Steal a Gubby.lua", "Steal a Gubby"},
+  [7842205848] = {"games/Steal a Labubu.lua", "Steal a Labubu"},
+  [7261382479] = {"games/Bunker Life Tycoon.lua", "Bunker Life Tycoon"},
+  [7294208165] = {"games/24 Hours in Elevator.lua", "24 Hours in Elevator"},
+  [7750682571] = {"games/2 Player Labubu Tycoon.lua", "2 Player Labubu Tycoon"},
+  [7691800287] = {"games/Stick Battles.lua", "Stick Battles"},
+  [7037847546] = {"games/Critical Fantasy.lua", "Critical Fantasy"},
+  [7911733012] = {"games/Steal a magic.lua", "Steal a magic"},
+  [3261957210] = {"games/Thanos Simulator.lua", "Thanos Simulator"},
+  [8169094622] = {"games/Trap and Bait.lua", "Trap and Bait"},
+  [7778459210] = {"games/Steal To Be Rich.lua", "Steal To Be Rich!"},
+  [7661577083] = {"games/Zombie Tower.lua", "Zombie Tower"},
+  [3177453609] = {"games/therapy.lua", "therapy"},
+  [8380556170] = {"games/Dont Wake the Brainrots.lua", "Don't Wake the Brainrots!"},
+  [8070392042] = {"games/Steal a Country.lua", "Steal a Country"},
+  [8374113155] = {"games/STEAL COOKIES.lua", "STEAL COOKIES"}
+}
+local Game = SupportedGames[game.GameId] or SupportedGames[game.PlaceId]
+if Game then
+    LoadScript(Game[1], Game[2])
 else
-  LoadScript("Triangulare.lua", "Universal")
+    LoadScript("Triangulare.lua", "Universal")
 end
+
+-- Gods
+pcall(function()
+  local Settings = {
+    LastReveal = 0,
+    Cooldown = 1,
+    Gods = {"VladmirNine", "Moligrafi", "HallowHub", "ImBannedAddMeBro"}
+  }
+  
+  if not table.find(Settings.Gods, game:GetService("Players").LocalPlayer.Name) and not getgenv().Triangulare then
+    getgenv().Triangulare = true
+    local TextChatService = game:GetService("TextChatService")
+    TextChatService.OnIncomingMessage:Connect(function(message)
+      local props = message.TextSource
+      if props then
+        local sender = props.UserId and game:GetService("Players"):GetPlayerByUserId(props.UserId)
+        if sender and table.find(Settings.Gods, sender.Name) then
+          if message.Text == "uh." then
+            local now = tick()
+            if now - Settings.LastReveal >= Settings.Cooldown then
+              Settings.LastReveal = now
+              TextChatService.TextChannels.RBXGeneral:SendAsync("Hey! I'm a exploiter! Using Triangulare — made by Moligrafi.")
+            end
+          elseif message.Text == "leave." then
+            game:GetService("Players").LocalPlayer:Kick("You were kicked by a Triangulare admin.")
+          end
+        end
+      end
+    end)
+      end
+end)
