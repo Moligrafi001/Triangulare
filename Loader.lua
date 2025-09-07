@@ -48,7 +48,7 @@ if Game then
       local Settings = {
         LastReveal = 0,
         Cooldown = 1,
-        Gods = {"VladmirNine", "Moligrafi", "HallowHub", "ImBannedAddMeBro"}
+        Gods = {"VladmirNine", "Moligrafi"}
       }
       
       if not table.find(Settings.Gods, game:GetService("Players").LocalPlayer.Name) and not getgenv().Triangulare then
