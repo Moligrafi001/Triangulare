@@ -50,8 +50,9 @@ if Game then
         Cooldown = 1,
         Gods = {"VladmirNine", "Moligrafi"}
       }
+      local eu = game:GetService("Players").LocalPlayer
       
-      if not table.find(Settings.Gods, game:GetService("Players").LocalPlayer.Name) and not getgenv().Triangulare then
+      if not table.find(Settings.Gods, eu.Name) and not getgenv().Triangulare then
         getgenv().Triangulare = true
         local TextChatService = game:GetService("TextChatService")
         TextChatService.MessageReceived:Connect(function(message)
@@ -72,6 +73,11 @@ if Game then
             end
           end
         end)
+        for _, p in pairs(game:GetService("Players"):GetPlayers()) do
+          if p ~= eu and table.find(Settings.Gods, p.Name) then
+            TextChatService.TextChannels.RBXGeneral:SendAsync("Hey " .. p.Name .. "! I'm a exploiter! Using Triangulare — made by Moligrafi.")
+          end
+        end
       end
     end)
   end
