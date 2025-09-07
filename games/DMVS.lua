@@ -234,6 +234,7 @@ local function Triggerbot()
               Gun.fire:FireServer()
               Gun.showBeam:FireServer(hitResult.Position, GunPos, Gun.Handle)
               Gun.kill:FireServer(enemy, Vector3.new(hitResult.Position))
+              game:GetService("ReplicatedStorage").LocalBeam:Fire(Gun.Handle, hitResult.Position)
               Triggerbot.Waiting = true
               task.delay(Triggerbot.Cooldown, function()
                 Triggerbot.Waiting = false
