@@ -41,9 +41,9 @@ local function GetClassOf(class)
   for _, p in pairs(game:GetService("Players"):GetPlayers()) do
     if p ~= eu and p:GetAttribute("Game") == eu:GetAttribute("Game") then
       if (class == "Enemies" or class == "Everyone") and p:GetAttribute("Team") ~= eu:GetAttribute("Team") and not table.find(Settings.Ignore, p.Name) then
-        table.insert(Objects.Enemies, p)
+        Objects.Enemies[#Objects.Enemies+1] = p
       elseif (class == "Allies" or class == "Everyone") and p:GetAttribute("Team") == eu:GetAttribute("Team") then
-        table.insert(Objects.Allies, p)
+        Objects.Allies[#Objects.Allies+1] = p
       end
     end
   end
@@ -208,7 +208,7 @@ local function Triggerbot()
     local Allies = {}
     for _, ally in pairs(allies) do
       if ally.Character then
-        table.insert(Allies, ally.Character)
+        Allies[#Allies+1] = ally.Character
       end
     end
     return Allies
