@@ -110,9 +110,7 @@ local function KillGun()
 end
 local function KillKnife()
   for _, enemy in pairs(GetClassOf("Enemies")) do
-    if eu.Character then
-      game:GetService("ReplicatedStorage").KnifeKill:FireServer(enemy, enemy)
-    end
+    game:GetService("ReplicatedStorage").KnifeKill:FireServer(enemy, enemy)
   end
 end
 local function AutoGun()
