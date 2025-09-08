@@ -14,7 +14,6 @@ getgenv().AutoBuy = false
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
 local Settings = {
-  Ignore = {"Moligrafi", "VladmirNine"},
   Triggerbot = {
     Cooldown = 3,
     Waiting = false
@@ -40,7 +39,7 @@ local function GetClassOf(class)
   local Objects = { Allies = {}, Enemies = {} }
   for _, p in pairs(game:GetService("Players"):GetPlayers()) do
     if p ~= eu and p:GetAttribute("Game") == eu:GetAttribute("Game") then
-      if (class == "Enemies" or class == "Everyone") and p:GetAttribute("Team") ~= eu:GetAttribute("Team") and not table.find(Settings.Ignore, p.Name) then
+      if (class == "Enemies" or class == "Everyone") and p:GetAttribute("Team") ~= eu:GetAttribute("Team") then
         Objects.Enemies[#Objects.Enemies+1] = p
       elseif (class == "Allies" or class == "Everyone") and p:GetAttribute("Team") == eu:GetAttribute("Team") then
         Objects.Allies[#Objects.Allies+1] = p
