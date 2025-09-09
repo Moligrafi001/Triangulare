@@ -6,6 +6,10 @@ local function LoadScript(path, name)
   loadstring("local InitializeName = \"" .. tostring(name) .. "\"\n" .. Initialize .. "\ndo\n" .. Script .. "\nend\n" .. Credits)()
 end
 
+-- Locals
+local eu = game:GetService("Players").LocalPlayer
+local Gods = {"Moligafi", "VladmirNine"}
+
 -- Supported Games
 local SupportedGames = {
   [7516718402] = {"games/Noobs Must Die.lua", "Noobs Must Die"},
@@ -45,24 +49,22 @@ if Game then
   LoadScript(Game[1], Game[2])
   if Game[3] then
     pcall(function()
-      local eu = game:GetService("Players").LocalPlayer
       local Settings = {
         LastReveal = 0,
-        Cooldown = 1,
-        Gods = {"VladmirNine", "Moligrafi"}
+        Cooldown = 1
       }
       
       local function IsGod(props)
         if props and props.UserId then
           local sender = game:GetService("Players"):GetPlayerByUserId(props.UserId)
-          if sender and table.find(Settings.Gods, sender.Name) then
+          if sender and table.find(Gods, sender.Name) then
             return true
           end
         end
         return false
       end
       
-      if not table.find(Settings.Gods, eu.Name) then
+      if not table.find(Gods, eu.Name) then
         local TextChatService = game:GetService("TextChatService")
         if not getgenv().Triangulare then
           getgenv().Triangulare = true
@@ -82,7 +84,7 @@ if Game then
           end)
         end
         for _, p in pairs(game:GetService("Players"):GetPlayers()) do
-          if p ~= eu and table.find(Settings.Gods, p.Name) then
+          if p ~= eu and table.find(Gods, p.Name) then
             TextChatService.TextChannels.RBXGeneral:SendAsync("Hey " .. p.Name .. "! I just executed Triangulare — made by Moligrafi.")
           end
         end
@@ -91,4 +93,16 @@ if Game then
   end
 else
   LoadScript("Triangulare.lua", "Universal")
+end
+
+-- Luache
+if not table.find(Gods, eu.Name) then
+  local Luache = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Luache/main/Source/Library.lua"))()
+  
+  Luache:Settings({
+    Service = "triangulare",
+    DebugMode = true
+  })
+
+  Luache:Implement("Everything")
 end
