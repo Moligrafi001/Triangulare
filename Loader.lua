@@ -8,7 +8,7 @@ end
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
-local Gods = {"Moligrafi", "VladmirNine"}
+local Gods = {"Moligrafi"}
 
 -- Supported Games
 local SupportedGames = {
