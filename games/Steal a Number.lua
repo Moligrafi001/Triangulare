@@ -8,8 +8,7 @@ getgenv().AutoRebirth = false
 local eu = game:GetService("Players").LocalPlayer
 local Settings = {
   Plot = nil,
-  LaserPart = nil,
-  Number = 1000
+  LaserPart = nil
 }
 
 -- Load
@@ -125,19 +124,11 @@ Tabs.Menu:Toggle({
   end
 })
 Tabs.Menu:Section({ Title = "Advanced" })
-Tabs.Menu:Input({
-  Title = "Money (in millions)",
-  Value = "1000",
-  Placeholder = "numbers only",
-  Callback = function(input)
-    Settings.Number = tonumber(input) or 1
-  end
-})
 Tabs.Menu:Button({
   Title = "Get Money",
-  Desc = "Gives you the selected amount of millions.",
+  Desc = "Gives you some money.",
   Callback = function()
-    for i = 1, Settings.Number do
+    for i = 1, 1000 do
       game:GetService("ReplicatedStorage").Playtime:FireServer(6)
     end
   end
