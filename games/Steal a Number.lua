@@ -61,6 +61,13 @@ local function AutoLock()
     end)
   end
 end
+local function AutoRebirth()
+  while getgenv().AutoRebirth and task.wait(1) do
+    pcall(function()
+      game:GetService("ReplicatedStorage").RebirthRemote:FireServer()
+    end)
+  end
+end
 
 --[[
 workspace.Bases.Base3.Lock.TouchInterest
@@ -104,5 +111,14 @@ Tabs.Menu:Toggle({
   Callback = function(state)
     getgenv().AutoDeliver = state
     AutoDeliver()
+  end
+})
+Tabs.Menu:Toggle({
+  Title = "Auto Rebirth",
+  Desc = "Automatically rebirths.",
+  Value = false,
+  Callback = function(state)
+    getgenv().AutoRebirth = state
+    AutoRebirth()
   end
 })
