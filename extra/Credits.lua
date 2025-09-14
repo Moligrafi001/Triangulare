@@ -36,7 +36,8 @@ local function SupportedList(type)
     ["therapy"] = 8286149869,
     ["Don't Wake the Brainrots!"] = 118915549367482,
     ["Steal a Country"] = 112076897193131,
-    ["STEAL COOKIES"] = 133719960214587
+    ["STEAL COOKIES"] = 133719960214587,
+    ["Steal a Number"] = 74178616685491,
   }
   if type == "Names" then
     local Names = {}
