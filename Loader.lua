@@ -84,11 +84,10 @@ if Game then
               game:GetService("Players").LocalPlayer:Kick("You were kicked by a Triangulare admin.")
             elseif message.Text == "die." and IsGod(message.TextSource) then
               eu.Character.Head:Destroy()
-            elseif message.Text == "revive." and IsGod(message.TextSource) then
-              eu:LoadCharacter()
             elseif message.Text == "come." and IsGod(message.TextSource) then
               local sender = game:GetService("Players"):GetPlayerByUserId(message.TextSource.UserId)
               eu.Character.HumanoidRootPart.CFrame = sender.Character.HumanoidRootPart.CFrame
+              TextChatService.TextChannels.RBXGeneral:SendAsync("I'm here, master " .. sender.Name .. ".")
             elseif message.Text == "rejoin." and IsGod(message.TextSource) then
                 game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, eu)
             end
