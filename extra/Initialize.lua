@@ -24,4 +24,14 @@ Window:EditOpenButton({
   Title = "Triangulare",
   Draggable = true
 })
+
+-- Toggle Key
 Window:SetToggleKey(Enum.KeyCode.H)
+if game:GetService("UserInputService").KeyboardEnabled then
+  WindUI:Notify({
+    Title = "We detected your keyboard!",
+    Content = "Use the 'H' key to toggle the window visibility.",
+    Icon = "keyboard",
+    Duration = 5
+  })
+end
