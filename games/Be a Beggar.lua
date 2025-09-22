@@ -1,5 +1,6 @@
 -- Global Values
 getgenv().AutoCollect = false
+getgenv().AutoBeg = false
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
@@ -33,6 +34,19 @@ local function AutoCollect()
     end)
   end
 end
+local function AutoBeg()
+  while getgenv().AutoBeg and task.wait(0.39) do
+    pcall(function()
+      for _, npc in pairs(workspace.NPCs:GetChildren()) do
+        pcall(function()
+          if (eu.Character.HumanoidRootPart.Position - npc.HumanoidRootPart.Position).Magnitude <= 10 then
+            fireproximityprompt(npc.HumanoidRootPart.Template)
+          end
+        end)
+      end
+    end)
+  end
+end
 
 --[[
 Game: 8305240030 | Place: 119574637420814
@@ -53,5 +67,14 @@ Tabs.Menu:Toggle({
   Callback = function(state)
     getgenv().AutoCollect = state
     AutoCollect()
+  end
+})
+Tabs.Menu:Toggle({
+  Title = "Auto Beg",
+  Desc = "Automatically begs for NPCs.",
+  Value = false,
+  Callback = function(state)
+    getgenv().AutoBeg = state
+    AutoBeg()
   end
 })
