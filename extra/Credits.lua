@@ -40,6 +40,7 @@ local function SupportedList(type)
     ["Steal a Number"] = 74178616685491,
     ["Build A Boat For Treasure"] = 537413528,
     ["Hide and Seek Extreme"] = 205224386,
+    ["Be a Beggar!"] = 119574637420814,
   }
   if type == "Names" then
     local Names = {}
