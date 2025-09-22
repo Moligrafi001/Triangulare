@@ -84,9 +84,11 @@ Tabs.Menu:Button({
   Desc = "Gives you all the gamepasses.",
   Callback = function()
     for _, g in pairs(eu.PlayerData:GetChildren()) do
-      if g.Value == false then
-        g.Value = true
-      end
+      pcall(function()
+        if g.Value == false then
+          g.Value = true
+        end
+      end)
     end
   end
 })
