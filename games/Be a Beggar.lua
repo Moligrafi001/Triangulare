@@ -22,7 +22,7 @@ end)
 
 -- Functions
 local function AutoCollect()
-  while getgenv().AutoCollect and task.wait(1) do
+  while getgenv().AutoCollect and task.wait(0.39) do
     pcall(function()
       for _, money in pairs(workspace.Money:GetChildren()) do
         pcall(function()
