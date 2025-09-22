@@ -32,6 +32,6 @@ if game:GetService("UserInputService").KeyboardEnabled then
     Title = "We detected your keyboard!",
     Content = "Use the 'H' key to toggle the window visibility.",
     Icon = "keyboard",
-    Duration = 5
+    Duration = 7
   })
 end
