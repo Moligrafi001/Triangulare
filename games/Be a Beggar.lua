@@ -78,3 +78,15 @@ Tabs.Menu:Toggle({
     AutoBeg()
   end
 })
+Tabs.Menu:Section({ Title = "Gamepasses" })
+Tabs.Menu:Button({
+  Title = "Get All Gamepasses [ not 100% ]",
+  Desc = "Gives you all the gamepasses.",
+  Callback = function()
+    for _, g in pairs(eu.PlayerData:GetChildren()) do
+      if g.Value == false then
+        g.Value = true
+      end
+    end
+  end
+})
