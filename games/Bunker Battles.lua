@@ -1,6 +1,7 @@
 -- Global Values
 getgenv().AutoCollect = false
 getgenv().AutoDeliver = false
+getgenv().AutoWin = false
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
@@ -16,10 +17,20 @@ local function AutoCollect()
 end
 local function AutoDeliver()
   while getgenv().AutoDeliver and task.wait(0.09) do
-    local Team = eu.Team
     pcall(function()
+      local Team = eu.Team
       firetouchinterest(eu.Character.HumanoidRootPart, workspace.IMPORTANT.BUNKERS[Team].TOUCH, 0)
       firetouchinterest(eu.Character.HumanoidRootPart, workspace.IMPORTANT.BUNKERS[Team].TOUCH, 1)
+    end)
+  end
+end
+local function AutoWin()
+  while getgenv().AutoWin and task.wait(0.09) do
+    pcall(function()
+      if not eu.Team then
+        firetouchinterest(eu.Character.HumanoidRootPart, workspace.Lobby.Folder.WIN, 0)
+        firetouchinterest(eu.Character.HumanoidRootPart, workspace.Lobby.Folder.WIN, 1)
+      end
     end)
   end
 end
@@ -59,5 +70,14 @@ Tabs.Menu:Toggle({
   Callback = function(state)
     getgenv().AutoDeliver = state
     AutoDeliver()
+  end
+})
+Tabs.Menu:Toggle({
+  Title = "Auto Win",
+  Desc = "Automatically wins obby.",
+  Value = false,
+  Callback = function(state)
+    getgenv().AutoWin = state
+    AutoWin()
   end
 })
