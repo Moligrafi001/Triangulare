@@ -34,7 +34,7 @@ local function AutoCollect()
             firetouchinterest(root, giver, 1)
           end
           
-          task.wait(0.5)
+          task.wait(1)
           root.CFrame = OldCFrame
         end
       else
