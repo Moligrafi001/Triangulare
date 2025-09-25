@@ -13,7 +13,7 @@ local function ScanNewMap()
   for _, map in pairs(Maps) do
     if workspace:FindFirstChild(map) and workspace[map]:IsA("Folder") then
       Settings.Map = map
-      break
+      return true
     end
   end
 end
