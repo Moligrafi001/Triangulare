@@ -11,7 +11,10 @@ local function AutoCollect()
     if Team and eu.BrickCount.Value < 1 and eu.Character then
       local root = eu.Character.HumanoidRootPart
       local OldCFrame = root.CFrame
-      root.CFrame = workspace.Classic[Team].BlockMain.Giver * CFrame.new(0, 3, 0)
+      local giver = workspace.Classic[Team].BlockMain.Giver
+      root.CFrame = giver.CFrame * CFrame.new(0, 3, 0)
+      firetouchinterest(root, giver, 0)
+      firetouchinterest(root, giver, 1)
       task.wait(0.1)
       root.CFrame = OldCFrame
     end
