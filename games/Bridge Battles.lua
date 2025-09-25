@@ -22,7 +22,7 @@ end
 local function AutoCollect()
   while getgenv().AutoCollect and task.wait(0.09) do
     if Settings.Map then
-      local Team = eu.Team
+      local Team = eu:GetAttribute("TeamName")
       if Team and eu.BrickCount.Value < 1 and eu.Character then
         local root = eu.Character.HumanoidRootPart
         local OldCFrame = root.CFrame
