@@ -20,7 +20,7 @@ end
 
 -- Functions
 local function AutoCollect()
-  while getgenv().AutoCollect and task.wait(0.09) do
+  while getgenv().AutoCollect and task.wait(0.375) do
     pcall(function()
       if Settings.Map then
         local Team = eu:GetAttribute("TeamName")
