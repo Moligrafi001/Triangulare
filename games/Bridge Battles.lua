@@ -9,7 +9,7 @@ local Settings = {
 
 -- Almost
 local function ScanNewMap()
-  local Maps = {"Chaos", "Classic"}
+  local Maps = {"Chaos", "Classic", "Showdown"}
   for _, map in pairs(Maps) do
     if workspace:FindFirstChild(map) and workspace[map]:IsA("Folder") then
       Settings.Map = map
