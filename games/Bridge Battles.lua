@@ -21,7 +21,7 @@ end
 local function AutoCollect()
   while getgenv().AutoCollect and task.wait(0.375) do
     pcall(function()
-      if workspace:FindFirstChild(Settings.Map) then
+      if Settings.Map and workspace:FindFirstChild(Settings.Map) then
         local Team = eu:GetAttribute("TeamName")
         if Team and eu.BrickCount.Value < 1 and eu.Character then
           local root = eu.Character.HumanoidRootPart
