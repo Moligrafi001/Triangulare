@@ -7,16 +7,14 @@ local eu = game:GetService("Players").LocalPlayer
 -- Functions
 local function AutoCollect()
   while getgenv().AutoCollect and task.wait(0.09) do
-    pcall(function()
-      local Team = eu.Team
-      if Team and eu.BrickCount.Value < 1 and eu.Character then
-        local root = eu.Character.HumanoidRootPart
-        local OldCFrame = root.CFrame
-        root.CFrame = workspace.Classic[Team].BlockMain.Giver * CFrame.new(0, 3, 0)
-        task.wait(0.1)
-        root.CFrame = OldCFrame
-      end
-    end)
+    local Team = eu.Team
+    if Team and eu.BrickCount.Value < 1 and eu.Character then
+      local root = eu.Character.HumanoidRootPart
+      local OldCFrame = root.CFrame
+      root.CFrame = workspace.Classic[Team].BlockMain.Giver * CFrame.new(0, 3, 0)
+      task.wait(0.1)
+      root.CFrame = OldCFrame
+    end
   end
 end
 
