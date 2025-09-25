@@ -28,8 +28,8 @@ local function AutoCollect()
           local root = eu.Character.HumanoidRootPart
           local OldCFrame = root.CFrame
           local giver = workspace[Settings.Map][Team].BlockMain.Giver
-          task.wait(0.125)
           root.CFrame = giver.CFrame * CFrame.new(0, 3, 0)
+          task.wait(0.125)
           firetouchinterest(root, giver, 0)
           firetouchinterest(root, giver, 1)
           task.wait(0.125)
