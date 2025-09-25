@@ -9,8 +9,7 @@ local Settings = {
 
 -- Almost
 local function ScanNewMap()
-  local Maps = {"Chaos", "Classic", "Showdown"}
-  for _, map in pairs(Maps) do
+  for _, map in pairs({"Chaos", "Classic", "Showdown"}) do
     if workspace:FindFirstChild(map) and workspace[map]:IsA("Folder") then
       Settings.Map = map
       return true
@@ -22,7 +21,7 @@ end
 local function AutoCollect()
   while getgenv().AutoCollect and task.wait(0.375) do
     pcall(function()
-      if Settings.Map then
+      if workspace:FindFirstChild(Settings.Map) then
         local Team = eu:GetAttribute("TeamName")
         if Team and eu.BrickCount.Value < 1 and eu.Character then
           local root = eu.Character.HumanoidRootPart
