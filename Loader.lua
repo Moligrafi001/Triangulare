@@ -50,6 +50,7 @@ local SupportedGames = {
   [8305240030] = {"games/Be a Beggar.lua", "Be a Beggar!"},
   [8366180257] = {"games/Bunker Battles.lua", "Bunker Battles"},
   [7960300951] = {"games/Bridge Battles.lua", "Bridge Battles!"},
+  [7960300951] = {"games/Rob a Bank.lua", "Rob a Bank!"},
 }
 local Game = SupportedGames[game.GameId] or SupportedGames[game.PlaceId]
 if Game then
