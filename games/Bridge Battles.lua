@@ -21,21 +21,25 @@ end
 -- Functions
 local function AutoCollect()
   while getgenv().AutoCollect and task.wait(0.09) do
-    if Settings.Map then
-      local Team = eu:GetAttribute("TeamName")
-      if Team and eu.BrickCount.Value < 1 and eu.Character then
-        local root = eu.Character.HumanoidRootPart
-        local OldCFrame = root.CFrame
-        local giver = workspace[Settings.Map][Team].BlockMain.Giver
-        root.CFrame = giver.CFrame * CFrame.new(0, 3, 0)
-        firetouchinterest(root, giver, 0)
-        firetouchinterest(root, giver, 1)
-        task.wait(0.1)
-        root.CFrame = OldCFrame
+    pcall(function()
+      if Settings.Map then
+        local Team = eu:GetAttribute("TeamName")
+        if Team and eu.BrickCount.Value < 1 and eu.Character then
+          local root = eu.Character.HumanoidRootPart
+          local OldCFrame = root.CFrame
+          local giver = workspace[Settings.Map][Team].BlockMain.Giver
+          task.wait(0.125)
+          root.CFrame = giver.CFrame * CFrame.new(0, 3, 0)
+          firetouchinterest(root, giver, 0)
+          firetouchinterest(root, giver, 1)
+          task.wait(0.125)
+          root.CFrame = OldCFrame
+          task.wait(0.125)
+        end
+      else
+        ScanNewMap()
       end
-    else
-      ScanNewMap()
-    end
+    end)
   end
 end
 
