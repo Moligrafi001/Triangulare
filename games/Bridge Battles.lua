@@ -28,12 +28,13 @@ local function AutoCollect()
           local OldCFrame = root.CFrame
           local giver = workspace[Settings.Map][Team].BlockMain.Giver
           root.CFrame = giver.CFrame * CFrame.new(0, 3, 0)
-          task.wait(0.125)
-          firetouchinterest(root, giver, 0)
-          firetouchinterest(root, giver, 1)
-          task.wait(0.125)
+          
+          repeat task.wait(0.1)
+            firetouchinterest(root, giver, 0)
+            firetouchinterest(root, giver, 1)
+          until eu.BrickCount.Value == tonumber(eu:GetAttribute("MaxBricks"))
+          
           root.CFrame = OldCFrame
-          task.wait(0.125)
         end
       else
         ScanNewMap()
