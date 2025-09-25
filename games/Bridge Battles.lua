@@ -34,6 +34,7 @@ local function AutoCollect()
             firetouchinterest(root, giver, 1)
           until eu.BrickCount.Value == tonumber(eu:GetAttribute("MaxBricks"))
           
+          task.wait(0.5)
           root.CFrame = OldCFrame
         end
       else
