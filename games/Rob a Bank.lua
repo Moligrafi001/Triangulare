@@ -22,10 +22,21 @@ end)
 
 -- Functions
 local function AutoCollect()
-  while getgenv().AutoCollect and task.wait(0.39) do
+  while getgenv().AutoCollect and task.wait(1) do
     pcall(function()
       firetouchinterest(eu.Character.HumanoidRootPart, Settings.Plot.MoneyCollecter.Collect, 0)
       firetouchinterest(eu.Character.HumanoidRootPart, Settings.Plot.MoneyCollecter.Collect, 1)
+    end)
+  end
+end
+local function AutoUpgrade()
+  while getgenv().AutoUpgrade and task.wait(1) do
+    pcall(function()
+      for _, upgrade in pairs(Settings.Plot.Upgrades:GetChildren()) do
+        if upgrade.ProximityPrompt.Enabled and upgrade.Price.Value <= eu.leaderstats.Dollars then
+          game:GetService("ReplicatedStorage").Events.BuyEvent:FireServer(upgrade)
+        end
+      end
     end)
   end
 end
@@ -58,5 +69,14 @@ Tabs.Menu:Toggle({
   Callback = function(state)
     getgenv().AutoCollect = state
     AutoCollect()
+  end
+})
+Tabs.Menu:Toggle({
+  Title = "Auto Upgrade",
+  Desc = "Automatically buys upgrades.",
+  Value = false,
+  Callback = function(state)
+    getgenv().AutoUpgrade = state
+    AutoUpgrade()
   end
 })
