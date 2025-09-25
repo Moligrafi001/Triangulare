@@ -3,20 +3,38 @@ getgenv().AutoCollect = false
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
+local Settings = {
+  Map = nil
+}
+
+-- Almost
+local function ScanNewMap()
+  local Maps = {"Chaos", "Classic"}
+  for _, map in pairs(Maps) do
+    if workspace:FindFirstChild(map) and workspace[map]:IsA("Folder") then
+      Settings.Map = map
+      break
+    end
+  end
+end
 
 -- Functions
 local function AutoCollect()
   while getgenv().AutoCollect and task.wait(0.09) do
-    local Team = eu.Team
-    if Team and eu.BrickCount.Value < 1 and eu.Character then
-      local root = eu.Character.HumanoidRootPart
-      local OldCFrame = root.CFrame
-      local giver = workspace.Classic[Team].BlockMain.Giver
-      root.CFrame = giver.CFrame * CFrame.new(0, 3, 0)
-      firetouchinterest(root, giver, 0)
-      firetouchinterest(root, giver, 1)
-      task.wait(0.1)
-      root.CFrame = OldCFrame
+    if Settings.Map then
+      local Team = eu.Team
+      if Team and eu.BrickCount.Value < 1 and eu.Character then
+        local root = eu.Character.HumanoidRootPart
+        local OldCFrame = root.CFrame
+        local giver = workspace.Classic[Team].BlockMain.Giver
+        root.CFrame = giver.CFrame * CFrame.new(0, 3, 0)
+        firetouchinterest(root, giver, 0)
+        firetouchinterest(root, giver, 1)
+        task.wait(0.1)
+        root.CFrame = OldCFrame
+      end
+    else
+      ScanNewMap()
     end
   end
 end
