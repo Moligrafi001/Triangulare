@@ -14,7 +14,7 @@ local function AutoCollect()
   local function Collect(item)
     if item:IsA("Tool") then
       local touch = item:FindFirstChild("TouchInterest", true)
-      if touch and not table.find(Settings.Ignore, item.Name) and (Settings.AntiDouble and not eu.Character:FindFirstChild(item.Name) and not eu.Backpack:FindFirstChild(item.Name)) then
+      if touch and not table.find(Settings.Ignore, item.Name) and (not Settings.AntiDouble or (not eu.Character:FindFirstChild(item.Name) and not eu.Backpack:FindFirstChild(item.Name))) then
         firetouchinterest(eu.Character.HumanoidRootPart, touch.Parent, 0)
         firetouchinterest(eu.Character.HumanoidRootPart, touch.Parent, 1)
       end
