@@ -4,7 +4,7 @@ getgenv().AutoCollect = false
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
 local Settings = {
-  Items = {NetheriteSword, WoodenSword, Rose, GhostSword, Stick, DiamondSword, Netherite, EmeraldSword, Ghost, Diamond, Regen1, PhoenixBladeH, RottenApple, Tsunami, Gap, StoneSword, NightfallBlade, Emerald, NightmareBladeST, Infinity, Iron, Strength, Jump2},
+  Items = { "NetheriteSword", "WoodenSword", "Rose", "GhostSword", "Stick", "DiamondSword", "Netherite", "EmeraldSword", "Ghost", "Diamond", "Regen1", "PhoenixBladeH", "RottenApple", "Tsunami", "Gap", "StoneSword", "NightfallBlade", "Emerald", "NightmareBladeST", "Infinity", "Iron", "Strength", "Jump2" },
   Ignore = {}
 }
 
