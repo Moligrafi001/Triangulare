@@ -34,7 +34,7 @@ end
 local function AutoLock()
   while getgenv().AutoLock and task.wait(1) do
     pcall(function()
-      if not Settings.Studio:GetAttribute("Locked") and eu.leaderstats.Worth.Value >= 30000 then
+      if not Settings.Studio:GetAttribute("isLocked") then
         firetouchinterest(eu.Character.HumanoidRootPart, Settings.Studio.LockOneMin.Hitbox, 0)
         firetouchinterest(eu.Character.HumanoidRootPart, Settings.Studio.LockOneMin.Hitbox, 1)
       end
