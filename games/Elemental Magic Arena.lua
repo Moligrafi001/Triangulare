@@ -15,20 +15,16 @@ local function AutoCollect()
         if diamond:IsA("MeshPart") and diamond.Name == "Diamond" and diamond:FindFirstChildOfClass("TouchTransmitter", true) then
           Settings.LastCFrame = eu.Character.HumanoidRootPart
           eu.Character.HumanoidRootPart.CFrame = diamond.CFrame
-          task.wait(0.3)
-          firetouchinterest(eu.Character.HumanoidRootPart, diamond, 0)
-          firetouchinterest(eu.Character.HumanoidRootPart, diamond, 1)
+          repeat do
+            firetouchinterest(eu.Character.HumanoidRootPart, diamond, 0)
+            firetouchinterest(eu.Character.HumanoidRootPart, diamond, 1)
+          end task.wait(0.1) until not diamond
+          eu.Character.HumanoidRootPart.CFrame = Settings.LastCFrame
         end
       end
     end)
   end
 end
-
---[[
-workspace:GetChildren()[37].Handle.TouchInterest
-workspace.Emerald.Handle.TouchInterest
-Game: 8118501380 | Place: 92304138580520
-]]--
 
 -- Tabs
 local Tabs = {
