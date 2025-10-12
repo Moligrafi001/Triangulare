@@ -88,6 +88,10 @@ local function InfStamina()
   end
 end
 
+--[[
+Game: 3408154779 | Place: 9058310544
+]]--
+
 -- Tabs
 local Tabs = {
   Menu = Window:Tab({ Title = "Main", Icon = "house"})
