@@ -35,6 +35,7 @@ local function AutoHeal()
       
       return false
     end
+    
     local missing = humanoid.MaxHealth - humanoid.Health
     if missing > 50 then
       if not Eat("Heart") then
