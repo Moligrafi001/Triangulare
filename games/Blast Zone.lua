@@ -21,8 +21,10 @@ local function AutoHeal()
         return false
       end
       
-      if SearchForFood(workspace.Map.Interactives.Givers) then return true
-      elseif workspace.Map:GetAttribute("Name") == "Lunar Arena" and SearchForFood(workspace.Map.Towers.RisingModel) then return true
+      if SearchForFood(workspace.Map.Interactives.Givers) then
+        return true
+      elseif workspace.Map:GetAttribute("Name") == "Lunar Arena" and SearchForFood(workspace.Map.Towers.RisingModel) then
+        return true
       end
       
       return false
