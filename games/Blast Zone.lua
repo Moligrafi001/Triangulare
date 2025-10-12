@@ -8,14 +8,16 @@ local eu = game:GetService("Players").LocalPlayer
 -- Functions
 local function AutoHeal()
   local function FinEat(humanoid)
-    local function Eat(type)
+    local function Eat(foods)
       local function SearchForFood(path)
         if not path then return false end
-        for _, giver in pairs(path:GetChildren()) do
-          if giver:FindFirstChild("Item") and giver:GetAttribute("PowerUp") == type then
-            firetouchinterest(eu.Character.HumanoidRootPart, giver.Item, 0)
-            firetouchinterest(eu.Character.HumanoidRootPart, giver.Item, 1)
-            return true
+        for _, food in ipairs(foods) do
+          for _, giver in pairs(path:GetChildren()) do
+            if giver:FindFirstChild("Item") and giver:GetAttribute("PowerUp") == food then
+              firetouchinterest(eu.Character.HumanoidRootPart, giver.Item, 0)
+              firetouchinterest(eu.Character.HumanoidRootPart, giver.Item, 1)
+              return true
+            end
           end
         end
         return false
@@ -38,19 +40,11 @@ local function AutoHeal()
     
     local missing = humanoid.MaxHealth - humanoid.Health
     if missing > 50 then
-      if not Eat("Heart") then
-        if not Eat("Burger") then
-          Eat("Donut")
-        end
-      end
+      Eat({ "Heart", "Burger", "Donut" })
     elseif missing > 25 then
-      if not Eat("Burger") then
-        Eat("Donut")
-      end
+      Eat({ "Burger", "Donut" })
     elseif missing > 0 then
-      if not Eat("Donut") then
-        Eat("Burger")
-      end
+      Eat({ "Donut", "Burger" })
     end
   end
   while getgenv().AutoHeal and task.wait(1) do
