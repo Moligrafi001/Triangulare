@@ -21,10 +21,10 @@ local function AutoHeal()
         return false
       end
       
+      if SearchForFood(workspace.Map.Interactives.Givers) then return true end
+      
       local map = workspace.Map:GetAttribute("Name")
-      if SearchForFood(workspace.Map.Interactives.Givers) then
-        return true
-      elseif map == "Lunar Arena" and SearchForFood(workspace.Map.Towers.RisingModel) then
+      if map == "Lunar Arena" and SearchForFood(workspace.Map.Towers.RisingModel) then
         return true
       elseif map == "Crossroads" then
         local part = workspace.Map.Interactives["Spase Aliens"].Josh.HealPart
