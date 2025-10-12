@@ -22,6 +22,7 @@ local function AutoHeal()
   local function FinEat(humanoid)
     local function Eat(type)
       local function SearchForFood(path)
+        if not path then return false end
         for _, giver in pairs(path:GetChildren()) do
           if giver:FindFirstChild("Item") and giver:GetAttribute("PowerUp") == type then
             firetouchinterest(eu.Character.HumanoidRootPart, giver.Item, 0)
@@ -29,12 +30,12 @@ local function AutoHeal()
             return true
           end
         end
+        return false
       end
-      -- workspace.Map.Interactives.Givers
       
       if SearchForFood(workspace.Map.Interactives.Givers) then
         return true
-      elseif workspace.Map.Towers.Sand and SearchForFood(workspace.Map.Towers.Sand) then
+      elseif workspace.Map:GetAttribute("Name") == "Lunar Arena" and SearchForFood(workspace.Map.Towers.Sand) then
         return true
       end
       
@@ -66,8 +67,8 @@ local function AutoHeal()
       if humanoid.Health < humanoid.MaxHealth then
         FinEat(humanoid)
       end
-      if not eu.Character:GetAttribute("Triangulare") then
-        eu.Character:SetAttribute("Triangulare", true)
+      if not char:GetAttribute("Triangulare") then
+        char:SetAttribute("Triangulare", true)
         humanoid.HealthChanged:Connect(function()
           if getgenv().AutoHeal and eu.Character.Humanoid.Health < eu.Character.Humanoid.MaxHealth then
             FinEat(eu.Character.Humanoid)
