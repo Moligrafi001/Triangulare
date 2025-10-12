@@ -53,7 +53,7 @@ local function AutoHeal()
     end
   end
   while getgenv().AutoHeal and task.wait(1) do
-    -- pcall(function()
+    pcall(function()
       local char = eu.Character
       local humanoid = char and char:FindFirstChildOfClass("Humanoid")
       if not humanoid then return end
@@ -69,7 +69,7 @@ local function AutoHeal()
           end
         end)
       end
-    -- end)
+    end)
   end
 end
 local function InfStamina()
