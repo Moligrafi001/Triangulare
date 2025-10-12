@@ -5,18 +5,6 @@ getgenv().InfStamina = false
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
 
--- Load
-task.spawn(function()
-  while not Settings.Plot and task.wait(1) do
-    for _, plot in pairs(workspace.Plots:GetChildren()) do
-      if plot:FindFirstChild("Owner") and plot.Owner.Value == eu.Name then
-        Settings.Plot = plot
-        return
-      end
-    end
-  end
-end)
-
 -- Functions
 local function AutoHeal()
   local function FinEat(humanoid)
@@ -33,10 +21,8 @@ local function AutoHeal()
         return false
       end
       
-      if SearchForFood(workspace.Map.Interactives.Givers) then
-        return true
-      elseif workspace.Map:GetAttribute("Name") == "Lunar Arena" and SearchForFood(workspace.Map.Towers.Sand) then
-        return true
+      if SearchForFood(workspace.Map.Interactives.Givers) then return true
+      elseif workspace.Map:GetAttribute("Name") == "Lunar Arena" and SearchForFood(workspace.Map.Towers.RisingModel) then return true
       end
       
       return false
