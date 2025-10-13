@@ -23,8 +23,8 @@ end)
 local function AutoCollect()
   while getgenv().AutoCollect and task.wait(1) do
     pcall(function()
-      firetouchinterest(eu.Character.HumanoidRootPart, plot.Collect.Main, 0)
-      firetouchinterest(eu.Character.HumanoidRootPart, plot.Collect.Main, 1)
+      firetouchinterest(eu.Character.HumanoidRootPart, Settings.Plot.Collect.Main, 0)
+      firetouchinterest(eu.Character.HumanoidRootPart, Settings.Plot.Collect.Main, 1)
     end)
   end
 end
