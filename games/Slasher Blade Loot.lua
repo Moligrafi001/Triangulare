@@ -14,7 +14,7 @@ local function KillAura()
     for _, enemy in pairs(workspace:GetPartBoundsInBox(eu.Character.HumanoidRootPart.CFrame, Vector3.new(Settings.Distance, 20, Settings.Distance), nil)) do
       local model = enemy:IsDescendantOf(workspace.Live.MobModel) and enemy:FindFirstAncestorWhichIsA("Model")
       
-      if model and model.Parent == workspace.Live.MobModel then
+      if model and model.Parent == workspace.Live.MobModel and not table.find(Detected, model.Name) then
         table.insert(Detected, model.Name)
       end
     end
