@@ -46,6 +46,7 @@ local function SupportedList(type)
     ["Rob a Bank!"] = 107431063731700,
     ["Steal a Power-up"] = 75235622760301,
     ["Blast Zone"] = 9058310544,
+    ["Slasher Blade Loot"] = 99827026339186,
   }
   if type == "Names" then
     local Names = {}
