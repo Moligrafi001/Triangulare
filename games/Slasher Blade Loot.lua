@@ -62,7 +62,6 @@ Tabs.Menu:Toggle({
 })
 Tabs.Menu:Slider({
   Title = "Aura Distance",
-  -- Desc = "Attacks the enemies from this",
   Step = 1,
   Value = {
     Min = 10,
