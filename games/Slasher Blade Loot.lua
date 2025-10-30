@@ -20,10 +20,10 @@ local function KillAura()
     end
     return Detected
   end
-  while getgenv().KillAura and task.wait(0.1) do
+  while getgenv().KillAura and task.wait(0.19) do
     pcall(function()
       local Enemies = GetNearby()
-      if #Enemies then
+      if #Enemies > 0 then
         game:GetService("ReplicatedStorage").Remote.Event.Combat.M1:FireServer(Enemies)
       end
     end)
