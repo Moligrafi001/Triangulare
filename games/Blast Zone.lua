@@ -40,11 +40,13 @@ local function AutoHeal()
     
     local missing = humanoid.MaxHealth - humanoid.Health
     if missing > 50 then
-      Eat({ "Heart", "Burger", "Donut" })
+      Eat({ "Heart", "Burger", "Donut", "BlastBurger" })
     elseif missing > 25 then
-      Eat({ "Burger", "Donut" })
+      Eat({ "Burger", "Donut", "BlastBurger" })
+    elseif missing > 10 then
+      Eat({ "Donut", "BlastBurger", "Burger" })
     elseif missing > 0 then
-      Eat({ "Donut", "Burger" })
+      Eat({ "BlastBurger", "Donut", "Burger" })
     end
   end
   while getgenv().AutoHeal and task.wait(1) do
