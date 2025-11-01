@@ -28,6 +28,8 @@ local function AutoHeal()
       local map = workspace.Map:GetAttribute("Name")
       if map == "Lunar Arena" and SearchForFood(workspace.Map.Towers.RisingModel) then
         return true
+      elseif map == "Reactor Core" and SearchForFood(workspace.Map.Environment.Event.RisingModel.Boat.Interactives) then
+        return true
       elseif map == "Crossroads" then
         local part = workspace.Map.Interactives["Spase Aliens"].Josh.HealPart
         firetouchinterest(eu.Character.HumanoidRootPart, part, 0)
@@ -81,6 +83,7 @@ end
 
 --[[
 Game: 3408154779 | Place: 9058310544
+workspace.Map.Environment.Event.RisingModel.Boat.Interactives:GetChildren()[11]
 ]]--
 
 -- Tabs
