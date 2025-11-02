@@ -27,7 +27,7 @@ local function AutoHeal()
       
       local Maps = {
         ["Lunar Arena"] = {
-          Foods = { "Heart", "Burger", "Donut" },
+          Foods = { "Heart", "Burger" },
           Fallback = function()
             return SearchForFood(workspace.Map.Towers.RisingModel, { "Heart", "Burger", "Donut" })
           end,
