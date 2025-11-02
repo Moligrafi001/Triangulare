@@ -28,7 +28,9 @@ local function AutoHeal()
       local map = workspace.Map:GetAttribute("Name")
       if map == "Lunar Arena" and SearchForFood(workspace.Map.Towers.RisingModel) then
         return true
-      elseif map == "Reactor Core" and SearchForFood(workspace.Map.Environment.Event.RisingModel.Boat.Interactives) then
+      elseif map == "Bamboo Beach" and SearchForFood(workspace.Map.Environment.Event.Model) then
+        return true
+      elseif map == "Reactor Core" and (SearchForFood(workspace.Map.Environment.Event.RisingModel.Boat.Interactives) or SearchForFood(workspace.Map.Environment.Event.LoweringRocks)) then
         return true
       elseif map == "Crossroads" then
         local part = workspace.Map.Interactives["Spase Aliens"].Josh.HealPart
@@ -84,6 +86,11 @@ end
 --[[
 Game: 3408154779 | Place: 9058310544
 workspace.Map.Environment.Event.RisingModel.Boat.Interactives:GetChildren()[11]
+-- Reactor
+workspace.Map.Environment.Event.LoweringRocks.Giver
+-- Bamboo Beach
+workspace.Map.Environment.Event.Model:GetChildren()[4].Item.TouchInterest
+-- Blackrock Castle
 ]]--
 
 -- Tabs
