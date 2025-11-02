@@ -47,21 +47,22 @@ local function AutoHeal()
           end,
         },
         ["Bamboo Beach"] = {
+          Foods = { "Heart", "Burger", "Donut" },
           Fallback = function()
-            return SearchForFood(workspace.Map.Environment.Event.Model, { "Burger" })
+            return SearchForFood(workspace.Map.Environment.Event.Model, { "Donut" })
           end,
         },
         ["Reactor Core"] = {
-          Foods = { "Heart", "Burguer", "Donut" },
+          Foods = { "Heart", "Burger", "Donut" },
           Fallback = function()
             return SearchForFood(workspace.Map.Environment.Event.RisingModel.Boat.Interactives, { "Heart", "Burger", "BlastBurger" }) or SearchForFood(workspace.Map.Environment.Event.LoweringRocks, { "Donut" })
           end
         },
         ["Blackrock Castle"] = {
-          Foods = { "Heart", "Burguer" }
+          Foods = { "Heart", "Burger" }
         },
         ["BloxBurg"] = {
-          Foods = { "Heart", "Burguer", "BlastBurger" }
+          Foods = { "Heart", "Burger", "BlastBurger" }
         }
       }
       
@@ -119,7 +120,7 @@ local function InfStamina()
 end
 
 --[[
-Blackrock Castle: Heart, Burguer
+Blackrock Castle: Heart, Burger
 -- BloxBurg: Heart, Burger, BlastBurger
 Game: 3408154779 | Place: 9058310544
 workspace.Map.Environment.Event.RisingModel.Boat.Interactives:GetChildren()[11]
