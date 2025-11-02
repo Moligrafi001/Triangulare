@@ -67,7 +67,7 @@ local function AutoHeal()
       
       local Map = Maps[MapName]
       if Map then
-        if Map.Foods and SearchForFood(workspace.Map.Interactives.Givers, Map.Foods) then
+        if SearchForFood(workspace.Map.Interactives.Givers, Map.Foods or order) then
           return true
         elseif Map.Fallback then
           return Map.Fallback()
