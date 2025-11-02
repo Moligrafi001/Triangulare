@@ -8,38 +8,67 @@ local eu = game:GetService("Players").LocalPlayer
 -- Functions
 local function AutoHeal()
   local function FinEat(humanoid)
-    local function Eat(foods)
-      local function SearchForFood(path)
-        if not path then return false end
-        for _, food in ipairs(foods) do
-          for _, giver in pairs(path:GetChildren()) do
-            if giver:FindFirstChild("Item") and giver:GetAttribute("PowerUp") == food then
-              firetouchinterest(eu.Character.HumanoidRootPart, giver.Item, 0)
-              firetouchinterest(eu.Character.HumanoidRootPart, giver.Item, 1)
-              return true
+    local MapName = workspace.Map:GetAttribute("Name")
+    local function Eat(order)
+      local function SearchForFood(path, foods)
+        for _, food in ipairs(order) do
+          if table.find(foods, food) then
+            for _, giver in pairs(path:GetChildren()) do
+              if giver:FindFirstChild("Item") and giver:GetAttribute("PowerUp") == food then
+                firetouchinterest(eu.Character.HumanoidRootPart, giver.Item, 0)
+                firetouchinterest(eu.Character.HumanoidRootPart, giver.Item, 1)
+                return true
+              end
             end
           end
         end
         return false
       end
       
-      if SearchForFood(workspace.Map.Interactives.Givers) then return true end
+      local Maps = {
+        ["Lunar Arena"] = {
+          Foods = { "Heart", "Burger", "Donut" },
+          Fallback = function()
+            return SearchForFood(workspace.Map.Towers.RisingModel, { "Heart", "Burger", "Donut" })
+          end,
+        },
+        ["Crossroads"] = {
+          Foods = { "Heart", "Burger", "Donut" },
+          Fallback = function()
+            local part = workspace.Map.Interactives["Spase Aliens"].Josh.HealPart
+            firetouchinterest(eu.Character.HumanoidRootPart, part, 0)
+            firetouchinterest(eu.Character.HumanoidRootPart, part, 1)
+            return true
+          end
+        },
+        ["Haunted Mansion"] = {
+          Fallback = function()
+            return SearchForFood(workspace.Map.Structures.RopeBridge, { "Burger" })
+          end,
+        },
+        ["Bamboo Beach"] = {
+          Fallback = function()
+            return SearchForFood(workspace.Map.Environment.Event.Model, { "Burger" })
+          end,
+        },
+        ["Reactor Core"] = {
+          Foods = { "Heart", "Burguer", "Donut" },
+          Fallback = function()
+            return SearchForFood(workspace.Map.Environment.Event.RisingModel.Boat.Interactives, { "Heart", "Burger", "BlastBurger" }) or SearchForFood(workspace.Map.Environment.Event.LoweringRocks, { "Donut" })
+          end
+        }
+      }
       
-      local map = workspace.Map:GetAttribute("Name")
-      if map == "Lunar Arena" and SearchForFood(workspace.Map.Towers.RisingModel) then
-        return true
-      elseif map == "Bamboo Beach" and SearchForFood(workspace.Map.Environment.Event.Model) then
-        return true
-      elseif map == "Reactor Core" and (SearchForFood(workspace.Map.Environment.Event.RisingModel.Boat.Interactives) or SearchForFood(workspace.Map.Environment.Event.LoweringRocks)) then
-        return true
-      elseif map == "Crossroads" then
-        local part = workspace.Map.Interactives["Spase Aliens"].Josh.HealPart
-        firetouchinterest(eu.Character.HumanoidRootPart, part, 0)
-        firetouchinterest(eu.Character.HumanoidRootPart, part, 1)
-        return true
+      local Map = Maps[MapName]
+      if Map then
+        if Map.Foods and SearchForFood(workspace.Map.Interactives.Givers, Map.Foods) then
+          return true
+        elseif Map.Fallback then
+          return Map.Fallback()
+        end
       end
       
-      return false
+      return SearchForFood(workspace.Map.Interactives.Givers, order)
     end
     
     local missing = humanoid.MaxHealth - humanoid.Health
@@ -91,6 +120,8 @@ workspace.Map.Environment.Event.LoweringRocks.Giver
 -- Bamboo Beach
 workspace.Map.Environment.Event.Model:GetChildren()[4].Item.TouchInterest
 -- Blackrock Castle
+-- Haunted Mansion
+workspace.Map.Structures.RopeBridge.Giver
 ]]--
 
 -- Tabs
