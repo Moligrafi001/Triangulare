@@ -32,6 +32,12 @@ local function AutoHeal()
             return SearchForFood(workspace.Map.Towers.RisingModel, { "Heart", "Burger", "Donut" })
           end,
         },
+        ["Cloud Pass"] = {
+          Foods = { "Heart", "Burger", "Donut" },
+          Fallback = function()
+            return SearchForFood(workspace.Map.V2.Interactives.Givers, { "Heart", "Burger", "Donut" })
+          end,
+        },
         ["Crossroads"] = {
           Foods = { "Heart", "Burger", "Donut" },
           Fallback = function()
@@ -120,6 +126,8 @@ local function InfStamina()
 end
 
 --[[
+workspace.Map.V2.Interactives.Givers Heart Burger Donut
+Cloud Pass
 Blackrock Castle: Heart, Burger
 -- BloxBurg: Heart, Burger, BlastBurger
 Game: 3408154779 | Place: 9058310544
