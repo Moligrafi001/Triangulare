@@ -57,6 +57,9 @@ local function AutoHeal()
             return SearchForFood(workspace.Map.Environment.Event.RisingModel.Boat.Interactives, { "Heart", "Burger", "BlastBurger" }) or SearchForFood(workspace.Map.Environment.Event.LoweringRocks, { "Donut" })
           end
         },
+        ["Blackrock Castle"] = {
+          Foods = { "Heart", "Burguer" }
+        },
         ["BloxBurg"] = {
           Foods = { "Heart", "Burguer", "BlastBurger" }
         }
@@ -116,6 +119,7 @@ local function InfStamina()
 end
 
 --[[
+Blackrock Castle: Heart, Burguer
 -- BloxBurg: Heart, Burger, BlastBurger
 Game: 3408154779 | Place: 9058310544
 workspace.Map.Environment.Event.RisingModel.Boat.Interactives:GetChildren()[11]
