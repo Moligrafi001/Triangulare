@@ -72,9 +72,9 @@ local function AutoHeal()
         elseif Map.Fallback then
           return Map.Fallback()
         end
+      else
+        return SearchForFood(workspace.Map.Interactives.Givers, order)
       end
-      
-      return SearchForFood(workspace.Map.Interactives.Givers, order)
     end
     
     local missing = humanoid.MaxHealth - humanoid.Health
