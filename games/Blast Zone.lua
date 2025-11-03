@@ -69,6 +69,9 @@ local function AutoHeal()
         },
         ["BloxBurg"] = {
           Foods = { "Heart", "Burger", "BlastBurger" }
+        },
+        ["Rocket Arena"] = {
+          Foods = { "Heart", "Burger", "BlastBurger" }
         }
       }
       
