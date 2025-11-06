@@ -72,6 +72,12 @@ local function AutoHeal()
         },
         ["Rocket Arena"] = {
           Foods = { "Heart", "Burger", "BlastBurger" }
+        },
+        ["Blast Summit"] = {
+          Foods = { "Heart", "Burger", "Donut" }
+        },
+        ["Roblox HQ"] = {
+          Foods = { "Heart", "Burger", "Donut" }
         }
       }
       
