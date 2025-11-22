@@ -64,6 +64,12 @@ local function AutoHeal()
             return SearchForFood(workspace.Map.Environment.Event.RisingModel.Boat.Interactives, { "Heart", "Burger", "BlastBurger" }) or SearchForFood(workspace.Map.Environment.Event.LoweringRocks, { "Donut" })
           end
         },
+        ["Gold Rush"] = {
+          Foods = { "Heart", "Burger", "Donut" },
+          Fallback = function()
+            return SearchForFood(workspace.Map.Interactives.BoundedPad, { "Heart" })
+          end
+        },
         ["Blackrock Castle"] = {
           Foods = { "Heart", "Burger" }
         },
