@@ -26,7 +26,9 @@ task.spawn(function()
     if gp or not Settings.FireRemote or not ReplicatedStorage.ClientRemotes:FindFirstChild(Settings.FireRemote) then return end
     
     for _, slot in pairs(Settings.Slots) do
-      if input.KeyCode == Enum.KeyCode[slot[2]] then
+      local bind = Enum.KeyCode[slot[2]]
+      
+      if bind and input.KeyCode == bind then
         local camera = workspace.CurrentCamera
         local rayOrigin = camera.CFrame.Position
         local rayDirection = camera.CFrame.LookVector * 1000
