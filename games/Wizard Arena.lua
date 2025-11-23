@@ -38,7 +38,7 @@ task.spawn(function()
         local result = workspace:Raycast(rayOrigin, rayDirection, params)
         local hitPosition = result and result.Position or rayOrigin + rayDirection
         
-        ReplicatedStorage.ClientRemotes:FindFirstChild(Settings.FireRemote):FireServer(slot[1])
+        ReplicatedStorage.ClientRemotes:FindFirstChild(Settings.FireRemote):FireServer(slot[1], hitPosition)
       end
     end
   end)
