@@ -51,6 +51,15 @@ local Tabs = {
 Window:SelectTab(1)
 
 -- Menu
+Tabs.Menu:Section({ Title = "Setup" })
+Tabs.Menu:Input({
+  Title = "Fire Remote",
+  Value = tostring(Settings.FireRemote),
+  Placeholder = "Remote event that fires the spells.",
+  Callback = function(input)
+    Settings.FireRemote = input
+  end
+})
 Tabs.Menu:Section({ Title = "Slot 1" })
 Tabs.Menu:Dropdown({
   Title = "Selected Spell",
