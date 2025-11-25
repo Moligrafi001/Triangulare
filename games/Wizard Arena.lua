@@ -25,8 +25,8 @@ local function ReturnSpells()
   local Names = {}
   
   for _, spell in pairs(ReplicatedStorage.SpellUtility:GetChildren()) do
-    if not table.find(Spells, spell.Name) then
-      table.insert(Spells, spell.Name)
+    if not table.find(Names, spell.Name) then
+      table.insert(Names, spell.Name)
     end
   end
   
