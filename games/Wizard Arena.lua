@@ -21,9 +21,22 @@ local Settings = {
 }
 
 -- Functions
+local function ReturnSpells()
+  local Names = {}
+  
+  for _, spell in pairs(ReplicatedStorage.SpellUtility:GetChildren()) do
+    if not table.find(Spells, spell.Name) then
+      table.insert(Spells, spell.Name)
+    end
+  end
+  
+  return Names
+end
+
+-- Load
 task.spawn(function()
   game:GetService("UserInputService").InputBegan:Connect(function(input, gp)
-    if gp or not Settings.FireRemote or not ReplicatedStorage.ClientRemotes:FindFirstChild(Settings.FireRemote) then return end
+    if gp or not Settings.FireRemote or not ReplicatedStorage.ClientRemotes:FindFirstChild(Settings.FireRemote) or not eu.Character or not eu.Character:FindFirstChild("SpellBook") then return end
     
     for _, slot in pairs(Settings.Slots) do
       local bind = Enum.KeyCode[slot[2]]
@@ -62,67 +75,24 @@ Tabs.Menu:Input({
     Settings.FireRemote = input
   end
 })
-Tabs.Menu:Section({ Title = "Slot 1" })
-Tabs.Menu:Dropdown({
-  Title = "Selected Spell",
-  Values = Settings.Spells,
-  Value = Settings.Slots[1][1],
-  Callback = function(option)
-    Settings.Slots[1][1] = option
+do
+  Settings.Spells = ReturnSpells()
+  for i = 1, 4 do
+    Tabs.Menu:Section({ Title = "Slot " .. i })
+    Tabs.Menu:Dropdown({
+      Title = "Selected Spell",
+      Values = Settings.Spells,
+      Value = Settings.Slots[i][1],
+      Callback = function(option)
+        Settings.Slots[i][1] = option
+      end
+    })
+    Tabs.Menu:Keybind({
+      Title = "Selected Keybind",
+      Value = Settings.Slots[i][2],
+      Callback = function(v)
+        Settings.Slots[i][2] = v
+      end
+    })
   end
-})
-Tabs.Menu:Keybind({
-  Title = "Selected Keybind",
-  Value = Settings.Slots[1][2],
-  Callback = function(v)
-    Settings.Slots[1][2] = v
-  end
-})
-Tabs.Menu:Section({ Title = "Slot 2" })
-Tabs.Menu:Dropdown({
-  Title = "Selected Spell",
-  Values = Settings.Spells,
-  Value = Settings.Slots[2][1],
-  Callback = function(option)
-    Settings.Slots[2][1] = option
-  end
-})
-Tabs.Menu:Keybind({
-  Title = "Selected Keybind",
-  Value = Settings.Slots[2][2],
-  Callback = function(v)
-    Settings.Slots[2][2] = v
-  end
-})
-Tabs.Menu:Section({ Title = "Slot 3" })
-Tabs.Menu:Dropdown({
-  Title = "Selected Spell",
-  Values = Settings.Spells,
-  Value = Settings.Slots[3][1],
-  Callback = function(option)
-    Settings.Slots[3][1] = option
-  end
-})
-Tabs.Menu:Keybind({
-  Title = "Selected Keybind",
-  Value = Settings.Slots[3][2],
-  Callback = function(v)
-    Settings.Slots[3][2] = v
-  end
-})
-Tabs.Menu:Section({ Title = "Slot 4" })
-Tabs.Menu:Dropdown({
-  Title = "Selected Spell",
-  Values = Settings.Spells,
-  Value = Settings.Slots[4][1],
-  Callback = function(option)
-    Settings.Slots[4][1] = option
-  end
-})
-Tabs.Menu:Keybind({
-  Title = "Selected Keybind",
-  Value = Settings.Slots[4][2],
-  Callback = function(v)
-    Settings.Slots[4][2] = v
-  end
-})
+end
