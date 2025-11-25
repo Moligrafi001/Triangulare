@@ -22,10 +22,11 @@ local Settings = {
 
 -- Functions
 local function ReturnSpells()
-  local Names = {}
+  local Names = { "Trace" }
   
+  local Blacklist = { "Seek" }
   for _, spell in pairs(ReplicatedStorage.SpellUtility:GetChildren()) do
-    if not table.find(Names, spell.Name) then
+    if not table.find(Names, spell.Name) and not table.find(Blacklist, spell.Name) then
       table.insert(Names, spell.Name)
     end
   end
