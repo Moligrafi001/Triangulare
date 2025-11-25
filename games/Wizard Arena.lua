@@ -6,13 +6,13 @@ local Settings = {
   FireRemote = "",
   Slots = {
     {
-      "Fireball", "ButtonSquare"
+      "Fireball", "ButtonX"
     },
     {
-      "Shield", "ButtonTriangle"
+      "Shield", "ButtonY"
     },
     {
-      "Void", "ButtonCircle"
+      "Void", "ButtonB"
     },
     {
       "Rock", "R"
