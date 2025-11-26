@@ -58,6 +58,24 @@ task.spawn(function()
       end
     end
   end)
+  
+  local hooks = {}
+  local IsA = game.IsA
+  hooks.__namecall = hookmetamethod(game, "__namecall", function(self, ...)
+  	local method = getnamecallmethod()
+  
+  	if method == "FireServer" and IsA(self, "RemoteEvent") then
+  		if not table.find({ "OnClient", "OnServer" }, self.Name) then
+  		  local arg1, arg2 = ...
+  		  
+  		  if typeof(arg1) == "string" and typeof(arg2) == "Vector3" then
+  		    Settings.FireRemote = self.Name
+  		  end
+  		end
+  	end
+  
+  	return hooks.__namecall(self, ...)
+  end)
 end)
 
 -- Tabs
@@ -67,15 +85,6 @@ local Tabs = {
 Window:SelectTab(1)
 
 -- Menu
-Tabs.Menu:Section({ Title = "Setup" })
-Tabs.Menu:Input({
-  Title = "Fire Remote",
-  Value = tostring(Settings.FireRemote),
-  Placeholder = "Remote event that fires the spells.",
-  Callback = function(input)
-    Settings.FireRemote = input
-  end
-})
 do
   Settings.Spells = ReturnSpells()
   for i = 1, 4 do
