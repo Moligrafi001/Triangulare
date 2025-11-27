@@ -87,24 +87,22 @@ local Tabs = {
 Window:SelectTab(1)
 
 -- Menu
-do
-  Settings.Spells = ReturnSpells()
-  for i = 1, 4 do
-    Tabs.Menu:Section({ Title = "Slot " .. i })
-    Tabs.Menu:Dropdown({
-      Title = "Selected Spell",
-      Values = Settings.Spells,
-      Value = Settings.Slots[i][1],
-      Callback = function(option)
-        Settings.Slots[i][1] = option
-      end
-    })
-    Tabs.Menu:Keybind({
-      Title = "Selected Keybind",
-      Value = Settings.Slots[i][2],
-      Callback = function(v)
-        Settings.Slots[i][2] = v
-      end
-    })
-  end
+Settings.Spells = ReturnSpells()
+for i = 1, 4 do
+  Tabs.Menu:Section({ Title = "Slot " .. i })
+  Tabs.Menu:Dropdown({
+    Title = "Selected Spell",
+    Values = Settings.Spells,
+    Value = Settings.Slots[i][1],
+    Callback = function(option)
+      Settings.Slots[i][1] = option
+    end
+  })
+  Tabs.Menu:Keybind({
+    Title = "Selected Keybind",
+    Value = Settings.Slots[i][2],
+    Callback = function(v)
+      Settings.Slots[i][2] = v
+    end
+  })
 end
