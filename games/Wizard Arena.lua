@@ -63,19 +63,17 @@ task.spawn(function()
     local hooks = {}
     local IsA = game.IsA
     hooks.__namecall = hookmetamethod(game, "__namecall", function(self, ...)
-    	local method = getnamecallmethod()
-    
-    	if method == "FireServer" and IsA(self, "RemoteEvent") then
-    		if not table.find({ "OnClient", "OnServer" }, self.Name) then
-    		  local arg1, arg2 = ...
-    		  
-    		  if typeof(arg1) == "string" and typeof(arg2) == "Vector3" then
-    		    Settings.FireRemote = self.Name
-    		  end
-    		end
-    	end
-    
-    	return hooks.__namecall(self, ...)
+      local method = getnamecallmethod()
+      
+      if method == "FireServer" and IsA(self, "RemoteEvent") and not table.find({ "OnClient", "OnServer" }, self.Name) then
+        local arg1, arg2 = ...
+        
+        if typeof(arg1) == "string" and typeof(arg2) == "Vector3" then
+          Settings.FireRemote = self.Name
+        end
+      end
+      
+      return hooks.__namecall(self, ...)
     end)
   end)
 end)
