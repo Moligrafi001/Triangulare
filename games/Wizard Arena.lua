@@ -1,6 +1,6 @@
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
-local ReplicatedStorage= game:GetService("ReplicatedStorage")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Settings = {
   Spells = { "Fireball", "Magic Missile", "Rock", "Void", "Shield", "Repair", "Lightning", "Holy Light" },
   FireRemote = "",
