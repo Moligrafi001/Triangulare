@@ -2,7 +2,8 @@
 local eu = game:GetService("Players").LocalPlayer
 local Settings = {
   Selected = "",
-  Typing = false
+  Typing = false,
+  MaxWords = 10
 }
 
 -- Functions
@@ -41,6 +42,8 @@ local function GetWords(letters)
   
   local words = {}
   for i, entry in ipairs(data) do
+    if #words >= Settings.MaxWords then return words end
+    
     local word = entry.word or ""
     if word and not table.find(words, word) then
       table.insert(words, word)
