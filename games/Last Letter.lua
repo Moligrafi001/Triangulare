@@ -107,7 +107,7 @@ Tabs.Menu:Button({
       task.wait(0.1)
     end
     
-    firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Done, "MouseButton1Click")
+    firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Done, MouseButton1Click)
     Settings.Typing = false
   end
 })
