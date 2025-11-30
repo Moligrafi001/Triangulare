@@ -67,7 +67,7 @@ firesignal(img.MouseButton1Click)
 
 -- Tabs
 local Tabs = {
-  Menu = Window:Tab({ Title = "Type", Icon = "keyboard"}),
+  Menu = Window:Tab({ Title = "Auto Type", Icon = "keyboard"}),
   Settings = Window:Tab({ Title = "Settings", Icon = "settings"})
 }
 Window:SelectTab(1)
