@@ -17,7 +17,7 @@ end
 local function GetLetters()
   local table = GetTable()
   if not table then return end
-  local text = Billboard.Gui.Starting.Text
+  local text = table.Billboard.Gui.Starting.Text
   
   return text
 end
