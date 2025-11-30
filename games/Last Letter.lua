@@ -4,25 +4,27 @@ local Settings = {
   Selected = "",
   Typing = false,
   MaxWords = 9,
-  Cache = {}
+  Cache = {},
+  Table = nil,
+  Mode = ""
 }
 
 -- Functions
-local function GetTable()
-  for _, table in pairs(workspace.Tables:GetChildren()) do
-    for _, user in pairs(table:GetChildren()) do
-      if user:IsA("Model") and user.Name == tostring(eu.UserId) then
-        return table
+local function GetLetters()
+  local mesa = Settings.Table
+  if mesa and mesa[eu.UserId] then
+    return mesa.Billboard.Gui.Starting.Text
+  else
+    for _, table in pairs(workspace.Tables:GetChildren()) do
+      for _, user in pairs(table:GetChildren()) do
+        if user:IsA("Model") and user.Name == tostring(eu.UserId) then
+          Settings.Table = table
+          Settings.Mode = table:GetAttribute("Gamemode")
+          return table.Billboard.Gui.Starting.Text
+        end
       end
     end
   end
-end
-local function GetLetters()
-  local table = GetTable()
-  if not table then return end
-  local text = table.Billboard.Gui.Starting.Text
-  
-  return text
 end
 local function PressKey(key)
   for _, group in pairs(eu.PlayerGui.Overbar.Frame.Keyboard:GetChildren()) do
@@ -104,16 +106,21 @@ Tabs.Menu:Button({
     
     if Settings.Selected:lower():sub(1, #letras) ~= letras:lower() then return end
     
-    local faltando = Settings.Selected:sub(#letras + 1)
     
     Settings.Typing = true
-    for letra in faltando:gmatch(".") do
-      PressKey(letra)
-      task.wait(0.1)
+    local faltando = Settings.Selected:sub(#letras + 1)
+    if Settings.Mode == "One By One" then
+      PressKey(faltando:sub(1, 1))
+    elseif Settings.Mode == "Last Letter" then
+      for letra in faltando:gmatch(".") do
+        PressKey(letra)
+        task.wait(0.1)
+      end
+      
+      table.insert(Settings.Cache, Settings.Selected)
     end
     
     firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Done.MouseButton1Click)
-    table.insert(Settings.Cache, Settings.Selected)
     Settings.Typing = false
   end
 })
