@@ -100,5 +100,7 @@ Tabs.Menu:Button({
       PressKey(letra)
       task.wait(0.1)
     end
+    
+    firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Done, MouseButton1Click)
   end
 })
