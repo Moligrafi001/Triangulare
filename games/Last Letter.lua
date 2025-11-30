@@ -1,7 +1,8 @@
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
 local Settings = {
-  Selected = ""
+  Selected = "",
+  Typing = false
 }
 
 -- Functions
@@ -91,16 +92,22 @@ Tabs.Menu:Button({
   Title = "Type selected word",
   Desc = "Types the word you selected.",
   Callback = function()
+    if Settings.Typing then return end
+    
     local letras = GetLetters()
     if not letras then return end
     
+    if Settings.Selected:lower():sub(1, #letras) ~= letras:lower() then return end
+    
     local faltando = Settings.Selected:sub(#letras + 1)
     
+    Settings.Typing = true
     for letra in faltando:gmatch(".") do
       PressKey(letra)
       task.wait(0.1)
     end
     
-    firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Done, MouseButton1Click)
+    firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Done, "MouseButton1Click")
+    Settings.Typing = false
   end
 })
