@@ -45,6 +45,8 @@ local function GetWords(letters)
       table.insert(words, word)
     end
   end
+  
+  return words
 end
 
 --[[
