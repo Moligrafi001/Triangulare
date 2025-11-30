@@ -43,12 +43,12 @@ local function PressKey(key)
     for _, k in pairs(children) do
       if k:IsA("TextButton") and not Settings.Keys[k.Name:lower()] then
         Settings.Keys[k.Name:lower()] = k
-        button = k
+        if k.Name:lower() == key:lower() then
+          firesignal(k.MouseButton1Click)
+        end
       end
     end
   end
-  
-  return firesignal(button.MouseButton1Click)
 end
 local function GetWords(letters)
   local url = "https://api.datamuse.com/words?sp=" .. letters .. "*"
