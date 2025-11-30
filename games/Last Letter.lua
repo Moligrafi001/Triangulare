@@ -98,6 +98,7 @@ Tabs.Menu:Button({
     
     for letra in faltando:gmatch(".") do
       PressKey(letra)
+      task.wait(0.1)
     end
   end
 })
