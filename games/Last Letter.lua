@@ -1,12 +1,18 @@
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
 local Settings = {
-  Selected = "",
   Typing = false,
-  MaxWords = 9,
-  Cache = {},
   Table = nil,
-  Mode = ""
+  Mode = "",
+  Words = {
+    Selected = "",
+    Cache = {},
+    Max = 9,
+  },
+  Keys = {
+    ["a"] = eu.PlayerGui.Overbar.Frame.Keyboard["2"].A,
+    ["done"] = eu.PlayerGui.Overbar.Frame.Keyboard.Done
+  }
 }
 
 -- Functions
@@ -27,16 +33,24 @@ local function GetLetters()
   end
 end
 local function PressKey(key)
+  local button = Settings.Keys[key:lower()]
+  if button then
+    return firesignal(button.MouseButton1Click)
+  end
+  
   for _, group in pairs(eu.PlayerGui.Overbar.Frame.Keyboard:GetChildren()) do
     local children = group:GetChildren()
     if #children >= 3 then
       for _, k in pairs(children) do
-        if k:IsA("TextButton") and k.Name:lower() == key:lower() then
-          return firesignal(k.MouseButton1Click)
+        if k:IsA("TextButton") then
+          Settings.Keys[k:lower()] = k
+          button = k
         end
       end
     end
   end
+  
+  return firesignal(button.MouseButton1Click)
 end
 local function GetWords(letters)
   local url = "https://api.datamuse.com/words?sp=" .. letters .. "*"
@@ -45,10 +59,10 @@ local function GetWords(letters)
   
   local words = {}
   for i, entry in ipairs(data) do
-    if #words >= Settings.MaxWords then return words end
+    if #words >= Settings.Words.Max then return words end
     
     local word = entry.word or ""
-    if word and not word:find(" ") and not word:find("-") and not table.find(words, word) and not table.find(Settings.Cache, word) then
+    if word and not (word:find(" ") or word:find("-")) and not table.find(Settings.Words.Cache, word) then
       table.insert(words, word)
     end
   end
@@ -79,9 +93,9 @@ Tabs.Menu:Section({ Title = "Words" })
 local words = Tabs.Menu:Dropdown({
   Title = "Selected Word",
   Values = {},
-  Value = Settings.Selected,
+  Value = Settings.Words.Selected,
   Callback = function(option)
-    Settings.Selected = option
+    Settings.Words.Selected = option
   end
 })
 Tabs.Menu:Button({
@@ -104,11 +118,11 @@ Tabs.Menu:Button({
     local letras = GetLetters()
     if not letras then return end
     
-    if Settings.Selected:lower():sub(1, #letras) ~= letras:lower() then return end
+    if Settings.Words.Selected:lower():sub(1, #letras) ~= letras:lower() then return end
     
     
     Settings.Typing = true
-    local faltando = Settings.Selected:sub(#letras + 1)
+    local faltando = Settings.Words.Selected:sub(#letras + 1)
     if Settings.Mode == "One By One" then
       PressKey(faltando:sub(1, 1))
     elseif Settings.Mode == "Last Letter" then
@@ -117,10 +131,10 @@ Tabs.Menu:Button({
         task.wait(0.1)
       end
       
-      table.insert(Settings.Cache, Settings.Selected)
+      table.insert(Settings.Words.Cache, Settings.Words.Selected)
     end
     
-    firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Done.MouseButton1Click)
+    PressKey("done")
     Settings.Typing = false
   end
 })
@@ -144,16 +158,16 @@ Tabs.Menu:Button({
 Tabs.Settings:Section({ Title = "Words" })
 Tabs.Settings:Input({
   Title = "Max words",
-  Value = tostring(Settings.MaxWords),
+  Value = tostring(Settings.Words.Max),
   Placeholder = "Numbers only, ex.: 10",
   Callback = function(input)
-    Settings.MaxWords = tonumber(input) or 1
+    Settings.Words.Max = tonumber(input) or 1
   end
 })
 Tabs.Settings:Section({ Title = "Cache" })
 local cached = Tabs.Settings:Dropdown({
   Title = "Cached Words",
-  Values = Settings.Cache,
+  Values = Settings.Words.Cache,
   Value = "",
   Callback = function(option) end
 })
@@ -161,13 +175,13 @@ Tabs.Settings:Button({
   Title = "Refresh List",
   Desc = "Refreshs the list.",
   Callback = function()
-    cached:Refresh(Settings.Cache)
+    cached:Refresh(Settings.Words.Cache)
   end
 })
 Tabs.Settings:Button({
   Title = "Clean cache",
   Desc = "Cleans the used words cache.",
   Callback = function()
-    Settings.Cache = {}
+    Settings.Words.Cache = {}
   end
 })
