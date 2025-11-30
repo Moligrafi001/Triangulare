@@ -3,7 +3,7 @@ local eu = game:GetService("Players").LocalPlayer
 local Settings = {
   Selected = "",
   Typing = false,
-  MaxWords = 10,
+  MaxWords = 9,
   Cache = {}
 }
 
