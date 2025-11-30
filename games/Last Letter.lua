@@ -3,7 +3,8 @@ local eu = game:GetService("Players").LocalPlayer
 local Settings = {
   Selected = "",
   Typing = false,
-  MaxWords = 10
+  MaxWords = 10,
+  Cache = {}
 }
 
 -- Functions
@@ -45,7 +46,7 @@ local function GetWords(letters)
     if #words >= Settings.MaxWords then return words end
     
     local word = entry.word or ""
-    if word and not table.find(words, word) then
+    if word and not word:find(" ") and not word:find("-") and not table.find(words, word) and not table.find(Settings.Cache, word) then
       table.insert(words, word)
     end
   end
@@ -66,7 +67,7 @@ firesignal(img.MouseButton1Click)
 
 -- Tabs
 local Tabs = {
-  Menu = Window:Tab({ Title = "Auto Farm", Icon = "house"})
+  Menu = Window:Tab({ Title = "Main", Icon = "house"})
 }
 Window:SelectTab(1)
 
@@ -92,7 +93,7 @@ Tabs.Menu:Button({
 })
 Tabs.Menu:Section({ Title = "Type" })
 Tabs.Menu:Button({
-  Title = "Type selected word",
+  Title = "Type word",
   Desc = "Types the word you selected.",
   Callback = function()
     if Settings.Typing then return end
@@ -111,6 +112,29 @@ Tabs.Menu:Button({
     end
     
     firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Done.MouseButton1Click)
+    table.insert(Settings.Cache, Settings.Selected)
     Settings.Typing = false
+  end
+})
+Tabs.Menu:Button({
+  Title = "Delete word",
+  Desc = "Deletes the word you typed.",
+  Callback = function()
+    if Settings.Typing then return end
+    
+    local letras = GetLetters()
+    if not letras then return end
+    
+    for letra in letras:gmatch(".") do
+      firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Delete.MouseButton1Click)
+      task.wait(0.05)
+    end
+  end
+})
+Tabs.Menu:Button({
+  Title = "Clean cache",
+  Desc = "Cleans the used words cache.",
+  Callback = function()
+    Settings.Cache = {}
   end
 })
