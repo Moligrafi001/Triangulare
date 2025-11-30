@@ -53,12 +53,12 @@ local function GetWords(letters)
   local words = {}
   local function AddToWords(data)
     for _, entry in ipairs(data) do
-      if #words >= Settings.Words.Max then return end
-      
       local word = entry.word
       if word and not (word:find(" ") or word:find("-")) and not (table.find(Settings.Words.Cache, word) or table.find(words, word)) then
         table.insert(words, word)
       end
+      
+      if #words >= Settings.Words.Max then return end
     end
   end
   local url = "https://api.datamuse.com/words?sp=" .. letters:lower() .. "*"
