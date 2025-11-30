@@ -40,12 +40,10 @@ local function PressKey(key)
   
   for _, group in pairs(eu.PlayerGui.Overbar.Frame.Keyboard:GetChildren()) do
     local children = group:GetChildren()
-    if #children >= 3 then
-      for _, k in pairs(children) do
-        if k:IsA("TextButton") then
-          Settings.Keys[k:lower()] = k
-          button = k
-        end
+    for _, k in pairs(children) do
+      if k:IsA("TextButton") and not Settings.Keys[k.Name:lower()] then
+        Settings.Keys[k.Name:lower()] = k
+        button = k
       end
     end
   end
