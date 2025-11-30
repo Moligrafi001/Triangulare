@@ -12,7 +12,7 @@ local Settings = {
 -- Functions
 local function GetLetters()
   local mesa = Settings.Table
-  if mesa and mesa[eu.UserId] then
+  if mesa and mesa:FindFirstChild(tostring(eu.UserId)) then
     return mesa.Billboard.Gui.Starting.Text
   else
     for _, table in pairs(workspace.Tables:GetChildren()) do
