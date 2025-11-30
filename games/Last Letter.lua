@@ -8,6 +8,7 @@ local Settings = {
     Selected = "",
     Cache = {},
     Max = 9,
+    OnlyX = false
   },
   Keys = {
     ["a"] = eu.PlayerGui.Overbar.Frame.Keyboard["2"].A,
@@ -52,6 +53,11 @@ local function PressKey(key)
 end
 local function GetWords(letters)
   local url = "https://api.datamuse.com/words?sp=" .. letters .. "*"
+  
+  if Settings.Words.OnlyX then
+    url = url .. "x"
+  end
+  
   local response = game:HttpGet(url, true)
   local data = game:GetService("HttpService"):JSONDecode(response)
   
@@ -160,6 +166,14 @@ Tabs.Settings:Input({
   Placeholder = "Numbers only, ex.: 10",
   Callback = function(input)
     Settings.Words.Max = tonumber(input) or 1
+  end
+})
+Tabs.Settings:Toggle({
+  Title = "X only words",
+  Desc = "Sugests only words that ends with X.",
+  Value = false,
+  Callback = function(state)
+    Settings.Words.OnlyX = state
   end
 })
 Tabs.Settings:Section({ Title = "Cache" })
