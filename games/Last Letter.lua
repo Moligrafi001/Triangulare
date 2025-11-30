@@ -150,6 +150,20 @@ Tabs.Settings:Input({
     Settings.MaxWords = tonumber(input) or 1
   end
 })
+Tabs.Settings:Section({ Title = "Cache" })
+local cached = Tabs.Settings:Dropdown({
+  Title = "Cached Words",
+  Values = {},
+  Value = Settings.Cache,
+  Callback = function(option) end
+})
+Tabs.Settings:Button({
+  Title = "Refresh List",
+  Desc = "Refreshs the list.",
+  Callback = function()
+    cached:Refresh(Settings.Cache)
+  end
+})
 Tabs.Settings:Button({
   Title = "Clean cache",
   Desc = "Cleans the used words cache.",
