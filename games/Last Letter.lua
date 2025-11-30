@@ -35,8 +35,8 @@ local function PressKey(key)
 end
 local function GetWords(letters)
   local url = "https://api.datamuse.com/words?sp=" .. letters .. "*"
-  local request = game:HttpGet(url, true)
-  local data = game:GetService("HttpService"):JSONDecode(data)
+  local response = game:HttpGet(url, true)
+  local data = game:GetService("HttpService"):JSONDecode(response)
   
   local words = {}
   for i, entry in ipairs(data) do
