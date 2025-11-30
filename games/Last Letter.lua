@@ -67,7 +67,8 @@ firesignal(img.MouseButton1Click)
 
 -- Tabs
 local Tabs = {
-  Menu = Window:Tab({ Title = "Main", Icon = "house"})
+  Menu = Window:Tab({ Title = "Type", Icon = "keyboard"}),
+  Settings = Window:Tab({ Title = "Settings", Icon = "settings"})
 }
 Window:SelectTab(1)
 
@@ -131,7 +132,18 @@ Tabs.Menu:Button({
     end
   end
 })
-Tabs.Menu:Button({
+
+-- Settings
+Tabs.Settings:Section({ Title = "Words" })
+Tabs.Settings:Input({
+  Title = "Max words",
+  Value = tostring(Settings.MaxWords),
+  Placeholder = "Numbers only, ex.: 10",
+  Callback = function(input)
+    Settings.MaxWords = tonumber(input) or 1
+  end
+})
+Tabs.Settings:Button({
   Title = "Clean cache",
   Desc = "Cleans the used words cache.",
   Callback = function()
