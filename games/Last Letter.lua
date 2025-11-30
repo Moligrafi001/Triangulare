@@ -127,7 +127,7 @@ Tabs.Menu:Button({
     
     for letra in letras:gmatch(".") do
       firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Delete.MouseButton1Click)
-      task.wait(0.05)
+      task.wait(1)
     end
   end
 })
