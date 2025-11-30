@@ -26,7 +26,7 @@ local function PressKey(key)
     local children = group:GetChildren()
     if #children >= 3 then
       for _, k in pairs(children) do
-        if k:IsA("ImageButton") and k.Name:lower() == key:lower() then
+        if k:IsA("TextButton") and k.Name:lower() == key:lower() then
           return firesignal(k.MouseButton1Click)
         end
       end
