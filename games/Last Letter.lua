@@ -53,13 +53,29 @@ local function PressKey(key)
 end
 local function GetWords(letters)
   local url = "https://api.datamuse.com/words?sp=" .. letters .. "*"
+  local data = {}
   
   if Settings.Words.OnlyX then
-    url = url .. "x"
+    local test = url .. "x"
+    local response = game:HttpGet(test, true)
+    data = game:GetService("HttpService"):JSONDecode(response)
   end
   
-  local response = game:HttpGet(url, true)
-  local data = game:GetService("HttpService"):JSONDecode(response)
+  if #data < Settings.Words.Max then
+    local response = game:HttpGet(url, true)
+    if Settings.Words.OnlyX then
+      local extra = game:GetService("HttpService"):JSONDecode(response)
+      for _, entry in ipairs(extra) do
+        if #data < Settings.Words.Max then
+          table.insert(data, {
+            word = entry.word
+          })
+        end
+      end
+    else
+      data = game:GetService("HttpService"):JSONDecode(response)
+    end
+  end
   
   local words = {}
   for i, entry in ipairs(data) do
@@ -170,7 +186,7 @@ Tabs.Settings:Input({
 })
 Tabs.Settings:Toggle({
   Title = "X only words",
-  Desc = "Sugests only words that ends with X.",
+  Desc = "Sugests most words that ends with X.",
   Value = false,
   Callback = function(state)
     Settings.Words.OnlyX = state
