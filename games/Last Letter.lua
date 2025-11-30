@@ -154,7 +154,7 @@ Tabs.Settings:Section({ Title = "Cache" })
 local cached = Tabs.Settings:Dropdown({
   Title = "Cached Words",
   Values = {},
-  Value = Settings.Cache,
+  Value = "",
   Callback = function(option) end
 })
 Tabs.Settings:Button({
