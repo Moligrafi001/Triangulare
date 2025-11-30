@@ -14,14 +14,14 @@ local function GetLetters()
   local mesa = Settings.Table
   if mesa and mesa:FindFirstChild(tostring(eu.UserId)) then
     return mesa.Billboard.Gui.Starting.Text
-  else
-    for _, table in pairs(workspace.Tables:GetChildren()) do
-      for _, user in pairs(table:GetChildren()) do
-        if user:IsA("Model") and user.Name == tostring(eu.UserId) then
-          Settings.Table = table
-          Settings.Mode = table:GetAttribute("Gamemode")
-          return table.Billboard.Gui.Starting.Text
-        end
+  end
+  
+  for _, table in pairs(workspace.Tables:GetChildren()) do
+    for _, user in pairs(table:GetChildren()) do
+      if user:IsA("Model") and user.Name == tostring(eu.UserId) then
+        Settings.Table = table
+        Settings.Mode = table:GetAttribute("Gamemode")
+        return table.Billboard.Gui.Starting.Text
       end
     end
   end
