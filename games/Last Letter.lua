@@ -24,12 +24,10 @@ local function GetLetters()
   end
   
   for _, table in pairs(workspace.Tables:GetChildren()) do
-    for _, user in pairs(table:GetChildren()) do
-      if user:IsA("Model") and user.Name == tostring(eu.UserId) then
-        Settings.Table = table
-        Settings.Mode = table:GetAttribute("Gamemode")
-        return table.Billboard.Gui.Starting.Text
-      end
+    if table:FindFirstChild(tostring(eu.UserId)) then
+      Settings.Table = table
+      Settings.Mode = table:GetAttribute("Gamemode")
+      return table.Billboard.Gui.Starting.Text
     end
   end
 end
@@ -52,39 +50,29 @@ local function PressKey(key)
   end
 end
 local function GetWords(letters)
-  local url = "https://api.datamuse.com/words?sp=" .. letters .. "*"
-  local data = {}
+  local words = {}
+  local function AddToWords(data)
+    for _, entry in ipairs(data) do
+      if #words >= Settings.Words.Max then return end
+      
+      local word = entry.word
+      if word and not (word:find(" ") or word:find("-")) and not (table.find(Settings.Words.Cache, word) or table.find(words, word)) then
+        table.insert(words, word)
+      end
+    end
+  end
+  local url = "https://api.datamuse.com/words?sp=" .. letters:lower() .. "*"
   
   if Settings.Words.OnlyX then
-    local test = url .. "x"
-    local response = game:HttpGet(test, true)
-    data = game:GetService("HttpService"):JSONDecode(response)
-  end
-  
-  if #data < Settings.Words.Max then
-    local response = game:HttpGet(url, true)
-    if Settings.Words.OnlyX then
-      local extra = game:GetService("HttpService"):JSONDecode(response)
-      for _, entry in ipairs(extra) do
-        if #data < Settings.Words.Max then
-          table.insert(data, {
-            word = entry.word
-          })
-        end
-      end
-    else
-      data = game:GetService("HttpService"):JSONDecode(response)
-    end
-  end
-  
-  local words = {}
-  for i, entry in ipairs(data) do
-    if #words >= Settings.Words.Max then return words end
+    local data = game:GetService("HttpService"):JSONDecode(game:HttpGet(url .. "x", true))
     
-    local word = entry.word or ""
-    if word and not (word:find(" ") or word:find("-")) and not table.find(Settings.Words.Cache, word) then
-      table.insert(words, word)
-    end
+    if #data > 0 then AddToWords(data) end
+  end
+  
+  if #words < Settings.Words.Max then
+    local data = game:GetService("HttpService"):JSONDecode(game:HttpGet(url, true))
+    
+    if #data > 0 then AddToWords(data) end
   end
   
   return words
