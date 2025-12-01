@@ -209,7 +209,7 @@ Tabs.Cache:Button({
   Desc = "Blacklists the selected word.",
   Callback = function()
     if not table.find(Settings.Words.Blacklist, Settings.Words.ToBlacklist) then
-      table.insert(Settings.Words.Blacklist, Settings.Words.ToBlacklist
+      table.insert(Settings.Words.Blacklist, Settings.Words.ToBlacklist)
     end
   end
 })
