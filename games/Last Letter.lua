@@ -6,9 +6,13 @@ local Settings = {
   Mode = "",
   Words = {
     Selected = "",
-    Cache = {},
-    Max = 9,
     OnlyX = false
+    Max = 9,
+    -- Ignore List
+    ToBlacklist = ""
+    ToUnblacklist = ""
+    Blacklist = {},
+    Cache = {},
   },
   Keys = {
     ["a"] = eu.PlayerGui.Overbar.Frame.Keyboard["2"].A,
@@ -54,7 +58,7 @@ local function GetWords(letters)
   local function AddToWords(data)
     for _, entry in ipairs(data) do
       local word = entry.word
-      if word and not (word:find(" ") or word:find("-")) and not (table.find(Settings.Words.Cache, word) or table.find(words, word)) then
+      if word and not (word:find(" ") or word:find("-")) and not (table.find(Settings.Words.Cache, word) or table.find(Settings.Words.Blacklist, word) or table.find(words, word)) then
         table.insert(words, word)
       end
       
@@ -92,7 +96,9 @@ firesignal(img.MouseButton1Click)
 -- Tabs
 local Tabs = {
   Menu = Window:Tab({ Title = "Auto Type", Icon = "keyboard"}),
-  Settings = Window:Tab({ Title = "Settings", Icon = "settings"})
+  Blacklist = Window:Tab({ Title = "Blacklist", Icon = "settings"})
+  Cache = Window:Tab({ Title = "Cache", Icon = "database"}),
+  Settings = Window:Tab({ Title = "Settings", Icon = "settings"}),
 }
 Window:SelectTab(1)
 
@@ -180,24 +186,65 @@ Tabs.Settings:Toggle({
     Settings.Words.OnlyX = state
   end
 })
-Tabs.Settings:Section({ Title = "Cache" })
-local cached = Tabs.Settings:Dropdown({
+
+-- Cache
+Tabs.Cache:Section({ Title = "Cache" })
+local cached = Tabs.Cache:Dropdown({
   Title = "Cached Words",
   Values = Settings.Words.Cache,
   Value = "",
-  Callback = function(option) end
+  Callback = function(option)
+    Settings.Words.ToBlacklist = option
+  end
 })
-Tabs.Settings:Button({
+Tabs.Cache:Button({
   Title = "Refresh List",
   Desc = "Refreshs the list.",
   Callback = function()
     cached:Refresh(Settings.Words.Cache)
   end
 })
-Tabs.Settings:Button({
+Tabs.Cache:Button({
+  Title = "Blacklist Word",
+  Desc = "Blacklists the selected word.",
+  Callback = function()
+    if not table.find(Settings.Words.Blacklist, Settings.Words.ToBlacklist) then
+      table.insert(Settings.Words.Blacklist, Settings.Words.ToBlacklist
+    end
+  end
+})
+Tabs.Cache:Button({
   Title = "Clean cache",
   Desc = "Cleans the used words cache.",
   Callback = function()
     Settings.Words.Cache = {}
+  end
+})
+
+-- Blacklist
+Tabs.Blacklist:Section({ Title = "Blacklist" })
+local blacklisted = Tabs.Blacklist:Dropdown({
+  Title = "Blacklisted Words",
+  Values = Settings.Words.Blacklist,
+  Value = "",
+  Callback = function(option)
+    Settings.Words.ToUnblacklist = option
+  end
+})
+Tabs.Blacklist:Button({
+  Title = "Refresh List",
+  Desc = "Refreshs the list.",
+  Callback = function()
+    blacklisted:Refresh(Settings.Words.Blacklist)
+  end
+})
+Tabs.Blacklist:Button({
+  Title = "Remove from List",
+  Desc = "Removes the selected word from the list.",
+  Callback = function()
+    local i = table.find(Settings.Words.Blacklist, Settings.Words.ToUnblacklist)
+    if i then
+      table.remove(Settings.Words.Blacklist, i)
+    end
   end
 })
