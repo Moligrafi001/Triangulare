@@ -58,7 +58,7 @@ local function GetWords(letters)
   local function AddToWords(data)
     for _, entry in ipairs(data) do
       local word = entry.word
-      if word and not (word:find(" ") or word:find("-")) and not (table.find(Settings.Words.Cache, word) or table.find(Settings.Words.Blacklist, word) or table.find(words, word)) then
+      if word and not (word:find(" ") or word:find("-") or word:find("'")) and not (table.find(Settings.Words.Cache, word) or table.find(Settings.Words.Blacklist, word) or table.find(words, word)) then
         table.insert(words, word)
       end
       
