@@ -96,7 +96,7 @@ firesignal(img.MouseButton1Click)
 -- Tabs
 local Tabs = {
   Menu = Window:Tab({ Title = "Auto Type", Icon = "keyboard"}),
-  Blacklist = Window:Tab({ Title = "Blacklist", Icon = "settings"})
+  Blacklist = Window:Tab({ Title = "Blacklist", Icon = "settings"}),
   Cache = Window:Tab({ Title = "Cache", Icon = "database"}),
   Settings = Window:Tab({ Title = "Settings", Icon = "settings"}),
 }
