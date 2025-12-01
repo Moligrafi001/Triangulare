@@ -188,7 +188,7 @@ Tabs.Settings:Toggle({
 })
 
 -- Cache
-Tabs.Cache:Section({ Title = "Cache" })
+Tabs.Cache:Section({ Title = "List" })
 local cached = Tabs.Cache:Dropdown({
   Title = "Cached Words",
   Values = Settings.Words.Cache,
@@ -204,6 +204,7 @@ Tabs.Cache:Button({
     cached:Refresh(Settings.Words.Cache)
   end
 })
+Tabs.Cache:Section({ Title = "Action" })
 Tabs.Cache:Button({
   Title = "Blacklist Word",
   Desc = "Blacklists the selected word.",
@@ -222,7 +223,7 @@ Tabs.Cache:Button({
 })
 
 -- Blacklist
-Tabs.Blacklist:Section({ Title = "Blacklist" })
+Tabs.Blacklist:Section({ Title = "List" })
 local blacklisted = Tabs.Blacklist:Dropdown({
   Title = "Blacklisted Words",
   Values = Settings.Words.Blacklist,
@@ -238,6 +239,7 @@ Tabs.Blacklist:Button({
     blacklisted:Refresh(Settings.Words.Blacklist)
   end
 })
+Tabs.Blacklist:Section({ Title = "Action" })
 Tabs.Blacklist:Button({
   Title = "Remove from List",
   Desc = "Removes the selected word from the list.",
