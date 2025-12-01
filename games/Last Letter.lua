@@ -11,7 +11,7 @@ local Settings = {
     -- Ignore List
     ToBlacklist = "",
     ToUnblacklist = "",
-    Blacklist = { "horcrux", "seeland", "seelie", "grawlix", "erx", "erbitux", "erymax", "boxx", "isocortex", "isx", "amoureux", "itx", "yux", "yandex", "urbex", "urox", "endocervix", "noncomplex", "xxx", "ianthe", "iand", "atex", "endoclimax", "entonox", "wessex", "skybox", "opex", "icex", "gedex", "kendrix", "axx", "etx", "yax", "anex", "edx", "edex", "edax", "editrix", "edronax", "ygx", "ymx", "xanax", "xx", "xxxx", "xenix", "xfx", "xox", "xfx", "xilinx", "xanadu" },
+    Blacklist = { "horcrux", "seeland", "seelie", "grawlix", "erx", "erbitux", "erymax", "boxx", "isocortex", "isx", "amoureux", "itx", "yux", "yandex", "urbex", "urox", "endocervix", "noncomplex", "xxx", "ianthe", "iand", "atex", "endoclimax", "entonox", "wessex", "skybox", "opex", "icex", "gedex", "kendrix", "axx", "etx", "yax", "anex", "edx", "edex", "edax", "editrix", "edronax", "ygx", "ymx", "xanax", "xx", "xxxx", "xenix", "xfx", "xox", "xfx", "xilinx", "xanadu", "yunx", "acex", "selex", "upx", "sonex" },
     Cache = {},
   },
   Keys = {
