@@ -6,11 +6,11 @@ local Settings = {
   Mode = "",
   Words = {
     Selected = "",
-    OnlyX = false
+    OnlyX = false,
     Max = 9,
     -- Ignore List
-    ToBlacklist = ""
-    ToUnblacklist = ""
+    ToBlacklist = "",
+    ToUnblacklist = "",
     Blacklist = {},
     Cache = {},
   },
