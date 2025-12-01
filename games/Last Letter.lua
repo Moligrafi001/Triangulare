@@ -11,7 +11,7 @@ local Settings = {
     -- Ignore List
     ToBlacklist = "",
     ToUnblacklist = "",
-    Blacklist = {},
+    Blacklist = { "horcrux", "seeland", "seelie", "grawlix", "erx", "erbitux", "erymax", "boxx" },
     Cache = {},
   },
   Keys = {
