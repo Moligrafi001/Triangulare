@@ -54,7 +54,9 @@ local function PressKey(key)
     end
   end
 end
-local function GetWords(letters)
+local function GetWords(letters, max)
+  local MaxWords = max or Settings.Words.Max
+  
   local words = {}
   local function AddToWords(data)
     for _, entry in ipairs(data) do
@@ -63,7 +65,7 @@ local function GetWords(letters)
         table.insert(words, word)
       end
       
-      if #words >= Settings.Words.Max then return end
+      if #words >= MaxWords then return end
     end
   end
   local url = "https://api.datamuse.com/words?sp=" .. letters:lower() .. "*"
@@ -74,7 +76,7 @@ local function GetWords(letters)
     if #data > 0 then AddToWords(data) end
   end
   
-  if #words < Settings.Words.Max then
+  if #words < MaxWords then
     local data = game:GetService("HttpService"):JSONDecode(game:HttpGet(url, true))
     
     if #data > 0 then AddToWords(data) end
@@ -166,6 +168,39 @@ Tabs.Menu:Button({
       firesignal(button.MouseButton1Down)
       firesignal(button.MouseButton1Up)
     end
+  end
+})
+Tabs.Menu:Section({ Title = "Beta" })
+Tabs.Menu:Button({
+  Title = "Auto type",
+  Desc = "Automatically types a word.",
+  Callback = function()
+    if Settings.Typing then return end
+    
+    local letras = GetLetters()
+    if not letras then return end
+    
+    local WordsArray = GetWords(letras, 1)
+    if not WordsArray then return end
+    local SelectedWord = WordsArray[1]
+    
+    if SelectedWord:lower():sub(1, #letras) ~= letras:lower() then return end
+    
+    Settings.Typing = true
+    local faltando = SelectedWord:sub(#letras + 1)
+    if Settings.Mode == "One By One" then
+      PressKey(faltando:sub(1, 1))
+    elseif Settings.Mode == "Last Letter" then
+      for letra in faltando:gmatch(".") do
+        PressKey(letra)
+        task.wait(0.1)
+      end
+      
+      table.insert(Settings.Words.Cache, SelectedWord)
+    end
+    
+    PressKey("done")
+    Settings.Typing = false
   end
 })
 
