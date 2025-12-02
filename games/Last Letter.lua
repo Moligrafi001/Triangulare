@@ -193,7 +193,7 @@ Tabs.Menu:Button({
   end
 })
 Tabs.Menu:Button({
-  Title = "Suggest words",
+  Title = "Suggest word",
   Desc = "Suggests a word in the chat.",
   Callback = function()
     if Settings.Typing then return end
