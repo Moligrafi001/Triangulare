@@ -134,7 +134,6 @@ Tabs.Menu:Button({
     
     if Settings.Words.Selected:lower():sub(1, #letras) ~= letras:lower() then return end
     
-    
     Settings.Typing = true
     local faltando = Settings.Words.Selected:sub(#letras + 1)
     if Settings.Mode == "One By One" then
