@@ -161,7 +161,8 @@ Tabs.Menu:Button({
     if not letras then return end
     
     for letra in letras:gmatch(".") do
-      firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Delete.MouseButton1Click)
+      firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Delete.MouseButton1Down)
+      firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Delete.MouseButton1Up)
       task.wait(1)
     end
   end
