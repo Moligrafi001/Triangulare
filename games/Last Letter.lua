@@ -161,8 +161,8 @@ Tabs.Menu:Button({
     local letras = GetLetters()
     if not letras then return end
     
+    local button = Settings.Keys["delete"]
     for letra in letras:gmatch(".") do
-      local button = Settings.Keys["delete"]
       firesignal(button.MouseButton1Down)
       firesignal(button.MouseButton1Up)
     end
