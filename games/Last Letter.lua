@@ -16,7 +16,7 @@ local Settings = {
   },
   Keys = {
     ["a"] = eu.PlayerGui.Overbar.Frame.Keyboard["2"].A,
-    ["done"] = eu.PlayerGui.Overbar.Frame.Keyboard.Done
+    ["done"] = eu.PlayerGui.Overbar.Frame.Keyboard.Done,
     ["delete"] = eu.PlayerGui.Overbar.Frame.Keyboard.Delete
   }
 }
