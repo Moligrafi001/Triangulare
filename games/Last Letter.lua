@@ -85,6 +85,27 @@ local function GetWords(letters, max)
   return words
 end
 
+-- Management
+local function TypeWord(word, letras)
+  if word:lower():sub(1, #letras) ~= letras:lower() then return end
+  
+  Settings.Typing = true
+  local faltando = word:sub(#letras + 1)
+  if Settings.Mode == "One By One" then
+    PressKey(faltando:sub(1, 1))
+  elseif Settings.Mode == "Last Letter" then
+    for letra in faltando:gmatch(".") do
+      PressKey(letra)
+      task.wait(0.1)
+    end
+    
+    table.insert(Settings.Words.Cache, word)
+  end
+  
+  PressKey("done")
+  Settings.Typing = false
+end
+
 --[[
 https://api.datamuse.com/words?sp=es*
 workspace.Tables["2"].Billboard.Gui.Starting
@@ -135,23 +156,7 @@ Tabs.Menu:Button({
     local letras = GetLetters()
     if not letras then return end
     
-    if Settings.Words.Selected:lower():sub(1, #letras) ~= letras:lower() then return end
-    
-    Settings.Typing = true
-    local faltando = Settings.Words.Selected:sub(#letras + 1)
-    if Settings.Mode == "One By One" then
-      PressKey(faltando:sub(1, 1))
-    elseif Settings.Mode == "Last Letter" then
-      for letra in faltando:gmatch(".") do
-        PressKey(letra)
-        task.wait(0.1)
-      end
-      
-      table.insert(Settings.Words.Cache, Settings.Words.Selected)
-    end
-    
-    PressKey("done")
-    Settings.Typing = false
+    TypeWord(Settings.Words.Selected, letras)
   end
 })
 Tabs.Menu:Button({
@@ -184,23 +189,7 @@ Tabs.Menu:Button({
     if not WordsArray then return end
     local SelectedWord = WordsArray[1]
     
-    if SelectedWord:lower():sub(1, #letras) ~= letras:lower() then return end
-    
-    Settings.Typing = true
-    local faltando = SelectedWord:sub(#letras + 1)
-    if Settings.Mode == "One By One" then
-      PressKey(faltando:sub(1, 1))
-    elseif Settings.Mode == "Last Letter" then
-      for letra in faltando:gmatch(".") do
-        PressKey(letra)
-        task.wait(0.1)
-      end
-      
-      table.insert(Settings.Words.Cache, SelectedWord)
-    end
-    
-    PressKey("done")
-    Settings.Typing = false
+    TypeWord(SelectedWord, letras)
   end
 })
 
