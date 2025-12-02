@@ -17,6 +17,7 @@ local Settings = {
   Keys = {
     ["a"] = eu.PlayerGui.Overbar.Frame.Keyboard["2"].A,
     ["done"] = eu.PlayerGui.Overbar.Frame.Keyboard.Done
+    ["delete"] = eu.PlayerGui.Overbar.Frame.Keyboard.Delete
   }
 }
 
@@ -38,7 +39,9 @@ end
 local function PressKey(key)
   local button = Settings.Keys[key:lower()]
   if button then
-    return firesignal(button.MouseButton1Click)
+    firesignal(button.MouseButton1Down)
+    firesignal(button.MouseButton1Up)
+    return
   end
   
   for _, group in pairs(eu.PlayerGui.Overbar.Frame.Keyboard:GetChildren()) do
@@ -47,7 +50,8 @@ local function PressKey(key)
       if k:IsA("TextButton") and not Settings.Keys[k.Name:lower()] then
         Settings.Keys[k.Name:lower()] = k
         if k.Name:lower() == key:lower() then
-          firesignal(k.MouseButton1Click)
+          firesignal(k.MouseButton1Down)
+          firesignal(k.MouseButton1Up)
         end
       end
     end
@@ -161,8 +165,7 @@ Tabs.Menu:Button({
     if not letras then return end
     
     for letra in letras:gmatch(".") do
-      firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Delete.MouseButton1Down)
-      firesignal(eu.PlayerGui.Overbar.Frame.Keyboard.Delete.MouseButton1Up)
+      PressKey("delete")
       task.wait(1)
     end
   end
