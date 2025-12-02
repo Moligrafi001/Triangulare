@@ -192,6 +192,22 @@ Tabs.Menu:Button({
     TypeWord(SelectedWord, letras)
   end
 })
+Tabs.Menu:Button({
+  Title = "Suggest words",
+  Desc = "Suggests a word in the chat.",
+  Callback = function()
+    if Settings.Typing then return end
+    
+    local letras = GetLetters()
+    if not letras then return end
+    
+    local WordsArray = GetWords(letras, 1)
+    if not WordsArray then return end
+    local SelectedWord = WordsArray[1]
+    
+    game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(SelectedWord)
+  end
+})
 
 -- Settings
 Tabs.Settings:Section({ Title = "Words" })
