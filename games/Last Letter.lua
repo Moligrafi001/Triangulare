@@ -187,9 +187,8 @@ Tabs.Menu:Button({
     
     local WordsArray = GetWords(letras, 1)
     if not WordsArray then return end
-    local SelectedWord = WordsArray[1]
     
-    TypeWord(SelectedWord, letras)
+    TypeWord(WordsArray[1], letras)
   end
 })
 Tabs.Menu:Button({
@@ -201,9 +200,8 @@ Tabs.Menu:Button({
     
     local WordsArray = GetWords(letras, 1)
     if not WordsArray then return end
-    local SelectedWord = WordsArray[1]
     
-    game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(SelectedWord)
+    game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(WordsArray[1])
   end
 })
 
