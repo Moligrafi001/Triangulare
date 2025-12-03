@@ -1,3 +1,6 @@
+-- Globals
+getgenv().Autocomplete = false
+
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
 local Settings = {
@@ -105,6 +108,38 @@ local function TypeWord(word, letras)
   PressKey("done")
   Settings.Typing = false
 end
+local function AutoType(letters)
+  if Settings.Typing then return end
+  
+  local letras = letters or GetLetters()
+  if not letras then return end
+  
+  local WordsArray = GetWords(letras, 1)
+  if not WordsArray then return end
+  
+  TypeWord(WordsArray[1], letras)
+end
+
+-- Load
+task.spawn(function()
+  local old
+  old = hookfunction(print, function(...)
+    if not getgenv().Autocomplete then return old(...) end
+    
+    local args = {...}
+    local printed = args[1]
+    
+    if printed and printed == "Word:" then
+      local word = args[2]
+      if word then
+        task.wait(1)
+        AutoType(word)
+      end
+    end
+  
+    return old(...)
+  end)
+end)
 
 --[[
 https://api.datamuse.com/words?sp=es*
@@ -177,18 +212,18 @@ Tabs.Menu:Button({
 })
 Tabs.Menu:Section({ Title = "Beta" })
 Tabs.Menu:Button({
-  Title = "Auto type",
-  Desc = "Automatically types a word.",
+  Title = "Complete Word",
+  Desc = "Completes the word.",
   Callback = function()
-    if Settings.Typing then return end
-    
-    local letras = GetLetters()
-    if not letras then return end
-    
-    local WordsArray = GetWords(letras, 1)
-    if not WordsArray then return end
-    
-    TypeWord(WordsArray[1], letras)
+    AutoType()
+  end
+})
+Tabs.Menu:Toggle({
+  Title = "Autocomplete",
+  Desc = "Automatically completes the word.",
+  Value = false,
+  Callback = function(state)
+    getgenv().Autocomplete = state
   end
 })
 Tabs.Menu:Button({
