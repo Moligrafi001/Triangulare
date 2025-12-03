@@ -26,18 +26,18 @@ local Settings = {
 
 -- Functions
 local function GetLetters()
-    local mesa = Settings.Table
+  local mesa = Settings.Table
 
-    if mesa and mesa:FindFirstChild(tostring(eu.UserId)) then
-      return mesa.Billboard.Gui.Starting.Text
-    end
-
-    local id = eu:GetAttribute("InTable")
-    mesa = id and workspace.Tables:FindFirstChild(tostring(id))
-    if not mesa then return end
-
-    Settings.Table, Settings.Mode = mesa, mesa:GetAttribute("Gamemode")
+  if mesa and mesa:FindFirstChild(tostring(eu.UserId)) then
     return mesa.Billboard.Gui.Starting.Text
+  end
+
+  local id = eu:GetAttribute("InTable")
+  mesa = id and workspace.Tables:FindFirstChild(tostring(id))
+  if not mesa then return end
+
+  Settings.Table, Settings.Mode = mesa, mesa:GetAttribute("Gamemode")
+  return mesa.Billboard.Gui.Starting.Text
 end
 local function PressKey(key)
   local button = Settings.Keys[key:lower()]
@@ -57,7 +57,7 @@ local function PressKey(key)
     end
   end
 end
-local function GetWords(letters, max)
+local function GetWords(letters, max, get)
   local MaxWords = max or Settings.Words.Max
   
   local words = {}
@@ -74,13 +74,13 @@ local function GetWords(letters, max)
   local url = "https://api.datamuse.com/words?sp=" .. letters:lower() .. "*"
   
   if Settings.Words.OnlyX then
-    local data = game:GetService("HttpService"):JSONDecode(game:HttpGet(url .. "x", true))
+    local data = game:GetService("HttpService"):JSONDecode(get and get(game, url .. "x") or game:HttpGet(url .. "x", true))
     
     if #data > 0 then AddToWords(data) end
   end
   
   if #words < MaxWords then
-    local data = game:GetService("HttpService"):JSONDecode(game:HttpGet(url, true))
+    local data = game:GetService("HttpService"):JSONDecode(get and get(game, url) or game:HttpGet(url, true))
     
     if #data > 0 then AddToWords(data) end
   end
@@ -206,6 +206,7 @@ Tabs.Menu:Toggle({
     if not getgenv().Autocompleting then
       getgenv().Autocompleting = true
       local old
+      local HttpGet = game.HttpGet
       old = hookfunction(print, function(...)
         if not getgenv().Autocomplete then return old(...) end
         
@@ -217,7 +218,7 @@ Tabs.Menu:Toggle({
           if word then
             task.spawn(function()
               task.wait(1)
-              AutoType(word)
+              AutoType(word, HttpGet)
             end)
           end
         end
