@@ -132,8 +132,10 @@ task.spawn(function()
     if printed and printed == "Word:" then
       local word = args[2]
       if word then
-        task.wait(1)
-        AutoType(word)
+        task.spawn(function()
+          task.wait(1)
+          AutoType(word)
+        end)
       end
     end
   
