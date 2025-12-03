@@ -202,6 +202,7 @@ Tabs.Menu:Toggle({
   Desc = "Automatically completes the word.",
   Value = false,
   Callback = function(state)
+    getgenv().Autocomplete = state
     if not getgenv().Autocompleting then
       getgenv().Autocompleting = true
       local old
@@ -224,7 +225,6 @@ Tabs.Menu:Toggle({
         return old(...)
       end)
     end
-    getgenv().Autocomplete = state
   end
 })
 Tabs.Menu:Button({
