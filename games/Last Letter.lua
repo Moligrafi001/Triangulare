@@ -120,29 +120,6 @@ local function AutoType(letters)
   TypeWord(WordsArray[1], letras)
 end
 
--- Load
-task.spawn(function()
-  local old
-  old = hookfunction(print, function(...)
-    if not getgenv().Autocomplete then return old(...) end
-    
-    local args = {...}
-    local printed = args[1]
-    
-    if printed and printed == "Word:" then
-      local word = args[2]
-      if word then
-        task.spawn(function()
-          task.wait(1)
-          AutoType(word)
-        end)
-      end
-    end
-  
-    return old(...)
-  end)
-end)
-
 --[[
 https://api.datamuse.com/words?sp=es*
 workspace.Tables["2"].Billboard.Gui.Starting
@@ -225,6 +202,28 @@ Tabs.Menu:Toggle({
   Desc = "Automatically completes the word.",
   Value = false,
   Callback = function(state)
+    if not getgenv().Autocompleting then
+      getgenv().Autocompleting = true
+      local old
+      old = hookfunction(print, function(...)
+        if not getgenv().Autocomplete then return old(...) end
+        
+        local args = {...}
+        local printed = args[1]
+        
+        if printed and printed == "Word:" then
+          local word = args[2]
+          if word then
+            task.spawn(function()
+              task.wait(1)
+              AutoType(word)
+            end)
+          end
+        end
+      
+        return old(...)
+      end)
+    end
     getgenv().Autocomplete = state
   end
 })
