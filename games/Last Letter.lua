@@ -23,18 +23,19 @@ local Settings = {
 
 -- Functions
 local function GetLetters()
-  local mesa = Settings.Table
-  if mesa and mesa:FindFirstChild(tostring(eu.UserId)) then
-    return mesa.Billboard.Gui.Starting.Text
-  end
-  
-  for _, table in pairs(workspace.Tables:GetChildren()) do
-    if table:FindFirstChild(tostring(eu.UserId)) then
-      Settings.Table = table
-      Settings.Mode = table:GetAttribute("Gamemode")
-      return table.Billboard.Gui.Starting.Text
+    local mesa = Settings.Table
+    local uid = tostring(eu.UserId)
+
+    if mesa and mesa:FindFirstChild(uid) then
+      return mesa.Billboard.Gui.Starting.Text
     end
-  end
+
+    local id = eu:GetAttribute("InTable")
+    mesa = id and workspace.Tables:FindFirstChild(tostring(id))
+    if not mesa then return end
+
+    Settings.Table, Settings.Mode = mesa, mesa:GetAttribute("Gamemode")
+    return mesa.Billboard.Gui.Starting.Text
 end
 local function PressKey(key)
   local button = Settings.Keys[key:lower()]
