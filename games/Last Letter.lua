@@ -197,7 +197,7 @@ Tabs.Menu:Button({
     AutoType()
   end
 })
-Tabs.Menu:Toggle({
+--[[Tabs.Menu:Toggle({
   Title = "Autocomplete",
   Desc = "Automatically completes the word.",
   Value = false,
@@ -226,7 +226,7 @@ Tabs.Menu:Toggle({
       end)
     end
   end
-})
+})--]]
 Tabs.Menu:Button({
   Title = "Suggest word",
   Desc = "Suggests a word in the chat.",
