@@ -24,9 +24,8 @@ local Settings = {
 -- Functions
 local function GetLetters()
     local mesa = Settings.Table
-    local uid = tostring(eu.UserId)
 
-    if mesa and mesa:FindFirstChild(uid) then
+    if mesa and mesa:FindFirstChild(tostring(eu.UserId)) then
       return mesa.Billboard.Gui.Starting.Text
     end
 
