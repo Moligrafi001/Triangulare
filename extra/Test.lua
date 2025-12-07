@@ -31,10 +31,10 @@ WindUI.Services.Luache = {
 }
 
 local Window = WindUI:CreateWindow({
-  Title = "Triangulare",
+  Title = "Triangulare | " .. InitializeName,
   Icon = "triangle",
-  Author = "https://luache.squareweb.app/dashboard",
-  Folder = "Luache",
+  Author = "by Moligrafi",
+  Folder = "Triangulare",
   Size = UDim2.fromOffset(580, 400),
   Transparent = true,
   Theme = "Dark",
@@ -45,7 +45,7 @@ local Window = WindUI:CreateWindow({
   HasOutline = true,
 
   KeySystem = {
-    Note = "Your key",
+    Note = "Insert your key, or get one.",
     SaveKey = true,
     API = {
       {
@@ -55,7 +55,18 @@ local Window = WindUI:CreateWindow({
     }
   }
 })
+Window:EditOpenButton({
+  Title = "Triangulare",
+  Draggable = true
+})
 
-print("got ghere")
-
-Luache:Implement("Everything")
+-- Toggle Key
+Window:SetToggleKey(Enum.KeyCode.H)
+if game:GetService("UserInputService").KeyboardEnabled then
+  WindUI:Notify({
+    Title = "We detected your keyboard!",
+    Content = "Use the 'H' key to toggle the window visibility.",
+    Icon = "keyboard",
+    Duration = 7
+  })
+end
