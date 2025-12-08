@@ -123,7 +123,6 @@ if not table.find(Gods, eu.Name) then
   
   Luache:Settings({
     Service = "triangulare",
-    DebugMode = true
   })
 
   Luache:Implement("Everything")
