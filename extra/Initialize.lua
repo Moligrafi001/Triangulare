@@ -1,7 +1,6 @@
 local Luache = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Luache/main/Source/Library.lua"))()
 Luache:Settings({
   Service = "triangulare",
-  DebugMode = true
 })
 
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
