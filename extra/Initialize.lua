@@ -1,14 +1,14 @@
-local Luache = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Luache/main/Source/Library.lua"))()
-Luache:Settings({
-  Service = "triangulare",
-})
-
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 WindUI.Services.Luache = {
   Name = "Luache",
   Icon = "shield",
   Args = {"API"},
   New = function(API)
+    local Luache = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Luache/main/Source/Library.lua"))()
+    Luache:Settings({
+      Service = "triangulare",
+    })
+  
     return {
       Verify = function(key)
         local boolean, message = Luache:Check(key)
