@@ -25,7 +25,7 @@ local SupportedGames = {
   
   -- [DUELS] Murderers VS Sherrifs
   [7219654364] = {"games/DMVS.lua", "[DUELS] Murderers VS Sherrifs"},
-  [7155018773] = {"games/DMVS.lua", "[DUELS] Murderers VS Sherrifs", true},
+  [7155018773] = {"games/DMVS.lua", "[Testing] DMvsS", true},
   
   [7606156849] = {"games/Make a Sprunki Tycoon.lua", "Make a Sprunki Tycoon!"},
   [7118588325] = {"games/Fast Food Simulator.lua", "Fast Food Simulator"}, 
