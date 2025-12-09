@@ -22,7 +22,11 @@ local SupportedGames = {
   [7516718402] = {"games/Noobs Must Die.lua", "Noobs Must Die"},
   [6944270854] = {"games/Rope Battles.lua", "Rope Battles"},
   [7453941040] = {"games/Dangerous Night.lua", "Dangerous Night"},
-  [7219654364] = {"games/DMVS.lua", "[DUELS] Murderers VS Sherrifs", true},
+  
+  -- [DUELS] Murderers VS Sherrifs
+  [7219654364] = {"games/DMVS.lua", "[DUELS] Murderers VS Sherrifs"},
+  [7155018773] = {"games/DMVS.lua", "[DUELS] Murderers VS Sherrifs", true},
+  
   [7606156849] = {"games/Make a Sprunki Tycoon.lua", "Make a Sprunki Tycoon!"},
   [7118588325] = {"games/Fast Food Simulator.lua", "Fast Food Simulator"}, 
   [4931927012] = {"games/Basketball Legends.lua", "Basketball Legends"},
