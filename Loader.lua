@@ -1,5 +1,5 @@
 -- Load Script
-local KeySystem = true
+local KeySystem = false
 local function LoadScript(path, name)
   local Initialize
   if KeySystem then
@@ -129,7 +129,7 @@ else
 end
 
 -- Luache
-if not table.find(Gods, eu.Name) then
+if false and not table.find(Gods, eu.Name) then
   local Luache = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Luache/main/Source/Library.lua"))()
   
   Luache:Settings({
