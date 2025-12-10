@@ -2,11 +2,12 @@ local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/rel
 WindUI.Services.Luache = {
   Name = "Luache",
   Icon = "shield",
-  Args = {"API"},
-  New = function(API)
+  Args = { "Service", "DebugMode" },
+  New = function(Service, DebugMode)
     local Luache = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Luache/main/Source/Library.lua"))()
     Luache:Settings({
-      Service = "triangulare",
+      Service = Service,
+      DebugMode = DebugMode or false
     })
   
     return {
@@ -22,7 +23,7 @@ WindUI.Services.Luache = {
 }
 
 local Window = WindUI:CreateWindow({
-  Title = "Triangulare | " .. InitializeName or "Undefined",
+  Title = "Triangulare | " .. (InitializeName or "Undefined"),
   Icon = "triangle",
   Author = "by Moligrafi",
   Folder = "Triangulare",
@@ -41,7 +42,8 @@ local Window = WindUI:CreateWindow({
     API = {
       {
         Type = "Luache",
-        API = "dunno"
+        Service = "triangulare",
+        DebugMode = false,
       }
     }
   }
