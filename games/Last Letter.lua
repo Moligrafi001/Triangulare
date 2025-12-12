@@ -71,7 +71,7 @@ local function GetWords(letters, max)
       if #words >= MaxWords then return end
     end
   end
-  local url = "https://api.datamuse.com/sug?s=" .. letters:lower() .. "*"
+  local url = "https://api.datamuse.com/words?sp=" .. letters:lower() .. "*"
   
   if Settings.Words.OnlyX then
     local data = game:GetService("HttpService"):JSONDecode(game:HttpGet(url .. "x", true))
