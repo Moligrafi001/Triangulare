@@ -7,7 +7,7 @@ WindUI.Services.Luache = {
     local Luache = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Luache/main/Source/Library.lua"))()
     Luache:Settings({
       Service = Service,
-      DebugMode = DebugMode or false
+      DebugMode = DebugMode or false,
       
       KeySystem = {
         HWIDs = {
