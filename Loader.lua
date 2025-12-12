@@ -129,7 +129,7 @@ else
 end
 
 -- Luache
-if false and not table.find(Gods, eu.Name) then
+if not table.find(Gods, eu.Name) then
   local Luache = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Luache/main/Source/Library.lua"))()
   
   Luache:Settings({
