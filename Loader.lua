@@ -1,5 +1,5 @@
 -- Load Script
-local KeySystem = false
+local KeySystem = true
 local function LoadScript(path, name)
   local Initialize
   if KeySystem then
