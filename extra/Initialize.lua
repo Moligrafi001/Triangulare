@@ -8,6 +8,10 @@ WindUI.Services.Luache = {
     Luache:Settings({
       Service = Service,
       DebugMode = DebugMode or false
+      
+      KeySystem = {
+        HWIDs = { "9e3065db04157b8dd181680ac86b4694e024093b4828b6e9059b280d06becdec" }
+      }
     })
   
     return {
