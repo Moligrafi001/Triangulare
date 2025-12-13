@@ -1,5 +1,5 @@
 -- Load Script
-local KeySystem = false
+local KeySystem = true
 local function LoadScript(path, name)
   local Initialize
   if KeySystem then
@@ -15,7 +15,7 @@ end
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
-local Gods = { "Moligrafi", "VladmirNine" }
+local Gods = {}
 
 -- Supported Games
 local SupportedGames = {
