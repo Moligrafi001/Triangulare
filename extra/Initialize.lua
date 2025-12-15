@@ -12,7 +12,8 @@ WindUI.Services.Luache = {
       KeySystem = {
         HWIDs = {
           "9e3065db04157b8dd181680ac86b4694e024093b4828b6e9059b280d06becdec",
-          "6cbe6b5db55ca1fdc7fecf279bb3d851723d739fb9a25ee48c621603080b5e77"
+          "6cbe6b5db55ca1fdc7fecf279bb3d851723d739fb9a25ee48c621603080b5e77",
+          "4093d4c4cb5b88e0c0e3f359ba1a3dfc33b9378e0519686c74e2658e72c3dd70"
         }
       }
     })
