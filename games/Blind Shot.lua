@@ -8,14 +8,44 @@ local eu = Players.LocalPlayer
 
 -- Functions
 local function RayESP()
-  while getgenv().RayESP and task.wait(1) do
+  while getgenv().RayESP and task.wait(0.1) do
     pcall(function()
       for _, p in pairs(Players:GetPlayers()) do
         if p ~= eu then
           local char = p.Character
-          if char and char:FindFirstChild("")
+          if char and char:FindFirstChild("Skin1") then
+            local clone = char.Skin1:Clone()
+            clone.Name = "Cloned"
+            clone.Enabled = true
+          end
         end
       end
+    end)
+  end
+end
+local function PlayerESP()
+  local function SetESP(state)
+    for _, p in pairs(Players:GetPlayers()) do
+      if p ~= eu then
+        local char = p.Character
+        if char then
+          local luz = char:FindFirstChild("Luz")
+          if state then
+            if luz then
+              if not luz.Enabled then luz.Enabled = state end
+            else
+              
+            end
+          end
+          if not state and luz then
+          end
+        end
+      end
+    end
+   end
+  while getgenv().PlayerESP and task.wait(1) do
+    pcall(function()
+      
     end)
   end
 end
