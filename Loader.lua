@@ -15,7 +15,7 @@ end
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
-local Gods = {}
+local Gods = {"ImNotWeirdHuzxie"}
 
 -- Supported Games
 local SupportedGames = {
@@ -24,7 +24,7 @@ local SupportedGames = {
   [7453941040] = {"games/Dangerous Night.lua", "Dangerous Night"},
   
   -- [DUELS] Murderers VS Sherrifs
-  [7219654364] = {"games/DMVS.lua", "[DUELS] Murderers VS Sherrifs"},
+  [7219654364] = {"games/DMVS.lua", "[DUELS] Murderers VS Sherrifs", true},
   [7155018773] = {"games/DMVS.lua", "[Testing] DMvsS"},
   
   [7606156849] = {"games/Make a Sprunki Tycoon.lua", "Make a Sprunki Tycoon!"},
