@@ -48,6 +48,8 @@ local function SupportedList(type)
     ["Blast Zone"] = 9058310544,
     ["Slasher Blade Loot"] = 99827026339186,
     ["Wizard Arena"] = 136178978872141,
+    ["Last Letter"] = 129866685202296,
+    ["Blind Shot"] = 118614517739521,
   }
   if type == "Names" then
     local Names = {}
