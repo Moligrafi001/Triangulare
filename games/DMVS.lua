@@ -380,6 +380,14 @@ task.spawn(function()
         getgenv().PlayerESP = not getgenv().PlayerESP
         PlayerESP()
       end
+    },
+    {
+      Title = "Teleport",
+      Bind = "ButtonB",
+      Callback = function()
+        local pos = mouse.Hit.Position + Vector3.new(0, 2.5, 0)
+        eu.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
+      end
     }
   }
   
