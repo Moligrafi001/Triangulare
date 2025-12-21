@@ -50,6 +50,7 @@ local function SupportedList(type)
     ["Wizard Arena"] = 136178978872141,
     ["Last Letter"] = 129866685202296,
     ["Blind Shot"] = 118614517739521,
+    ["Flee The Facility"] = 893973440,
   }
   if type == "Names" then
     local Names = {}
