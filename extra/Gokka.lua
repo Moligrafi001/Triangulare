@@ -10,11 +10,7 @@ function Gokka:Connect(obj)
 	assert(type(callback) == "function", "Invalid callback")
 
 	local connections = getgenv().GokkaConnections
-
-	if connections[name] then
-		connections[name]:Disconnect()
-	end
-
+	if connections[name] then connections[name]:Disconnect() end
 	connections[name] = signal:Connect(callback)
 
 	return connections[name]
@@ -33,9 +29,7 @@ end
 function Gokka:DisconnectAll()
 	local connections = getgenv().GokkaConnections
 
-	for _, conn in pairs(connections) do
-		conn:Disconnect()
-	end
+	for _, conn in pairs(connections) do conn:Disconnect() end
 
 	table.clear(connections)
 end
