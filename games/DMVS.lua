@@ -385,6 +385,7 @@ task.spawn(function()
       Title = "Teleport",
       Bind = "ButtonB",
       Callback = function()
+        local mouse = eu:GetMouse()
         local pos = mouse.Hit.Position + Vector3.new(0, 2.5, 0)
         eu.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
       end
