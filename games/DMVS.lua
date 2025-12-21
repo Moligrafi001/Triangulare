@@ -379,12 +379,8 @@ task.spawn(function()
       Title = "Player ESP",
       Bind = "?",
       Callback = function()
-        local success = getgenv().PlayerESP
-        if success then
-          getgenv().PlayerESP = false
-        else
-          getgenv().PlayerESP = true
-        end
+        getgenv().PlayerESP = not getgenv().PlayerESP
+        PlayerESP()
       end
     }
   }
