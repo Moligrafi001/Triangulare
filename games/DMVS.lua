@@ -656,8 +656,9 @@ Tabs.Teleport:Dropdown({
 })
 
 -- Keybinds
+Tabs.Keybinds:Section({ Title = "Keybinds" })
 for _, bind in pairs(Settings.Keybinds) do
-  Tabs.Menu:Keybind({
+  Tabs.Keybinds:Keybind({
     Title = bind.Title,
     Value = bind.Bind,
     Callback = function(v)
