@@ -29,63 +29,7 @@ local Settings = {
     Selected = "Knife Box #1",
     Price = 500
   },
-  SpamSoundCooldown = 0.2,
-  Keybinds = {
-    {
-      Title = "Manual Trigger",
-      Bind = "ButtonX",
-      Callback = function()
-        local function GetAlliesChar(allies)
-          local Allies = {}
-          for _, ally in pairs(allies) do
-            if ally.Character then
-              Allies[#Allies+1] = ally.Character
-            end
-          end
-          return Allies
-        end
-        local Triggerbot = Settings.Triggerbot
-        pcall(function()
-          local Gun = ReturnItem("Gun", "Character")
-            if Gun and workspace.CurrentCamera then
-              local Teams = GetClassOf("Everyone")
-              for _, enemy in pairs(Teams.Enemies) do
-                local char = enemy.Character
-                local root = char and char:FindFirstChild("HumanoidRootPart")
-                if root then
-                  local GunPos = Gun.Handle.Position
-                  local CamPos = workspace.CurrentCamera.CFrame.Position
-                  local rayParams = RaycastParams.new()
-                  rayParams.FilterDescendantsInstances = {eu.Character, unpack(GetAlliesChar(Teams.Allies))}
-                  rayParams.FilterType = Enum.RaycastFilterType.Blacklist
-                  local camResult = workspace:Raycast(CamPos, root.Position - CamPos, rayParams)
-                  local hitResult = workspace:Raycast(GunPos, root.Position - GunPos, rayParams)
-                  if not Triggerbot.Waiting and camResult and camResult.Instance:IsDescendantOf(char) and hitResult and hitResult.Instance:IsDescendantOf(char) then
-                    Gun.fire:FireServer()
-                    Gun.showBeam:FireServer(hitResult.Position, GunPos, Gun.Handle)
-                    Gun.kill:FireServer(enemy, Vector3.new(hitResult.Position))
-                    game:GetService("ReplicatedStorage").LocalBeam:Fire(Gun.Handle, hitResult.Position)
-
-                    Triggerbot.Waiting = true
-                    task.delay(Triggerbot.Cooldown, function()
-                      Triggerbot.Waiting = false
-                    end)
-                  end
-                end
-              end
-            end
-        end)
-      end
-    },
-    {
-      Title = "Kill All",
-      Bind = "ButtonY"
-    },
-    {
-      Title = "Player ESP",
-      Bind = "?"
-    }
-  }
+  SpamSoundCooldown = 0.2
 }
 local HitSize = 5
 local CorInocente = Color3.new(1, 0.5, 0)
@@ -377,6 +321,74 @@ end
 
 -- Load
 task.spawn(function()
+  Settings.Keybinds = {
+    {
+      Title = "Manual Trigger",
+      Bind = "ButtonX",
+      Callback = function()
+        local function GetAlliesChar(allies)
+          local Allies = {}
+          for _, ally in pairs(allies) do
+            if ally.Character then
+              Allies[#Allies+1] = ally.Character
+            end
+          end
+          return Allies
+        end
+        local Triggerbot = Settings.Triggerbot
+        pcall(function()
+          local Gun = ReturnItem("Gun", "Character")
+            if Gun and workspace.CurrentCamera then
+              local Teams = GetClassOf("Everyone")
+              for _, enemy in pairs(Teams.Enemies) do
+                local char = enemy.Character
+                local root = char and char:FindFirstChild("HumanoidRootPart")
+                if root then
+                  local GunPos = Gun.Handle.Position
+                  local CamPos = workspace.CurrentCamera.CFrame.Position
+                  local rayParams = RaycastParams.new()
+                  rayParams.FilterDescendantsInstances = {eu.Character, unpack(GetAlliesChar(Teams.Allies))}
+                  rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+                  local camResult = workspace:Raycast(CamPos, root.Position - CamPos, rayParams)
+                  local hitResult = workspace:Raycast(GunPos, root.Position - GunPos, rayParams)
+                  if not Triggerbot.Waiting and camResult and camResult.Instance:IsDescendantOf(char) and hitResult and hitResult.Instance:IsDescendantOf(char) then
+                    Gun.fire:FireServer()
+                    Gun.showBeam:FireServer(hitResult.Position, GunPos, Gun.Handle)
+                    Gun.kill:FireServer(enemy, Vector3.new(hitResult.Position))
+                    game:GetService("ReplicatedStorage").LocalBeam:Fire(Gun.Handle, hitResult.Position)
+
+                    Triggerbot.Waiting = true
+                    task.delay(Triggerbot.Cooldown, function()
+                      Triggerbot.Waiting = false
+                    end)
+                  end
+                end
+              end
+            end
+        end)
+      end
+    },
+    {
+      Title = "Kill All",
+      Bind = "ButtonY",
+      Callback = function()
+        KillKnife()
+      end
+    },
+    {
+      Title = "Player ESP",
+      Bind = "?",
+      Callback = function()
+        local success = getgenv().PlayerESP
+        if success then
+          getgenv().PlayerESP = false
+        else
+          getgenv().PlayerESP = true
+        end
+      end
+    }
+  }
+  
   local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
   Gokka:DisconnectAll()
   
