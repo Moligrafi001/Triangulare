@@ -3,9 +3,9 @@ local Gokka = {}
 getgenv().GokkaConnections = getgenv().GokkaConnections or {}
 
 function Gokka:Connect(name, signal, callback)
-	assert(type(name) == "string", "Name inválido")
-	assert(typeof(signal) == "RBXScriptSignal", "Signal inválido")
-	assert(type(callback) == "function", "Callback inválido")
+	assert(type(name) == "string", "Invalid name")
+	assert(typeof(signal) == "RBXScriptSignal", "Invalid signal")
+	assert(type(callback) == "function", "Invalid callback")
 
 	local connections = getgenv().GokkaConnections
 
