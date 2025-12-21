@@ -378,7 +378,7 @@ end
 -- Load
 task.spawn(function()
   local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
-  Gokka:DisconectAll()
+  Gokka:DisconnectAll()
   
   Gokka:Connect({
     Name = "Keybinds",
