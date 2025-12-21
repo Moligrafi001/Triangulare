@@ -325,7 +325,8 @@ local Tabs = {
   Gun = Window:Tab({ Title = "Gun", Icon = "skull"}),
   Knife = Window:Tab({ Title = "Knife", Icon = "sword"}),
   Boxes = Window:Tab({ Title = "Boxes", Icon = "box"}),
-  Teleport = Window:Tab({ Title = "Teleport", Icon = "shell"})
+  Teleport = Window:Tab({ Title = "Teleport", Icon = "shell"}),
+  Keybinds = Window:Tab({ Title = "Keybinds", Icon = "keyboard"}),
 }
 Window:SelectTab(1)
 
@@ -575,3 +576,5 @@ Tabs.Teleport:Dropdown({
     Settings.Teleport.Mode = option
   end
 })
+
+-- Keybinds
