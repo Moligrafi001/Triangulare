@@ -377,7 +377,7 @@ task.spawn(function()
     },
     {
       Title = "Player ESP",
-      Bind = "?",
+      Bind = "J",
       Callback = function()
         getgenv().PlayerESP = not getgenv().PlayerESP
         PlayerESP()
