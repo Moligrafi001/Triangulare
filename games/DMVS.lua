@@ -371,9 +371,7 @@ task.spawn(function()
     {
       Title = "Kill All",
       Bind = "ButtonY",
-      Callback = function()
-        KillKnife()
-      end
+      Callback = KillKnife
     },
     {
       Title = "Player ESP",
