@@ -406,7 +406,9 @@ task.spawn(function()
       Callback = function()
         local mouse = eu:GetMouse()
         local pos = mouse.Hit.Position + Vector3.new(0, 2.5, 0)
-        eu.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
+        eu.Character.HumanoidRootPart.CFrame.X = pos.X
+        eu.Character.HumanoidRootPart.CFrame.Y = pos.Y
+        eu.Character.HumanoidRootPart.CFrame.Z = pos.Z
         PlaySound(2428506580)
       end
     }
