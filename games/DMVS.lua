@@ -321,6 +321,21 @@ end
 
 -- Load
 task.spawn(function()
+  local function PlaySound(id)
+    task.spawn(function()
+    	local s = Instance.new("Sound")
+    	s.Parent = workspace.CurrentCamera
+    	s.Volume = 1
+    	s.Looped = false
+    	s.SoundId = "rbxassetid://" .. id
+    	
+    	s:Play()
+    	s.Ended:Wait()
+    	
+    	s:Destroy()
+    end)
+  end
+
   Settings.Keybinds = {
     {
       Title = "Manual Trigger",
@@ -355,6 +370,7 @@ task.spawn(function()
                     Gun.fire:FireServer()
                     Gun.showBeam:FireServer(hitResult.Position, GunPos, Gun.Handle)
                     Gun.kill:FireServer(enemy, Vector3.new(hitResult.Position))
+                    PlaySound(8561500387)
                     game:GetService("ReplicatedStorage").LocalBeam:Fire(Gun.Handle, hitResult.Position)
 
                     Triggerbot.Waiting = true
@@ -371,7 +387,10 @@ task.spawn(function()
     {
       Title = "Kill All",
       Bind = "ButtonY",
-      Callback = KillKnife
+      Callback = function()
+        KillKnife()
+        PlaySound(18694762392)
+      end
     },
     {
       Title = "Player ESP",
@@ -388,6 +407,7 @@ task.spawn(function()
         local mouse = eu:GetMouse()
         local pos = mouse.Hit.Position + Vector3.new(0, 2.5, 0)
         eu.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
+        PlaySound(2428506580)
       end
     }
   }
