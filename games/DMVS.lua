@@ -11,8 +11,11 @@ getgenv().EquipKnife = false
 getgenv().AutoTPe = false
 getgenv().AutoBuy = false
 
+-- Services
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 -- Locals
-local eu = game:GetService("Players").LocalPlayer
+local eu = Players.LocalPlayer
 local Settings = {
   Triggerbot = {
     Cooldown = 3,
@@ -29,6 +32,7 @@ local Settings = {
     Selected = "Knife Box #1",
     Price = 500
   },
+  SFX = false,
   SpamSoundCooldown = 0.2
 }
 local HitSize = 5
@@ -37,7 +41,7 @@ local CorInocente = Color3.new(1, 0.5, 0)
 -- Almost
 local function GetClassOf(class)
   local Objects = { Allies = {}, Enemies = {} }
-  for _, p in pairs(game:GetService("Players"):GetPlayers()) do
+  for _, p in pairs(Players:GetPlayers()) do
     if p ~= eu and p:GetAttribute("Game") == eu:GetAttribute("Game") then
       if (class == "Enemies" or class == "Everyone") and p:GetAttribute("Team") ~= eu:GetAttribute("Team") then
         Objects.Enemies[#Objects.Enemies+1] = p
@@ -63,7 +67,6 @@ local function ReturnItem(class, where)
         return item
       end
     end
-    return false
   end
   if where then
     for _, item in pairs(eu[where]:GetChildren()) do
@@ -80,18 +83,92 @@ local function ReturnItem(class, where)
       if checked then return checked end
     end
   end
-  return false
 end
+local function PlaySound(id)
+  task.spawn(function()
+  	local s = Instance.new("Sound")
+  	s.Parent = workspace.CurrentCamera
+  	s.Volume = 1
+  	s.Looped = false
+  	s.SoundId = "rbxassetid://" .. id
+  	
+  	s:Play()
+  	s.Ended:Wait()
+  	
+  	s:Destroy()
+  end)
+end
+-- Triggerbot
+local function ScanEnemies(from)
+  local EnemiesInSight = {}
+  if not workspace.CurrentCamera then return EnemiesInSight end
+  
+  local function GetAlliesChar(allies)
+    local Allies = {}
+    
+    for _, ally in pairs(allies) do
+      if ally.Character then table.insert(Allies, ally.Character) end
+    end
+    
+    return Allies
+  end
+  
+  local Teams = GetClassOf("Everyone")
+  for _, enemy in pairs(Teams.Enemies) do
+      local char = enemy.Character
+      local root = char and char:FindFirstChild("HumanoidRootPart")
+      if not root then continue end
 
--- Functions
-local function EquipKnife()
-  while getgenv().EquipKnife and task.wait(0.25) do
+      local CamPos = workspace.CurrentCamera.CFrame.Position
+      local rayParams = RaycastParams.new()
+      rayParams.FilterDescendantsInstances = {eu.Character, unpack(GetAlliesChar(Teams.Allies))}
+      rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+      local camResult = workspace:Raycast(CamPos, root.Position - CamPos, rayParams)
+      if not (camResult and camResult.Instance:IsDescendantOf(char)) then continue end
+      
+      local hitResult = workspace:Raycast(from, root.Position - from, rayParams)
+      if not (hitResult and hitResult.Instance:IsDescendantOf(char)) then continue end
+      
+      EnemiesInSight[enemy.Name] = {
+        Enemy = enemy,
+        Character = char,
+        HitPosition = hitResult.Position
+      }
+    end
+
+  return EnemiesInSight
+end
+local function Trigger()
+  local Triggerbot = Settings.Triggerbot
+  if not Triggerbot.Waiting then
     pcall(function()
-      local Knife = ReturnItem("Knife", "Backpack")
-      if Knife then Knife.Parent = eu.Character end
+      local Gun = ReturnItem("Gun", "Character")
+      if not Gun then return end
+      
+      local gunPos = Gun.Handle.Position
+      local EnemiesInSight = ScanEnemies(gunPos)
+      
+      for _, info in pairs(EnemiesInSight) do
+        local hitPos = info.HitPosition
+        local enemyObj = info.Enemy
+        
+        Gun.fire:FireServer()
+        Gun.showBeam:FireServer(hitPos, gunPos, Gun.Handle)
+        Gun.kill:FireServer(enemyObj, Vector3.new(hitPos))
+        if Settings.SFX then PlaySound(8561500387) end
+        ReplicatedStorage.LocalBeam:Fire(Gun.Handle, hitPos)
+        
+        -- Cooldown
+        Triggerbot.Waiting = true
+        task.delay(Triggerbot.Cooldown, function() Triggerbot.Waiting = false end)
+        break
+      end
     end)
   end
 end
+
+-- Functions
 local function KillGun()
   pcall(function()
     local Gun = ReturnItem("Gun", "Character")
@@ -106,54 +183,6 @@ local function KillGun()
       end)
     end
   end)
-end
-local function KillKnife()
-  for _, enemy in pairs(GetClassOf("Enemies")) do
-    game:GetService("ReplicatedStorage").KnifeKill:FireServer(enemy, enemy)
-  end
-end
-local function AutoGun()
-  while getgenv().AutoGun and task.wait(1) do
-    KillGun()
-  end
-end
-local function AutoKnife()
-  while getgenv().AutoKnife and task.wait(0.1) do
-    KillKnife()
-  end
-end
-local function PullGun()
-  while getgenv().PullGun and task.wait(0.25) do
-    pcall(function()
-      local Gun = ReturnItem("Gun", "Backpack")
-      if Gun then Gun.Parent = eu.Character end
-    end)
-  end
-end
-local function HitBox()
-  while getgenv().HitBox and wait(1) do
-    pcall(function()
-      for _, enemy in pairs(GetClassOf("Enemies")) do
-        local char = enemy.Character
-        local root = char and char:FindFirstChild("HumanoidRootPart")
-        local finSize = Vector3.new(HitSize, HitSize, HitSize)
-        if root and (root.Size ~= finSize or root.Transparency ~= 0.6) then
-          root.Size = finSize
-          root.Transparency = 0.6
-        end
-      end
-    end)
-  end
-  if not getgenv().HitBox then
-    for _, enemy in pairs(GetClassOf("Enemies")) do
-      local char = enemy.Character
-      local root = char and char:FindFirstChild("HumanoidRootPart")
-      if root then 
-        root.Size = Vector3.new(2, 2, 1)
-        root.Transparency = 1 
-      end
-    end
-  end
 end
 local function PlayerESP()
 	while getgenv().PlayerESP and wait(0.33) do
@@ -192,78 +221,33 @@ local function PlayerESP()
 		end
 	end
 end
-local function GunSound()
-  while getgenv().GunSound and task.wait(Settings.SpamSoundCooldown) do
-    pcall(function()
-      local Gun = ReturnItem("Gun", "Character")
-      if Gun then Gun.fire:FireServer() end
-    end)
+-- Knife
+local function KillKnife()
+  local Enemies = GetClassOf("Enemies")
+  if #Enemies < 1 then return false end
+  
+  for _, enemy in pairs(Enemies) do
+    ReplicatedStorage.KnifeKill:FireServer(enemy, enemy)
   end
+  return true
 end
-local function Triggerbot()
-  local function GetAlliesChar(allies)
-    local Allies = {}
-    for _, ally in pairs(allies) do
-      if ally.Character then
-        Allies[#Allies+1] = ally.Character
-      end
-    end
-    return Allies
-  end
-  local Triggerbot = Settings.Triggerbot
-  while getgenv().Triggerbot and task.wait(0.01) do
-    pcall(function()
-      local Gun = ReturnItem("Gun", "Character")
-      if Gun and workspace.CurrentCamera then
-        local Teams = GetClassOf("Everyone")
-        for _, enemy in pairs(Teams.Enemies) do
-          local char = enemy.Character
-          local root = char and char:FindFirstChild("HumanoidRootPart")
-          if root then
-            local GunPos = Gun.Handle.Position
-            local CamPos = workspace.CurrentCamera.CFrame.Position
-            local rayParams = RaycastParams.new()
-            rayParams.FilterDescendantsInstances = {eu.Character, unpack(GetAlliesChar(Teams.Allies))}
-            rayParams.FilterType = Enum.RaycastFilterType.Blacklist
-            local camResult = workspace:Raycast(CamPos, root.Position - CamPos, rayParams)
-            local hitResult = workspace:Raycast(GunPos, root.Position - GunPos, rayParams)
-            if not Triggerbot.Waiting and camResult and camResult.Instance:IsDescendantOf(char) and hitResult and hitResult.Instance:IsDescendantOf(char) then
-              Gun.fire:FireServer()
-              Gun.showBeam:FireServer(hitResult.Position, GunPos, Gun.Handle)
-              Gun.kill:FireServer(enemy, Vector3.new(hitResult.Position))
-              game:GetService("ReplicatedStorage").LocalBeam:Fire(Gun.Handle, hitResult.Position)
-              Triggerbot.Waiting = true
-              task.delay(Triggerbot.Cooldown, function()
-                Triggerbot.Waiting = false
-              end)
-            end
-          end
-        end
-      end
-    end)
-  end
-end
-local function AutoSlash()
-  while getgenv().AutoSlash and task.wait(Settings.Slash.Cooldown) do
-    pcall(function()
-      local Knife = ReturnItem("Knife", "Character")
-      if Knife then Knife.Slash:FireServer() end
-    end)
-  end
+-- Teleport
+local function MouseTP()
+  local mouse = eu:GetMouse()
+  local pos = mouse.Hit.Position + Vector3.new(0, 2.5, 0)
+  local hrp = eu.Character.HumanoidRootPart
+  
+  hrp.CFrame = CFrame.new(pos, pos + hrp.CFrame.LookVector)
+  if Settings.SFX then PlaySound(2428506580) end
 end
 local function GetTP()
   pcall(function()
-    local mouse = eu:GetMouse()
     local tool = Instance.new("Tool")
     tool.RequiresHandle = false
     tool.Name = "Teleport Tool"
     tool.ToolTip = "Equip and click somewhere to teleport - Triangulare"
-    -- tool.TextureId = "rbxassetid://17091459839"
     
-    tool.Activated:Connect(function()
-      local pos = mouse.Hit.Position + Vector3.new(0, 2.5, 0)
-      eu.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
-    end)
+    tool.Activated:Connect(MouseTP)
     
     tool.Parent = eu.Backpack
   end)
@@ -282,114 +266,26 @@ local function DelTP()
     end
   end)
 end
-local function AutoTPe()
-  while getgenv().AutoTPe and task.wait() do
-    pcall(function()
-      local function ToolsLoaded()
-        local Gun = ReturnItem("Gun")
-        local Knife = ReturnItem("Knife")
-        
-        if Gun and Knife then
-          return true
-        end
-        return false
-      end
-      if Settings.Teleport.Mode == "Tools Load" and (eu.Backpack:FindFirstChild("Teleport Tool") or eu.Character:FindFirstChild("Teleport Tool")) and not ToolsLoaded() then
-        DelTP()
-      elseif not eu.Backpack:FindFirstChild("Teleport Tool") and not eu.Character:FindFirstChild("Teleport Tool") then
-        if Settings.Teleport.Mode == "Tools Load" and ToolsLoaded() then
-          GetTP()
-        elseif Settings.Teleport.Mode == "Everytime" then
-          GetTP()
-        end
-      end
-    end)
-  end
-end
+-- Box
 local function BuyBox()
   if eu.Cash.Value >= Settings.Boxes.Price then
-    game:GetService("ReplicatedStorage").BuyCase:InvokeServer(Settings.Boxes.Selected)
-  end
-end
-local function AutoBuy()
-  while getgenv().AutoBuy and task.wait(1) do
-    pcall(function()
-      BuyBox()
-    end)
+    ReplicatedStorage.BuyCase:InvokeServer(Settings.Boxes.Selected)
   end
 end
 
 -- Load
 task.spawn(function()
-  local function PlaySound(id)
-    task.spawn(function()
-    	local s = Instance.new("Sound")
-    	s.Parent = workspace.CurrentCamera
-    	s.Volume = 1
-    	s.Looped = false
-    	s.SoundId = "rbxassetid://" .. id
-    	
-    	s:Play()
-    	s.Ended:Wait()
-    	
-    	s:Destroy()
-    end)
-  end
-
   Settings.Keybinds = {
     {
       Title = "Manual Trigger",
       Bind = "ButtonX",
-      Callback = function()
-        local function GetAlliesChar(allies)
-          local Allies = {}
-          for _, ally in pairs(allies) do
-            if ally.Character then
-              Allies[#Allies+1] = ally.Character
-            end
-          end
-          return Allies
-        end
-        local Triggerbot = Settings.Triggerbot
-        pcall(function()
-          local Gun = ReturnItem("Gun", "Character")
-            if Gun and workspace.CurrentCamera then
-              local Teams = GetClassOf("Everyone")
-              for _, enemy in pairs(Teams.Enemies) do
-                local char = enemy.Character
-                local root = char and char:FindFirstChild("HumanoidRootPart")
-                if root then
-                  local GunPos = Gun.Handle.Position
-                  local CamPos = workspace.CurrentCamera.CFrame.Position
-                  local rayParams = RaycastParams.new()
-                  rayParams.FilterDescendantsInstances = {eu.Character, unpack(GetAlliesChar(Teams.Allies))}
-                  rayParams.FilterType = Enum.RaycastFilterType.Blacklist
-                  local camResult = workspace:Raycast(CamPos, root.Position - CamPos, rayParams)
-                  local hitResult = workspace:Raycast(GunPos, root.Position - GunPos, rayParams)
-                  if not Triggerbot.Waiting and camResult and camResult.Instance:IsDescendantOf(char) and hitResult and hitResult.Instance:IsDescendantOf(char) then
-                    Gun.fire:FireServer()
-                    Gun.showBeam:FireServer(hitResult.Position, GunPos, Gun.Handle)
-                    Gun.kill:FireServer(enemy, Vector3.new(hitResult.Position))
-                    PlaySound(8561500387)
-                    game:GetService("ReplicatedStorage").LocalBeam:Fire(Gun.Handle, hitResult.Position)
-
-                    Triggerbot.Waiting = true
-                    task.delay(Triggerbot.Cooldown, function()
-                      Triggerbot.Waiting = false
-                    end)
-                  end
-                end
-              end
-            end
-        end)
-      end
+      Callback = Trigger
     },
     {
       Title = "Kill All",
       Bind = "ButtonY",
       Callback = function()
-        KillKnife()
-        PlaySound(18694762392)
+        if KillKnife() and Settings.SFX then PlaySound(18694762392) end
       end
     },
     {
@@ -403,14 +299,7 @@ task.spawn(function()
     {
       Title = "Teleport",
       Bind = "ButtonB",
-      Callback = function()
-        local mouse = eu:GetMouse()
-        local pos = mouse.Hit.Position + Vector3.new(0, 2.5, 0)
-        local hrp = eu.Character.HumanoidRootPart
-        
-        hrp.CFrame = CFrame.new(pos, pos + hrp.CFrame.LookVector)
-        PlaySound(2428506580)
-      end
+      Callback = MouseTP
     }
   }
   
@@ -471,7 +360,29 @@ Tabs.Menu:Toggle({
   Value = false,
   Callback = function(state)
     getgenv().HitBox = state
-    HitBox()
+    while getgenv().HitBox and wait(1) do
+      pcall(function()
+        for _, enemy in pairs(GetClassOf("Enemies")) do
+          local char = enemy.Character
+          local root = char and char:FindFirstChild("HumanoidRootPart")
+          local finSize = Vector3.new(HitSize, HitSize, HitSize)
+          if root and (root.Size ~= finSize or root.Transparency ~= 0.6) then
+            root.Size = finSize
+            root.Transparency = 0.6
+          end
+        end
+      end)
+    end
+    if not getgenv().HitBox then
+      for _, enemy in pairs(GetClassOf("Enemies")) do
+        local char = enemy.Character
+        local root = char and char:FindFirstChild("HumanoidRootPart")
+        if root then 
+          root.Size = Vector3.new(2, 2, 1)
+          root.Transparency = 1 
+        end
+      end
+    end
   end
 })
 Tabs.Menu:Input({
@@ -491,7 +402,9 @@ Tabs.Gun:Toggle({
   Value = false,
   Callback = function(state)
     getgenv().Triggerbot = state
-    Triggerbot()
+    while getgenv().Triggerbot and task.wait(0.01) do
+      Trigger()
+    end
   end
 })
 Tabs.Gun:Input({
@@ -516,7 +429,9 @@ Tabs.Gun:Toggle({
   Value = false,
   Callback = function(state)
     getgenv().AutoGun = state
-    AutoGun()
+    while getgenv().AutoGun and task.wait(1) do
+      KillGun()
+    end
   end
 })
 Tabs.Gun:Toggle({
@@ -525,7 +440,12 @@ Tabs.Gun:Toggle({
   Value = false,
   Callback = function(state)
     getgenv().PullGun = state
-    PullGun()
+    while getgenv().PullGun and task.wait(0.25) do
+      pcall(function()
+        local Gun = ReturnItem("Gun", "Backpack")
+        if Gun then Gun.Parent = eu.Character end
+      end)
+    end
   end
 })
 Tabs.Gun:Section({ Title = "Misc" })
@@ -535,7 +455,12 @@ Tabs.Gun:Toggle({
   Value = false,
   Callback = function(state)
     getgenv().GunSound = state
-    GunSound()
+    while getgenv().GunSound and task.wait(Settings.SpamSoundCooldown) do
+      pcall(function()
+        local Gun = ReturnItem("Gun", "Character")
+        if Gun then Gun.fire:FireServer() end
+      end)
+    end
   end
 })
 Tabs.Gun:Input({
@@ -555,7 +480,12 @@ Tabs.Knife:Toggle({
   Value = false,
   Callback = function(state)
     getgenv().AutoSlash = state
-    AutoSlash()
+    while getgenv().AutoSlash and task.wait(Settings.Slash.Cooldown) do
+      pcall(function()
+        local Knife = ReturnItem("Knife", "Character")
+        if Knife then Knife.Slash:FireServer() end
+      end)
+    end
   end
 })
 Tabs.Knife:Input({
@@ -580,7 +510,9 @@ Tabs.Knife:Toggle({
   Value = false,
   Callback = function(state)
     getgenv().AutoKnife = state
-    AutoKnife()
+    while getgenv().AutoKnife and task.wait(0.1) do
+      KillKnife()
+    end
   end
 })
 Tabs.Knife:Toggle({
@@ -589,7 +521,12 @@ Tabs.Knife:Toggle({
   Value = false,
   Callback = function(state)
     getgenv().EquipKnife = state
-    EquipKnife()
+    while getgenv().EquipKnife and task.wait(0.25) do
+      pcall(function()
+        local Knife = ReturnItem("Knife", "Backpack")
+        if Knife then Knife.Parent = eu.Character end
+      end)
+    end
   end
 })
 
@@ -612,9 +549,7 @@ Tabs.Boxes:Section({ Title = "Buy Box" })
 Tabs.Boxes:Button({
   Title = "Buy Box",
   Desc = "Buys the selected box if you have money.",
-  Callback = function()
-    BuyBox()
-  end
+  Callback = BuyBox
 })
 Tabs.Boxes:Toggle({
   Title = "Auto Buy",
@@ -622,7 +557,11 @@ Tabs.Boxes:Toggle({
   Value = false,
   Callback = function(state)
     getgenv().AutoBuy = state
-    AutoBuy()
+    while getgenv().AutoBuy and task.wait(1) do
+      pcall(function()
+        BuyBox()
+      end)
+    end
   end
 })
 
@@ -680,7 +619,26 @@ Tabs.Teleport:Toggle({
   Value = false,
   Callback = function(state)
     getgenv().AutoTPe = state
-    AutoTPe()
+    while getgenv().AutoTPe and task.wait() do
+      pcall(function()
+        local function ToolsLoaded()
+          local Gun = ReturnItem("Gun")
+          local Knife = ReturnItem("Knife")
+          
+          if Gun and Knife then return true end
+        end
+        
+        if Settings.Teleport.Mode == "Tools Load" and (eu.Backpack:FindFirstChild("Teleport Tool") or eu.Character:FindFirstChild("Teleport Tool")) and not ToolsLoaded() then
+          DelTP()
+        elseif not eu.Backpack:FindFirstChild("Teleport Tool") and not eu.Character:FindFirstChild("Teleport Tool") then
+          if Settings.Teleport.Mode == "Tools Load" and ToolsLoaded() then
+            GetTP()
+          elseif Settings.Teleport.Mode == "Everytime" then
+            GetTP()
+          end
+        end
+      end)
+    end
   end
 })
 Tabs.Teleport:Dropdown({
@@ -708,3 +666,12 @@ for _, bind in pairs(Settings.Keybinds) do
     end
   })
 end
+Tabs.Keybinds:Section({ Title = "Misc" })
+Tabs.Keybinds:Toggle({
+  Title = "SFX",
+  Desc = "Cool sound effects.",
+  Value = Settings.SFX,
+  Callback = function(state)
+    Settings.SFX = state
+  end
+})
