@@ -33,7 +33,11 @@ local Settings = {
     Price = 500
   },
   SFX = false,
-  SpamSoundCooldown = 0.2
+  SpamSoundCooldown = 0.2,
+  Cache = {
+    Knife = nil,
+    Gun = nil
+  }
 }
 local HitSize = 5
 local CorInocente = Color3.new(1, 0.5, 0)
@@ -59,30 +63,17 @@ local function GetClassOf(class)
   end
 end
 local function ReturnItem(class, where)
-  local function CheckedClass(item)
-    if item:IsA("Tool") then
-      if class == "Gun" and item:FindFirstChild("fire") and item:FindFirstChild("showBeam") and item:FindFirstChild("kill") then
-        return item
-      elseif class == "Knife" and item:FindFirstChild("Slash") then
+  local function SearchIn(parent)
+    for _, item in pairs(eu[parent]:GetChildren()) do
+      if item:IsA("Tool") and ((class == "Gun" and item:FindFirstChild("fire") and item:FindFirstChild("showBeam") and item:FindFirstChild("kill")) or (class == "Knife" and item:FindFirstChild("Slash"))) then
+        Settings.Cache[class] = item
         return item
       end
     end
   end
-  if where then
-    for _, item in pairs(eu[where]:GetChildren()) do
-      local checked = CheckedClass(item)
-      if checked then return checked end
-    end
-  else
-    for _, item in pairs(eu.Backpack:GetChildren()) do
-      local checked = CheckedClass(item)
-      if checked then return checked end
-    end
-    for _, item in pairs(eu.Character:GetChildren()) do
-      local checked = CheckedClass(item)
-      if checked then return checked end
-    end
-  end
+
+  local item = Settings.Cache[class]
+  return item and ((where and item.Parent == eu[where]) or not where) and item or (where and SearchIn(where) or SearchIn("Character") or SearchIn("Backpack"))
 end
 local function PlaySound(id)
   task.spawn(function()
