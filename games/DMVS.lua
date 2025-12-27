@@ -63,6 +63,7 @@ local function GetClassOf(class)
   end
 end
 local function ReturnItem(class, where)
+  if not eu:GetAttribute("Game") then return end
   local function SearchIn(parent)
     for _, item in pairs(eu[parent]:GetChildren()) do
       if item:IsA("Tool") and ((class == "Gun" and item:FindFirstChild("fire") and item:FindFirstChild("showBeam") and item:FindFirstChild("kill")) or (class == "Knife" and item:FindFirstChild("Slash"))) then
@@ -73,7 +74,12 @@ local function ReturnItem(class, where)
   end
 
   local item = Settings.Cache[class]
-  return item and ((where and item.Parent == eu[where]) or not where) and item or (where and SearchIn(where) or SearchIn("Character") or SearchIn("Backpack"))
+  if item then
+    if not where or item.Parent == eu[where] then return item end
+    return
+  end
+  
+  return where and SearchIn(where) or SearchIn("Character") or SearchIn("Backpack")
 end
 local function PlaySound(id)
   task.spawn(function()
