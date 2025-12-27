@@ -63,7 +63,7 @@ local function GetClassOf(class)
   end
 end
 local function ReturnItem(class, where)
-  if not eu:GetAttribute("Team") or not eu.Character then return end
+  if not eu.Character then return end
   local function SearchIn(parent)
     for _, item in pairs(eu[parent]:GetChildren()) do
       if item:IsA("Tool") and ((class == "Gun" and item:FindFirstChild("fire") and item:FindFirstChild("showBeam") and item:FindFirstChild("kill")) or (class == "Knife" and item:FindFirstChild("Slash"))) then
