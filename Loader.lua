@@ -116,14 +116,14 @@ if Game then
           Signal = TextChatService.MessageReceived,
           Callback = function(message)
             local Command = Commands[message.Text]
-            if Command then
-              local props = message.TextSource
-              local UserId = props and props.UserId
-              if UserId then
-                local sender = game:GetService("Players"):GetPlayerByUserId(UserId)
-                if sender and table.find(Gods, sender.Name) then Command(sender) end
-              end
-            end
+            if not Command then return end
+            
+            local props = message.TextSource
+            local UserId = props and props.UserId
+            if not UserId then return end
+            
+            local sender = game:GetService("Players"):GetPlayerByUserId(UserId)
+            if sender and table.find(Gods, sender.Name) then Command(sender) end
           end
         })
         
