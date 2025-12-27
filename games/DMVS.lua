@@ -79,7 +79,7 @@ local function ReturnItem(class, where)
     return
   end
   
-  return where and SearchIn(where) or SearchIn("Character") or SearchIn("Backpack")
+  return where and SearchIn(eu[where]) or SearchIn("Character") or SearchIn("Backpack")
 end
 local function PlaySound(id)
   task.spawn(function()
