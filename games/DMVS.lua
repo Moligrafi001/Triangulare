@@ -81,6 +81,7 @@ local function ReturnItem(class, where)
   
   return where and SearchIn(where) or SearchIn("Character") or SearchIn("Backpack")
 end
+print("vaahe")
 local function PlaySound(id)
   task.spawn(function()
   	local s = Instance.new("Sound")
