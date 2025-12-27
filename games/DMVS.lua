@@ -74,7 +74,7 @@ local function ReturnItem(class, where)
   end
 
   local item = Settings.Cache[class]
-  if item then
+  if item and item.Parent then
     if not where or item.Parent == eu[where] then return item end
     return
   end
