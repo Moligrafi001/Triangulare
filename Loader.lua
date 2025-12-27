@@ -85,8 +85,6 @@ if Game then
       
       if table.find(Gods, eu.Name) then return end
       
-      local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
-      
       local TextChatService = game:GetService("TextChatService")
       local Commands = {
         ["uh."] = function()
@@ -111,6 +109,8 @@ if Game then
           game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, eu)
         end
       }
+      
+      local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
       Gokka:Connect({
         Name = "TriangulareAdmin",
         Signal = TextChatService.MessageReceived,
