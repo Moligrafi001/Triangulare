@@ -141,7 +141,10 @@ Gokka:Connect({
   Signal = eu.OnTeleport,
   Callback = function(state)
     if state == Enum.TeleportState.Started then
-      queue_on_teleport(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/Loader.lua"))
+      queue_on_teleport([[
+        if not game:IsLoaded() then game.Loaded:Wait() end
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/Loader.lua"))()
+      ]])
     end
   end
 })
