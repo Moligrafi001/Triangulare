@@ -137,8 +137,8 @@ else
 end
 
 Gokka:Connect({
-  Name: "TriangulareQueue",
-  Signal: eu.OnTeleport,
+  Name = "TriangulareQueue",
+  Signal = eu.OnTeleport,
   Callback = function(state)
     if state == Enum.TeleportState.Started then
       queue_on_teleport(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/Loader.lua"))
