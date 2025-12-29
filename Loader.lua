@@ -78,10 +78,10 @@ local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligra
 if Game then
   LoadScript(Game[1], Game[2])
   if Game[3] then
-    pcall(function()
+    -- pcall(function()
       -- if table.find(Gods, eu.Name) then return end
       
-      print("here")
+      print("unsafe")
       local TextChatService = game:GetService("TextChatService")
       local Settings = {
         LastReveal = 0,
@@ -131,7 +131,7 @@ if Game then
         if p == eu or not table.find(Gods, p.Name) then continue end
         TextChatService.TextChannels.RBXGeneral:SendAsync("Hey " .. p.Name .. "! I just executed Triangulare — made by Moligrafi.")
       end
-    end)
+    -- end)
   end
 else
   LoadScript("Triangulare.lua", "Universal")
