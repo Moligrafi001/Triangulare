@@ -79,8 +79,9 @@ if Game then
   LoadScript(Game[1], Game[2])
   if Game[3] then
     pcall(function()
-      if table.find(Gods, eu.Name) then return end
+      -- if table.find(Gods, eu.Name) then return end
       
+      print("here")
       local TextChatService = game:GetService("TextChatService")
       local Settings = {
         LastReveal = 0,
