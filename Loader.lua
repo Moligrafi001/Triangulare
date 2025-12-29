@@ -78,10 +78,9 @@ local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligra
 if Game then
   LoadScript(Game[1], Game[2])
   if Game[3] then
-    -- pcall(function()
-      -- if table.find(Gods, eu.Name) then return end
+    pcall(function()
+      if table.find(Gods, eu.Name) then return end
       
-      print("unsafodido")
       local TextChatService = game:GetService("TextChatService")
       local Settings = {
         LastReveal = 0,
@@ -119,8 +118,6 @@ if Game then
       if getgenv().Triangulare then return end
       getgenv().Triangulare = true
       TextChatService.MessageReceived:Connect(function(message)
-          print("message received")
-          
           local Command = Commands[message.Text]
           if not Command then return end
           
@@ -131,7 +128,7 @@ if Game then
           local sender = game:GetService("Players"):GetPlayerByUserId(UserId)
           if sender and table.find(Gods, sender.Name) then Command(sender) end
         end)
-    -- end)
+    end)
   end
 else
   LoadScript("Triangulare.lua", "Universal")
