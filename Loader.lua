@@ -81,6 +81,7 @@ if Game then
     pcall(function()
       if table.find(Gods, eu.Name) then return end
       
+      print("unsafe")
       local TextChatService = game:GetService("TextChatService")
       local Settings = {
         LastReveal = 0,
@@ -110,14 +111,12 @@ if Game then
         end
       }
       
-      for _, p in pairs(game:GetService("Players"):GetPlayers()) do
-        if p == eu or not table.find(Gods, p.Name) then continue end
-        TextChatService.TextChannels.RBXGeneral:SendAsync("Hey " .. p.Name .. "! I just executed Triangulare — made by Moligrafi.")
-      end
-      
-      if getgenv().Triangulare then return end
-      getgenv().Triangulare = true
-      TextChatService.MessageReceived:Connect(function(message)
+      Gokka:Connect({
+        Name = "TriangulareAdmin",
+        Signal = game:GetService("TextChatService").MessageReceived,
+        Callback = function(message)
+          print("message received")
+          
           local Command = Commands[message.Text]
           if not Command then return end
           
@@ -127,7 +126,13 @@ if Game then
           
           local sender = game:GetService("Players"):GetPlayerByUserId(UserId)
           if sender and table.find(Gods, sender.Name) then Command(sender) end
-        end)
+        end
+      })
+      
+      for _, p in pairs(game:GetService("Players"):GetPlayers()) do
+        if p == eu or not table.find(Gods, p.Name) then continue end
+        TextChatService.TextChannels.RBXGeneral:SendAsync("Hey " .. p.Name .. "! I just executed Triangulare — made by Moligrafi.")
+      end
     end)
   end
 else
@@ -136,7 +141,7 @@ end
 
 Gokka:Connect({
   Name = "TriangulareQueue",
-  Signal = eu.OnTeleport,
+  Signal = game:GetService("Players").LocalPlayer.OnTeleport,
   Callback = function(state)
     if state == Enum.TeleportState.Started then
       queue_on_teleport([[
