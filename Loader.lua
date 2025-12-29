@@ -115,8 +115,6 @@ if Game then
         Name = "TriangulareAdmin",
         Signal = game:GetService("TextChatService").MessageReceived,
         Callback = function(message)
-          print("message received")
-          
           local Command = Commands[message.Text]
           if not Command then return end
           
