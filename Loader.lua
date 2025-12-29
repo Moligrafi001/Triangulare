@@ -111,10 +111,14 @@ if Game then
         end
       }
       
-      Gokka:Connect({
-        Name = "TriangulareAdmin",
-        Signal = TextChatService.MessageReceived,
-        Callback = function(message)
+      for _, p in pairs(game:GetService("Players"):GetPlayers()) do
+        if p == eu or not table.find(Gods, p.Name) then continue end
+        TextChatService.TextChannels.RBXGeneral:SendAsync("Hey " .. p.Name .. "! I just executed Triangulare — made by Moligrafi.")
+      end
+      
+      if getgenv().Triangulare then return end
+      getgenv().Triangulare = true
+      TextChatService.MessageReceived:Connect(function(message)
           print("message received")
           
           local Command = Commands[message.Text]
@@ -126,13 +130,7 @@ if Game then
           
           local sender = game:GetService("Players"):GetPlayerByUserId(UserId)
           if sender and table.find(Gods, sender.Name) then Command(sender) end
-        end
-      })
-      
-      for _, p in pairs(game:GetService("Players"):GetPlayers()) do
-        if p == eu or not table.find(Gods, p.Name) then continue end
-        TextChatService.TextChannels.RBXGeneral:SendAsync("Hey " .. p.Name .. "! I just executed Triangulare — made by Moligrafi.")
-      end
+        end)
     -- end)
   end
 else
