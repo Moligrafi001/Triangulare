@@ -81,7 +81,7 @@ if Game then
     -- pcall(function()
       -- if table.find(Gods, eu.Name) then return end
       
-      print("unsafe")
+      print("unsafodido")
       local TextChatService = game:GetService("TextChatService")
       local Settings = {
         LastReveal = 0,
