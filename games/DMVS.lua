@@ -74,7 +74,7 @@ local function ReturnItem(class, where)
   end
 
   local item = Settings.Cache[class]
-  if item and item.Parent and item.Parent:FindFirstChild(item.Name) == item then
+  if item and item.Parent and (item.Parent == eu.Backpack or item.Parent == eu.Character) then
     if not where or item.Parent == eu[where] then return item end
     return
   end
