@@ -118,8 +118,8 @@ Crates:Toggle({
   Desc = "Auto collects crates.",
   Value = false,
   Callback = function(state)
-    getgenv().AutoBuy = state
-    while getgenv().AutoBuy do
+    getgenv().Crates = state
+    while getgenv().Crates do
       pcall(function()
         CollectCrates()
       end)
