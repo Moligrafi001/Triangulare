@@ -120,9 +120,7 @@ Crates:Toggle({
   Callback = function(state)
     getgenv().Crates = state
     while getgenv().Crates do
-      pcall(function()
-        CollectCrates()
-      end)
+      pcall(CollectCrates)
     task.wait(1) end
   end
 })
