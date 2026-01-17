@@ -75,11 +75,15 @@ Tabs.Menu:Toggle({
     while getgenv().AutoBuy do
       pcall(function()
         for _, button in next, Settings.Plot.Buttons:GetChildren() do
-          if button:GetAttribute("Price") > eu.leaderstats.Cash.Value then continue end
-          
-          local r, p = eu.Character.HumanoidRootPart, button.Head
-          firetouchinterest(r, p, 0)
-          firetouchinterest(r, p, 1)
+          pcall(function()
+            if button:GetAttribute("Price") > eu.leaderstats.Cash.Value then continue end
+            
+            local r, p = eu.Character.HumanoidRootPart, button.Head
+            firetouchinterest(r, p, 0)
+            firetouchinterest(r, p, 1)
+            
+            task.wait(1)
+          end)
         end
       end)
     task.wait(1) end
