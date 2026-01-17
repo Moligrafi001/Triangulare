@@ -1,6 +1,7 @@
 -- Global Values
 getgenv().AutoCollect = false
 getgenv().AutoBuy = false
+getgenv().Crates = false
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
@@ -26,6 +27,23 @@ task.spawn(function()
     end
   task.wait(1) end
 end)
+
+-- Functions
+local function CollectCrates()
+  local r = eu.Character.HumanoidRootPart
+  
+  for _, crate in next, workspace:GetChildren() do
+    if crate.Name == "MoneyCrate" and crate:IsA("UnionOperation") and crate:FindFirstChild("Prompt") then
+      local backup = r.CFrame
+      r.CFrame = crate.CFrame * CFrame.new(0, 3, 0)
+      
+      task.wait(0.3)
+      fireproximityprompt(crate.Prompt)
+      
+      r.CFrame = backup
+    end
+  end
+end
 
 --[[
 local r = game.Players.LocalPlayer.Character.HumanoidRootPart
@@ -85,6 +103,25 @@ Tabs.Menu:Toggle({
             end
           end)
         end
+      end)
+    task.wait(1) end
+  end
+})
+local Crates = Tabs.Menu:Section({ Title = "Crates", Opened = true })
+Crates:Button({
+  Title = "Collect Crates",
+  Desc = "Collects all crates",
+  Callback = CollectCrates
+})
+Crates:Toggle({
+  Title = "Auto Crates",
+  Desc = "Auto collects crates.",
+  Value = false,
+  Callback = function(state)
+    getgenv().AutoBuy = state
+    while getgenv().AutoBuy do
+      pcall(function()
+        CollectCrates()
       end)
     task.wait(1) end
   end
