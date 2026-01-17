@@ -76,13 +76,13 @@ Tabs.Menu:Toggle({
       pcall(function()
         for _, button in next, Settings.Plot.Buttons:GetChildren() do
           pcall(function()
-            if button:GetAttribute("Price") > eu.leaderstats.Cash.Value then continue end
-            
-            local r, p = eu.Character.HumanoidRootPart, button.Head
-            firetouchinterest(r, p, 0)
-            firetouchinterest(r, p, 1)
-            
-            task.wait(1)
+            if button:GetAttribute("Price") <= eu.leaderstats.Cash.Value then
+              local r, p = eu.Character.HumanoidRootPart, button.Head
+              firetouchinterest(r, p, 0)
+              firetouchinterest(r, p, 1)
+              
+              task.wait(1)
+            end
           end)
         end
       end)
