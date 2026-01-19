@@ -16,7 +16,6 @@ workspace.Map:GetChildren()[117].DressClone.ClickPart.ClickDetector
 workspace.GameplaySections.Task1.Complete.TouchInterest
 workspace.GameplaySections.Task2.CompleteB.TouchInterest
 workspace.GameplaySections.Task2.CompleteA.TouchInterest
-workspace.Map:GetChildren()[117].DressClone.ClickPart.ClickDetector
 ]]--
 
 -- Tabs
@@ -51,7 +50,7 @@ ShoCen:Button({
   end
 })
 local Forest = Tabs.Event:Section({ Title = "Forest", Opened = true })
-ShoCen:Button({
+Forest:Button({
   Title = "Climb Mountain",
   Desc = "Step 1",
   Callback = function()
@@ -60,7 +59,7 @@ ShoCen:Button({
     firetouchinterest(r, p, 1)
   end
 })
-ShoCen:Toggle({
+Forest:Toggle({
   Title = "Fire Prompt",
   Desc = "Step 2 (hit the npcs first)",
   Value = false,
@@ -81,12 +80,28 @@ ShoCen:Toggle({
     task.wait(0.1) end
   end
 })
-ShoCen:Button({
+Forest:Button({
   Title = "Bypass Cave",
   Desc = "Step 3",
   Callback = function()
     local r, p = eu.Character.HumanoidRootPart, workspace.GameplaySections.Task2.CompleteA
     firetouchinterest(r, p, 0)
     firetouchinterest(r, p, 1)
+  end
+})
+Forest:Button({
+  Title = "Storage Room",
+  Desc = "Step 4",
+  Callback = function()
+    local r, p = eu.Character.HumanoidRootPart, workspace.GameplaySections.Task2.CompleteB
+    firetouchinterest(r, p, 0)
+    firetouchinterest(r, p, 1)
+  end
+})
+Forest:Button({
+  Title = "Get Dress",
+  Desc = "Step 5",
+  Callback = function()
+    fireclickdetector(workspace.Map:GetChildren()[117].DressClone.ClickPart.ClickDetector)
   end
 })
