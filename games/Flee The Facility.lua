@@ -105,3 +105,10 @@ Forest:Button({
     fireclickdetector(workspace.Map:GetChildren()[117].DressClone.ClickPart.ClickDetector)
   end
 })
+Forest:Button({
+  Title = "Finish Minigame",
+  Desc = "Step 6 (click when minigame start)",
+  Callback = function()
+    game:GetService("ReplicatedStorage").Remotes.MinigameEvent:FireServer(true)
+  end
+})
