@@ -57,6 +57,7 @@ Forest:Button({
     local r, p = eu.Character.HumanoidRootPart, workspace.GameplaySections.Task1.Complete
     firetouchinterest(r, p, 0)
     firetouchinterest(r, p, 1)
+    r.CFrame = p.CFrame
   end
 })
 Forest:Toggle({
@@ -70,7 +71,7 @@ Forest:Toggle({
         for _, npc in next, workspace:GetChildren() do
           pcall(function()
             local r = npc:FindFirstChild("HumanoidRootPart")
-            -- if not r then continue end
+            if not r then continue end
             
             local pp = r:FindFirstChild("HikerProximityPrompt")
             if pp and pp.Enabled then fireproximityprompt(pp) end 
