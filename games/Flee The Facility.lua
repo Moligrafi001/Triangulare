@@ -58,7 +58,7 @@ do
       end
     })
   
-    local step = 1
+    local step = "1"
     local specific = ShoCen:Section({ Title = "Specific Action", Opened = true })
     specific:Dropdown({
       Title = "Selected Action",
