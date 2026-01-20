@@ -51,10 +51,10 @@ do
       Desc = "Finishes all steps, teleporting you to the event place.",
       Icon = "shell",
       Callback = function()
-        Steps["1"]()
-        Steps["2"]()
+        pcall(Steps["1"])
+        pcall(Steps["2"])
         task.wait(3)
-        Steps["3"]()
+        pcall(Steps["3"])
       end
     })
   
