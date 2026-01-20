@@ -25,31 +25,80 @@ local Tabs = {
 Window:SelectTab(1)
 
 -- Event
-local ShoCen = Tabs.Event:Section({ Title = "Shopping Center", Opened = true })
-ShoCen:Button({
-  Title = "Collect Heels",
-  Desc = "Step 1",
-  Callback = function()
-    fireclickdetector(workspace["Shopping Center by D4niel_Foxy"].Heels.ClickPart.ClickDetector)
+do
+  local ShoCen = Tabs.Event:Section({ Title = "Shopping Center", Opened = true })
+  ShoCen:Paragraph({
+    Title = "How to Use",
+    Desc = "When in the \"Shopping Center\" map click the button below or execute the specific action you need in the section below"
+  })
+  do
+    local Steps = {
+      ["1"] = function()
+        fireclickdetector(workspace["Shopping Center by D4niel_Foxy"].Heels.ClickPart.ClickDetector)
+      end,
+      ["2"] = function()
+        fireclickdetector(workspace["Shopping Center by D4niel_Foxy"].MirrorModel.MirrorFace.ClickDetector)
+      end,
+      ["3"] = function()
+        local r, p = eu.Character.HumanoidRootPart, workspace["Shopping Center by D4niel_Foxy"].MirrorModel.TouchDetector
+        firetouchinterest(r, p, 0)
+        firetouchinterest(r, p, 1)
+      end,
+    }
+    
+    ShoCen:Button({
+      Title = "Finish All Steps",
+      Desc = "Finishes all steps, teleporting you to the event place.",
+      Icon = "shell",
+      Callback = function()
+        Steps["1"]()
+        Steps["2"]()
+        task.wait(3)
+        Steps["3"]()
+      end
+    })
+  
+    local step = 1
+    local specific = ShoCen:Section({ Title = "Specific Action", Opened = true })
+    specific:Dropdown({
+      Title = "Selected Action",
+      Desc = "Selects a specific action",
+      Values = {
+        {
+          Title = "Collect Heels [ 1 / 3 ]",
+          Desc = "Collects the heels from the stand",
+          Icon = "footprints"
+        },
+        {
+          Title = "Activate Mirror [ 2 / 3 ]",
+          Desc = "Activates the portal so you can enter",
+          Icon = "mouse-pointer"
+        },
+        {
+          Title = "Enter Mirror [ 3 / 3 ]",
+          Desc = "Teleports you to the event place",
+          Icon = "log-in"
+        }
+      },
+      Value = "Collect Heels [ 1 / 3 ]",
+      Callback = function(option)
+        option = option.Title:match("%d+")
+        step = option
+      end
+    })
+    specific:Button({
+      Title = "Execute Action",
+      Desc = "Executes the step selected above",
+      Icon = "play",
+      Callback = function()
+        local action = Steps[step]
+        action()
+      end
+    })
   end
-})
-ShoCen:Button({
-  Title = "Activate Mirror",
-  Desc = "Step 2",
-  Callback = function()
-    fireclickdetector(workspace["Shopping Center by D4niel_Foxy"].MirrorModel.MirrorFace.ClickDetector)
-  end
-})
-ShoCen:Button({
-  Title = "Enter Mirror",
-  Desc = "Step 3",
-  Callback = function()
-    local r, p = eu.Character.HumanoidRootPart, workspace["Shopping Center by D4niel_Foxy"].MirrorModel.TouchDetector
-    firetouchinterest(r, p, 0)
-    firetouchinterest(r, p, 1)
-  end
-})
-local Forest = Tabs.Event:Section({ Title = "Forest", Opened = true })
+end
+Tabs.Event:Divider()
+local Forest = Tabs.Event:Section({ Title = "Event Place", Opened = true })
 Forest:Button({
   Title = "Mountain Climber",
   Desc = "Step 1",
@@ -71,7 +120,7 @@ Forest:Toggle({
         for _, npc in next, workspace:GetChildren() do
           pcall(function()
             local r = npc:FindFirstChild("HumanoidRootPart")
-            if not r then continue end
+            -- if not r then continue end
             
             local pp = r:FindFirstChild("HikerProximityPrompt")
             if pp and pp.Enabled then fireproximityprompt(pp) end 
