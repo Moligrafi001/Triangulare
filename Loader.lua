@@ -24,7 +24,7 @@ local function LoadScript(path, name)
     local InitializeName = %q
     %s
     do
-        %s
+      %s
     end
     %s
   ]], name, r1, r2, r3))()
