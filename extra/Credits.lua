@@ -5,6 +5,41 @@ local CredSettings = {
 local CredTabs = {}
 CredTabs.ExtraDivider = Window:Divider()
 
+-- Languages
+local LangTable = {
+  ["pt-br"] = {
+    GamesTab = "Jogos",
+    SupportedSection = "Jogos Suportados",
+    SelectedGame = "Jogo Selecionado",
+    TeleportSection = "Teleportar para o Jogo",
+    TeleportBtn = "Teleportar",
+    TeleportDesc = "Teleporta você para o jogo selecionado.",
+    CreditsTab = "Créditos",
+    DevsSection = "Desenvolvedores",
+    FounderTitle = "Desenvolvedor Fundador",
+    CoDevsTitle = "Co-Desenvolvedores",
+    DiscordSection = "Servidor do Discord",
+    CopyLink = "Copiar Link do Servidor"
+  },
+  ["en-us"] = {
+    GamesTab = "Games",
+    SupportedSection = "Supported Games",
+    SelectedGame = "Selected Game",
+    TeleportSection = "Teleport to Game",
+    TeleportBtn = "Teleport",
+    TeleportDesc = "Teleports you to the selected game.",
+    CreditsTab = "Credits",
+    DevsSection = "Developers",
+    FounderTitle = "Founder Developer",
+    CoDevsTitle = "Co-Developers",
+    DiscordSection = "Discord Server",
+    CopyLink = "Copy Server Link"
+  }
+}
+
+local LocalizationService = game:GetService("LocalizationService")
+local T = LangTable[LocalizationService.RobloxLocaleId:lower()] or LangTable["en-us"]
+
 -- Supported
 local function SupportedList(type)
   local gamePlaceIds = {
@@ -61,20 +96,20 @@ local function SupportedList(type)
   end
   return gamePlaceIds
 end
-CredTabs.SupportedTab = Window:Tab({ Title = "Games", Icon = "gamepad-2"})
-CredTabs.SupportedTab:Section({ Title = "Supported Games" })
+CredTabs.SupportedTab = Window:Tab({ Title = T.GamesTab, Icon = "gamepad-2"})
+CredTabs.SupportedTab:Section({ Title = T.SupportedSection })
 CredTabs.SupportedTab:Dropdown({
-  Title = "Selected Game",
+  Title = T.SelectedGame,
   Values = SupportedList("Names"),
   Value = CredSettings.Teleport,
   Callback = function(option)
     CredSettings.Teleport = option
   end
 })
-CredTabs.SupportedTab:Section({ Title = "Teleport to Game" })
+CredTabs.SupportedTab:Section({ Title = T.TeleportSection })
 CredTabs.SupportedTab:Button({
-  Title = "Teleport",
-  Desc = "Teleports you to the selected game.",
+  Title = T.TeleportBtn,
+  Desc = T.TeleportDesc,
   Callback = function()
     local id = SupportedList("IDs")[CredSettings.Teleport]
     game:GetService("TeleportService"):Teleport(id, game:GetService("Players").LocalPlayer)
@@ -82,23 +117,23 @@ CredTabs.SupportedTab:Button({
 })
 
 -- Credits
-CredTabs.CreditsTab = Window:Tab({ Title = "Credits", Icon = "info"})
-CredTabs.CreditsTab:Section({ Title = "Developers" })
+CredTabs.CreditsTab = Window:Tab({ Title = T.CreditsTab, Icon = "info"})
+CredTabs.CreditsTab:Section({ Title = T.DevsSection })
 CredTabs.CreditsTab:Paragraph({
-  Title = "Founder Developer",
+  Title = T.FounderTitle,
   Desc = "Discord: @moligrafi",
 })
 CredTabs.CreditsTab:Paragraph({
-  Title = "Co-Developers",
+  Title = T.CoDevsTitle,
   Desc = "Discord: @_prismx\nDiscord: @zylxex",
 })
-CredTabs.CreditsTab:Section({ Title = "Discord Server" })
+CredTabs.CreditsTab:Section({ Title = T.DiscordSection })
 CredTabs.CreditsTab:Paragraph({
-  Title = "Discord Server",
+  Title = T.DiscordSection,
   Desc = "https://discord.gg/q7xBfkwdjc",
   Buttons = {
     {
-      Title = "Copy Server Link",
+      Title = T.CopyLink,
       Variant = "Primary",
       Callback = function()
         setclipboard("https://discord.gg/q7xBfkwdjc")
