@@ -3,11 +3,8 @@ local Gokka = {}
 getgenv().GokkaConnections = getgenv().GokkaConnections or {}
 
 function Gokka:Connect(obj)
-  local name, signal, callback = obj.Name, obj.Signal, obj.Callback
-  
-	assert(type(name) == "string", "Invalid name")
-	assert(typeof(signal) == "RBXScriptSignal", "Invalid signal")
-	assert(type(callback) == "function", "Invalid callback")
+  local name, parent, signal, callback = obj.Name, obj.Parent, obj.Signal, obj.Callback
+  signal = parent[signal]
 
 	local connections = getgenv().GokkaConnections
 	if connections[name] then connections[name]:Disconnect() end
