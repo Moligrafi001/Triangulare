@@ -155,7 +155,7 @@ else
   LoadScript("Triangulare.lua", "Universal")
 end
 
-Gokka:Connect({
+--[[Gokka:Connect({
   Name = "TriangulareQueue",
   Signal = game:GetService("Players").LocalPlayer.OnTeleport,
   Callback = function(state)
@@ -166,7 +166,7 @@ Gokka:Connect({
       ]])
     end
   end
-})
+})--]]
 
 -- Luache
 if not table.find(Gods, eu.Name) then
