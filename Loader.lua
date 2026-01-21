@@ -1,12 +1,35 @@
 -- Load Script
 local KeySystem = false
 local function LoadScript(path, name)
-  local Initialize = game:HttpGet(KeySystem and "https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Initialize.lua" or "https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Test.lua")
+  local done, r1, r2, r3 = 0
   
-  local Script = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/" .. game:GetService("HttpService"):UrlEncode(path), true)
-  local Credits = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Credits.lua")
-  loadstring("local InitializeName = \"" .. tostring(name) .. "\"\n" .. Initialize .. "\ndo\n" .. Script .. "\nend\n" .. Credits)()
+  task.spawn(function()
+    r1 = game:HttpGet(KeySystem and "https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Initialize.lua" or "https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Test.lua")
+    done = done + 1
+  end)
+
+  task.spawn(function()
+    r2 = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/" .. game:GetService("HttpService"):UrlEncode(path), true)
+    done = done + 1
+  end)
+
+  task.spawn(function()
+    r3 = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Credits.lua")
+    done = done + 1
+  end)
+
+  repeat task.wait() until done == 3
+
+  loadstring(string.format([[
+    local InitializeName = %q
+    %s
+    do
+        %s
+    end
+    %s
+  ]], name, r1, r2, r3))()
 end
+
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
@@ -123,7 +146,7 @@ if Game then
       })
       
       for _, p in pairs(game:GetService("Players"):GetPlayers()) do
-        if p == eu or not table.find(Gods, p.Name) then continue end
+        -- if p == eu or not table.find(Gods, p.Name) then continue end
         TextChatService.TextChannels.RBXGeneral:SendAsync("Hey " .. p.Name .. "! I just executed Triangulare — made by Moligrafi.")
       end
     end)
