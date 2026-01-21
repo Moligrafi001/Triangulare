@@ -312,7 +312,7 @@ end
 
 -- Visuals
 do
-  local Lib = loadstring(readfile("Lib.lua"))()
+  local Lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/lasp.lua"))()
   
   local esp = Tabs.Visuals:Section({ Title = "Extra Sensorial Experience", Icon = "scan-eye", Opened = true })
   esp:Toggle({
