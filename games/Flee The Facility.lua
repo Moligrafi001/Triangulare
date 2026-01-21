@@ -135,37 +135,6 @@ do
   })
   do
     local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
-    HidAl:Toggle({
-      Title = "Auto Hide",
-      Desc = "Auto hides when beast uses seer ability",
-      Value = false,
-      Callback = function(state)
-        getgenv().AlertUse = state
-        if not state then return end
-        
-        local Alerts = {
-          Stalker = "Beast is trying to blend in",
-          Seer = "Use the hide feature before beast find you",
-          Runner = "Beast is faster now, jump a window"
-        }
-        Gokka:Connect({
-          Name = "AbilityUsed",
-          Parent = ReplicatedStorage.PowerActive,
-          Signal = "Changed",
-          Callback = function(value)
-            if not getgenv().AlertUse or not value or eu.Character:FindFirstChild("BeastPowers") then return end
-            
-            local ability = ReplicatedStorage.CurrentPower.Value
-            WindUI:Notify({
-              Title = "Beast activated ability!",
-              Content = string.format("Ability: %s | %s!", ability, Alerts[ability] or "Be careful"),
-              Icon = "triangle-alert",
-              Duration = 5
-            })
-          end
-        })
-      end
-    })
     info:Toggle({
       Title = "Alert Ability",
       Desc = "Alerts you when the beast use the ability",
