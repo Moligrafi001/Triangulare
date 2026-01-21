@@ -332,343 +332,369 @@ local Tabs = {
 Window:SelectTab(1)
 
 -- Menu
-Tabs.Menu:Section({ Title = "Player ESP" })
-Tabs.Menu:Toggle({
-  Title = "Player ESP",
-  Desc = "Extra Sensorial Experience.",
-  Value = false,
-  Callback = function(state)
-    getgenv().PlayerESP = state
-    PlayerESP()
-  end
-})
-Tabs.Menu:Colorpicker({
-  Title = "ESP Color",
-  Default = CorInocente,
-  Locked = true,
-  Callback = function(color)
-    CorInocente = Color3.new(color)
-  end
-})
-Tabs.Menu:Section({ Title = "Hitbox Expander" })
-Tabs.Menu:Toggle({
-  Title = "Expand Hitboxes",
-  Desc = "Bigger hitboxes.",
-  Value = false,
-  Callback = function(state)
-    getgenv().HitBox = state
-    while getgenv().HitBox and wait(1) do
-      pcall(function()
+do
+  local section = Tabs.Menu:Section({ Title = "Player ESP", Opened = true })
+  section:Toggle({
+    Title = "Player ESP",
+    Desc = "Extra Sensorial Experience.",
+    Value = false,
+    Callback = function(state)
+      getgenv().PlayerESP = state
+      PlayerESP()
+    end
+  })
+  section:Colorpicker({
+    Title = "ESP Color",
+    Default = CorInocente,
+    Locked = true,
+    Callback = function(color)
+      CorInocente = Color3.new(color)
+    end
+  })
+end
+do
+  local section = Tabs.Menu:Section({ Title = "Hitbox Expander", Opened = true })
+  section:Toggle({
+    Title = "Expand Hitboxes",
+    Desc = "Bigger hitboxes.",
+    Value = false,
+    Callback = function(state)
+      getgenv().HitBox = state
+      while getgenv().HitBox and wait(1) do
+        pcall(function()
+          for _, enemy in pairs(GetClassOf("Enemies")) do
+            local char = enemy.Character
+            local root = char and char:FindFirstChild("HumanoidRootPart")
+            local finSize = Vector3.new(HitSize, HitSize, HitSize)
+            if root and (root.Size ~= finSize or root.Transparency ~= 0.6) then
+              root.Size = finSize
+              root.Transparency = 0.6
+            end
+          end
+        end)
+      end
+      if not getgenv().HitBox then
         for _, enemy in pairs(GetClassOf("Enemies")) do
           local char = enemy.Character
           local root = char and char:FindFirstChild("HumanoidRootPart")
-          local finSize = Vector3.new(HitSize, HitSize, HitSize)
-          if root and (root.Size ~= finSize or root.Transparency ~= 0.6) then
-            root.Size = finSize
-            root.Transparency = 0.6
+          if root then 
+            root.Size = Vector3.new(2, 2, 1)
+            root.Transparency = 1 
           end
-        end
-      end)
-    end
-    if not getgenv().HitBox then
-      for _, enemy in pairs(GetClassOf("Enemies")) do
-        local char = enemy.Character
-        local root = char and char:FindFirstChild("HumanoidRootPart")
-        if root then 
-          root.Size = Vector3.new(2, 2, 1)
-          root.Transparency = 1 
-        end
-      end
-    end
-  end
-})
-Tabs.Menu:Input({
-  Title = "Hitbox Size",
-  Value = "5",
-  Placeholder = "Default HitBox Size = 5",
-  Callback = function(input)
-    HitSize = tonumber(input) or 1
-  end
-})
-
--- Gun
-Tabs.Gun:Section({ Title = "Undetectable" })
-Tabs.Gun:Toggle({
-  Title = "Triggerbot",
-  Desc = "Auto kill enemies in sight.",
-  Value = false,
-  Callback = function(state)
-    getgenv().Triggerbot = state
-    while getgenv().Triggerbot and task.wait(0.01) do
-      Trigger()
-    end
-  end
-})
-Tabs.Gun:Input({
-  Title = "Shoot Cooldown",
-  Value = "3",
-  Placeholder = "In seconds, ex.: 3",
-  Callback = function(input)
-    Settings.Triggerbot.Cooldown = tonumber(input) or 0
-  end
-})
-Tabs.Gun:Section({ Title = "Blatant" })
-Tabs.Gun:Button({
-  Title = "Kill All",
-  Desc = "Kills everyone using your gun.",
-  Callback = function()
-    KillGun()
-  end
-})
-Tabs.Gun:Toggle({
-  Title = "Auto Kill",
-  Desc = "Auto kills everyone.",
-  Value = false,
-  Callback = function(state)
-    getgenv().AutoGun = state
-    while getgenv().AutoGun and task.wait(1) do
-      KillGun()
-    end
-  end
-})
-Tabs.Gun:Toggle({
-  Title = "Auto Equip Gun",
-  Desc = "Automatically equips your gun.",
-  Value = false,
-  Callback = function(state)
-    getgenv().PullGun = state
-    while getgenv().PullGun and task.wait(0.25) do
-      pcall(function()
-        local Gun = ReturnItem("Gun", "Backpack")
-        if Gun then Gun.Parent = eu.Character end
-      end)
-    end
-  end
-})
-Tabs.Gun:Section({ Title = "Misc" })
-Tabs.Gun:Toggle({
-  Title = "Spam Sound (FE)",
-  Desc = "Automatically spams the shoot sound.",
-  Value = false,
-  Callback = function(state)
-    getgenv().GunSound = state
-    while getgenv().GunSound and task.wait(Settings.SpamSoundCooldown) do
-      pcall(function()
-        local Gun = ReturnItem("Gun", "Character")
-        if Gun then Gun.fire:FireServer() end
-      end)
-    end
-  end
-})
-Tabs.Gun:Input({
-  Title = "Sound Cooldown",
-  Value = "0.2",
-  Placeholder = "In seconds, ex.: 0.2",
-  Callback = function(input)
-    Settings.SpamSoundCooldown= tonumber(input) or 1
-  end
-})
-
--- Knife
-Tabs.Knife:Section({ Title = "Legit" })
-Tabs.Knife:Toggle({
-  Title = "Auto Slash",
-  Desc = "Auto use your knife.",
-  Value = false,
-  Callback = function(state)
-    getgenv().AutoSlash = state
-    while getgenv().AutoSlash and task.wait(Settings.Slash.Cooldown) do
-      pcall(function()
-        local Knife = ReturnItem("Knife", "Character")
-        if Knife then Knife.Slash:FireServer() end
-      end)
-    end
-  end
-})
-Tabs.Knife:Input({
-  Title = "Slash Cooldown",
-  Value = "0.5",
-  Placeholder = "In seconds, ex.: 0.5",
-  Callback = function(input)
-    Settings.Slash.Cooldown = tonumber(input) or 1
-  end
-})
-Tabs.Knife:Section({ Title = "Blatant" })
-Tabs.Knife:Button({
-  Title = "Kill All",
-  Desc = "Kills everyone using your knife.",
-  Callback = function()
-    KillKnife()
-  end
-})
-Tabs.Knife:Toggle({
-  Title = "Auto Kill",
-  Desc = "Auto kills everyone.",
-  Value = false,
-  Callback = function(state)
-    getgenv().AutoKnife = state
-    while getgenv().AutoKnife and task.wait(0.1) do
-      KillKnife()
-    end
-  end
-})
-Tabs.Knife:Toggle({
-  Title = "Auto Equip Knife",
-  Desc = "Automatically equips your knife.",
-  Value = false,
-  Callback = function(state)
-    getgenv().EquipKnife = state
-    while getgenv().EquipKnife and task.wait(0.25) do
-      pcall(function()
-        local Knife = ReturnItem("Knife", "Backpack")
-        if Knife then Knife.Parent = eu.Character end
-      end)
-    end
-  end
-})
-
--- Boxes
-Tabs.Boxes:Section({ Title = "Selected Box" })
-Tabs.Boxes:Dropdown({
-  Title = "Selected Box",
-  Values = { "Knife Box #1", "Knife Box #2", "Gun Box #1", "Gun Box #2", "Mythic Box #1", "Mythic Box #2", "Mythic Box #3", "Mythic Box #4" },
-  Value = Settings.Boxes.Selected,
-  Callback = function(option)
-    Settings.Boxes.Selected = option
-    if string.find(option, "Mythic") then
-      Settings.Boxes.Price = 1500
-    else
-      Settings.Boxes.Price = 500
-    end
-  end
-})
-Tabs.Boxes:Section({ Title = "Buy Box" })
-Tabs.Boxes:Button({
-  Title = "Buy Box",
-  Desc = "Buys the selected box if you have money.",
-  Callback = BuyBox
-})
-Tabs.Boxes:Toggle({
-  Title = "Auto Buy",
-  Desc = "Auto buys the selected box.",
-  Value = false,
-  Callback = function(state)
-    getgenv().AutoBuy = state
-    while getgenv().AutoBuy and task.wait(1) do
-      pcall(function()
-        BuyBox()
-      end)
-    end
-  end
-})
-
--- Teleport
-Tabs.Teleport:Section({ Title = "Teleport to Map" })
-Tabs.Teleport:Dropdown({
-  Title = "Selected Map",
-  Values = {"Lobby", "Hotel", "Factory", "House", "Mansion", "MilBase", "Waiting Room"},
-  Value = "Lobby",
-  Callback = function(option)
-    if option == "Lobby" then
-      Settings.Teleport.CFrame = CFrame.new(-337, 76, 19)
-    elseif option == "Factory" then
-      Settings.Teleport.CFrame = CFrame.new(-1074, 113, 5437)
-    elseif option == "House" then
-      Settings.Teleport.CFrame = CFrame.new(408, 111, 6859)
-    elseif option == "Mansion" then
-      Settings.Teleport.CFrame = CFrame.new(-1175, 47, 6475)
-    elseif option == "MilBase" then
-      Settings.Teleport.CFrame = CFrame.new(-1186, 27, 3737)
-    elseif option == "Hotel" then
-      Settings.Teleport.CFrame = CFrame.new(677.19104, 95.9535522, 4991.19287)
-    elseif option == "Waiting Room" then
-      Settings.Teleport.CFrame = CFrame.new(1888.1405, -63.8421059, 78.9331055)
-    end
-  end
-})
-Tabs.Teleport:Button({
-  Title = "Teleport",
-  Desc = "Teleports you to the selected map.",
-  Callback = function()
-    pcall(function()
-      eu.Character.HumanoidRootPart.CFrame = Settings.Teleport.CFrame
-    end)
-  end
-})
-Tabs.Teleport:Section({ Title = "Teleport Tool" })
-Tabs.Teleport:Button({
-  Title = "Get Teleport Tool",
-  Desc = "Gives you the teleport tool.",
-  Callback = function()
-    GetTP()
-  end
-})
-Tabs.Teleport:Button({
-  Title = "Remove Tool",
-  Desc = "Removes the teleport tool.",
-  Callback = function()
-    DelTP()
-  end
-})
-Tabs.Teleport:Toggle({
-  Title = "Permanent Tool",
-  Desc = "Auto get teleport tool.",
-  Value = false,
-  Callback = function(state)
-    getgenv().AutoTPe = state
-    while getgenv().AutoTPe and task.wait() do
-      pcall(function()
-        local function ToolsLoaded()
-          local Gun = ReturnItem("Gun")
-          local Knife = ReturnItem("Knife")
-          
-          if Gun and Knife then return true end
-        end
-        
-        if Settings.Teleport.Mode == "Tools Load" and (eu.Backpack:FindFirstChild("Teleport Tool") or eu.Character:FindFirstChild("Teleport Tool")) and not ToolsLoaded() then
-          DelTP()
-        elseif not eu.Backpack:FindFirstChild("Teleport Tool") and not eu.Character:FindFirstChild("Teleport Tool") then
-          if Settings.Teleport.Mode == "Tools Load" and ToolsLoaded() then
-            GetTP()
-          elseif Settings.Teleport.Mode == "Everytime" then
-            GetTP()
-          end
-        end
-      end)
-    end
-  end
-})
-Tabs.Teleport:Dropdown({
-  Title = "Get Tool When",
-  Values = { "Tools Load", "Everytime" },
-  Value = Settings.Teleport.Mode,
-  Callback = function(option)
-    Settings.Teleport.Mode = option
-  end
-})
-
--- Keybinds
-Tabs.Keybinds:Section({ Title = "Keybinds" })
-for _, bind in pairs(Settings.Keybinds) do
-  Tabs.Keybinds:Keybind({
-    Title = bind.Title,
-    Value = bind.Bind,
-    Callback = function(v)
-      for _, obj in pairs(Settings.Keybinds) do
-        if obj.Title == bind.Title then
-          obj.Bind = v
-          return
         end
       end
     end
   })
+  section:Input({
+    Title = "Hitbox Size",
+    Value = "5",
+    Placeholder = "Default HitBox Size = 5",
+    Callback = function(input)
+      HitSize = tonumber(input) or 1
+    end
+  })
 end
-Tabs.Keybinds:Section({ Title = "Misc" })
-Tabs.Keybinds:Toggle({
-  Title = "SFX",
-  Desc = "Cool sound effects.",
-  Value = Settings.SFX,
-  Callback = function(state)
-    Settings.SFX = state
+
+-- Gun
+do
+  local section = Tabs.Gun:Section({ Title = "Undetectable", Opened = true })
+  section:Toggle({
+    Title = "Triggerbot",
+    Desc = "Auto kill enemies in sight.",
+    Value = false,
+    Callback = function(state)
+      getgenv().Triggerbot = state
+      while getgenv().Triggerbot and task.wait(0.01) do
+        Trigger()
+      end
+    end
+  })
+  section:Input({
+    Title = "Shoot Cooldown",
+    Value = "3",
+    Placeholder = "In seconds, ex.: 3",
+    Callback = function(input)
+      Settings.Triggerbot.Cooldown = tonumber(input) or 0
+    end
+  })
+end
+do
+  local section = Tabs.Gun:Section({ Title = "Blatant", Opened = true })
+  section:Button({
+    Title = "Kill All",
+    Desc = "Kills everyone using your gun.",
+    Callback = function()
+      KillGun()
+    end
+  })
+  section:Toggle({
+    Title = "Auto Kill",
+    Desc = "Auto kills everyone.",
+    Value = false,
+    Callback = function(state)
+      getgenv().AutoGun = state
+      while getgenv().AutoGun and task.wait(1) do
+        KillGun()
+      end
+    end
+  })
+  section:Toggle({
+    Title = "Auto Equip Gun",
+    Desc = "Automatically equips your gun.",
+    Value = false,
+    Callback = function(state)
+      getgenv().PullGun = state
+      while getgenv().PullGun and task.wait(0.25) do
+        pcall(function()
+          local Gun = ReturnItem("Gun", "Backpack")
+          if Gun then Gun.Parent = eu.Character end
+        end)
+      end
+    end
+  })
+end
+do
+  local section = Tabs.Gun:Section({ Title = "Misc", Opened = true })
+  section:Toggle({
+    Title = "Spam Sound (FE)",
+    Desc = "Automatically spams the shoot sound.",
+    Value = false,
+    Callback = function(state)
+      getgenv().GunSound = state
+      while getgenv().GunSound and task.wait(Settings.SpamSoundCooldown) do
+        pcall(function()
+          local Gun = ReturnItem("Gun", "Character")
+          if Gun then Gun.fire:FireServer() end
+        end)
+      end
+    end
+  })
+  section:Input({
+    Title = "Sound Cooldown",
+    Value = "0.2",
+    Placeholder = "In seconds, ex.: 0.2",
+    Callback = function(input)
+      Settings.SpamSoundCooldown= tonumber(input) or 1
+    end
+  })
+end
+
+-- Knife
+do
+  local section = Tabs.Knife:Section({ Title = "Legit", Opened = true })
+  section:Toggle({
+    Title = "Auto Slash",
+    Desc = "Auto use your knife.",
+    Value = false,
+    Callback = function(state)
+      getgenv().AutoSlash = state
+      while getgenv().AutoSlash and task.wait(Settings.Slash.Cooldown) do
+        pcall(function()
+          local Knife = ReturnItem("Knife", "Character")
+          if Knife then Knife.Slash:FireServer() end
+        end)
+      end
+    end
+  })
+  section:Input({
+    Title = "Slash Cooldown",
+    Value = "0.5",
+    Placeholder = "In seconds, ex.: 0.5",
+    Callback = function(input)
+      Settings.Slash.Cooldown = tonumber(input) or 1
+    end
+  })
+end
+do
+  local section = Tabs.Knife:Section({ Title = "Blatant", Opened = true })
+  section:Button({
+    Title = "Kill All",
+    Desc = "Kills everyone using your knife.",
+    Callback = function()
+      KillKnife()
+    end
+  })
+  section:Toggle({
+    Title = "Auto Kill",
+    Desc = "Auto kills everyone.",
+    Value = false,
+    Callback = function(state)
+      getgenv().AutoKnife = state
+      while getgenv().AutoKnife and task.wait(0.1) do
+        KillKnife()
+      end
+    end
+  })
+  section:Toggle({
+    Title = "Auto Equip Knife",
+    Desc = "Automatically equips your knife.",
+    Value = false,
+    Callback = function(state)
+      getgenv().EquipKnife = state
+      while getgenv().EquipKnife and task.wait(0.25) do
+        pcall(function()
+          local Knife = ReturnItem("Knife", "Backpack")
+          if Knife then Knife.Parent = eu.Character end
+        end)
+      end
+    end
+  })
+end
+
+-- Boxes
+do
+  local section = Tabs.Boxes:Section({ Title = "Selected Box", Opened = true })
+  section:Dropdown({
+    Title = "Selected Box",
+    Values = { "Knife Box #1", "Knife Box #2", "Gun Box #1", "Gun Box #2", "Mythic Box #1", "Mythic Box #2", "Mythic Box #3", "Mythic Box #4" },
+    Value = Settings.Boxes.Selected,
+    Callback = function(option)
+      Settings.Boxes.Selected = option
+      if string.find(option, "Mythic") then
+        Settings.Boxes.Price = 1500
+      else
+        Settings.Boxes.Price = 500
+      end
+    end
+  })
+end
+do
+  local section = Tabs.Boxes:Section({ Title = "Buy Box", Opened = true })
+  section:Button({
+    Title = "Buy Box",
+    Desc = "Buys the selected box if you have money.",
+    Callback = BuyBox
+  })
+  section:Toggle({
+    Title = "Auto Buy",
+    Desc = "Auto buys the selected box.",
+    Value = false,
+    Callback = function(state)
+      getgenv().AutoBuy = state
+      while getgenv().AutoBuy and task.wait(1) do
+        pcall(function()
+          BuyBox()
+        end)
+      end
+    end
+  })
+end
+
+-- Teleport
+do
+  local section = Tabs.Teleport:Section({ Title = "Teleport to Map", Opened = true })
+  section:Dropdown({
+    Title = "Selected Map",
+    Values = {"Lobby", "Hotel", "Factory", "House", "Mansion", "MilBase", "Waiting Room"},
+    Value = "Lobby",
+    Callback = function(option)
+      if option == "Lobby" then
+        Settings.Teleport.CFrame = CFrame.new(-337, 76, 19)
+      elseif option == "Factory" then
+        Settings.Teleport.CFrame = CFrame.new(-1074, 113, 5437)
+      elseif option == "House" then
+        Settings.Teleport.CFrame = CFrame.new(408, 111, 6859)
+      elseif option == "Mansion" then
+        Settings.Teleport.CFrame = CFrame.new(-1175, 47, 6475)
+      elseif option == "MilBase" then
+        Settings.Teleport.CFrame = CFrame.new(-1186, 27, 3737)
+      elseif option == "Hotel" then
+        Settings.Teleport.CFrame = CFrame.new(677.19104, 95.9535522, 4991.19287)
+      elseif option == "Waiting Room" then
+        Settings.Teleport.CFrame = CFrame.new(1888.1405, -63.8421059, 78.9331055)
+      end
+    end
+  })
+  section:Button({
+    Title = "Teleport",
+    Desc = "Teleports you to the selected map.",
+    Callback = function()
+      pcall(function()
+        eu.Character.HumanoidRootPart.CFrame = Settings.Teleport.CFrame
+      end)
+    end
+  })
+end
+do
+  local section = Tabs.Teleport:Section({ Title = "Teleport Tool", Opened = true })
+  section:Button({
+    Title = "Get Teleport Tool",
+    Desc = "Gives you the teleport tool.",
+    Callback = function()
+      GetTP()
+    end
+  })
+  section:Button({
+    Title = "Remove Tool",
+    Desc = "Removes the teleport tool.",
+    Callback = function()
+      DelTP()
+    end
+  })
+  section:Toggle({
+    Title = "Permanent Tool",
+    Desc = "Auto get teleport tool.",
+    Value = false,
+    Callback = function(state)
+      getgenv().AutoTPe = state
+      while getgenv().AutoTPe and task.wait() do
+        pcall(function()
+          local function ToolsLoaded()
+            local Gun = ReturnItem("Gun")
+            local Knife = ReturnItem("Knife")
+            
+            if Gun and Knife then return true end
+          end
+          
+          if Settings.Teleport.Mode == "Tools Load" and (eu.Backpack:FindFirstChild("Teleport Tool") or eu.Character:FindFirstChild("Teleport Tool")) and not ToolsLoaded() then
+            DelTP()
+          elseif not eu.Backpack:FindFirstChild("Teleport Tool") and not eu.Character:FindFirstChild("Teleport Tool") then
+            if Settings.Teleport.Mode == "Tools Load" and ToolsLoaded() then
+              GetTP()
+            elseif Settings.Teleport.Mode == "Everytime" then
+              GetTP()
+            end
+          end
+        end)
+      end
+    end
+  })
+  section:Dropdown({
+    Title = "Get Tool When",
+    Values = { "Tools Load", "Everytime" },
+    Value = Settings.Teleport.Mode,
+    Callback = function(option)
+      Settings.Teleport.Mode = option
+    end
+  })
+end
+
+-- Keybinds
+do
+  local section = Tabs.Keybinds:Section({ Title = "Keybinds", Opened = true })
+  for _, bind in pairs(Settings.Keybinds) do
+    section:Keybind({
+      Title = bind.Title,
+      Value = bind.Bind,
+      Callback = function(v)
+        for _, obj in pairs(Settings.Keybinds) do
+          if obj.Title == bind.Title then
+            obj.Bind = v
+            return
+          end
+        end
+      end
+    })
   end
-})
+end
+do
+  local section = Tabs.Keybinds:Section({ Title = "Misc", Opened = true })
+  section:Toggle({
+    Title = "SFX",
+    Desc = "Cool sound effects.",
+    Value = Settings.SFX,
+    Callback = function(state)
+      Settings.SFX = state
+    end
+  })
+end
