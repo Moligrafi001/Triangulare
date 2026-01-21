@@ -4,7 +4,7 @@ local function LoadScript(path, name)
   local done, r1, r2, r3 = 0
   
   task.spawn(function()
-    r1 = game:HttpGet(KeySystem and "https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Initialize.lua" or "https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Test.lua")
+    r1 = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/" .. (KeySystem and "Initialize.lua" or "Test.lua"))
     done = done + 1
   end)
 
