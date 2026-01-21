@@ -90,6 +90,7 @@ local SupportedGames = {
   [9277195104] = {"games/Blind Shot.lua", "Blind Shot"},
   [372226183] = {"games/Flee The Facility.lua", "Flee The Facility"},
   [7957168819] = {"games/2 Player Fast Food Tycoon.lua", "2 Player Fast Food Tycoon"},
+  [9341457358] = {"games/Save The People.lua", "Save The People"},
 }
 local Game = SupportedGames[game.GameId] or SupportedGames[game.PlaceId]
 local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
