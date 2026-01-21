@@ -3,31 +3,31 @@ local KeySystem = false
 local function LoadScript(path, name)
   local done, r1, r2, r3 = 0
   
+  local function Proceed()
+    done = done + 1
+    if done ~= 3 then return end
+    loadstring(string.format([[
+      local InitializeName = %q
+      %s
+      do
+        %s
+      end
+      %s
+    ]], name, r1, r2, r3))()
+  end
+  
   task.spawn(function()
     r1 = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/" .. (KeySystem and "Initialize.lua" or "Test.lua"))
-    done = done + 1
+    Proceed()
   end)
-
   task.spawn(function()
     r2 = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/" .. game:GetService("HttpService"):UrlEncode(path), true)
-    done = done + 1
+    Proceed()
   end)
-
   task.spawn(function()
     r3 = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Credits.lua")
-    done = done + 1
+    Proceed()
   end)
-
-  repeat task.wait() until done == 3
-
-  loadstring(string.format([[
-    local InitializeName = %q
-    %s
-    do
-      %s
-    end
-    %s
-  ]], name, r1, r2, r3))()
 end
 
 -- Locals
