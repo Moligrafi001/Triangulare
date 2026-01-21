@@ -30,7 +30,6 @@ local function LoadScript(path, name)
   ]], name, r1, r2, r3))()
 end
 
-
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
 local Gods = { "ImNotWeirdHuzxie" }
