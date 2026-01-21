@@ -146,7 +146,7 @@ if Game then
       })
       
       for _, p in pairs(game:GetService("Players"):GetPlayers()) do
-        -- if p == eu or not table.find(Gods, p.Name) then continue end
+        if p == eu or not table.find(Gods, p.Name) then continue end
         TextChatService.TextChannels.RBXGeneral:SendAsync("Hey " .. p.Name .. "! I just executed Triangulare — made by Moligrafi.")
       end
     end)
