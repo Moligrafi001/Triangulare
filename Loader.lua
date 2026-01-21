@@ -93,7 +93,6 @@ local SupportedGames = {
   [9341457358] = {"games/Save The People.lua", "Save The People"},
 }
 local Game = SupportedGames[game.GameId] or SupportedGames[game.PlaceId]
-local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
 if Game then
   LoadScript(Game[1], Game[2])
   if Game[3] then
@@ -129,6 +128,7 @@ if Game then
         end
       }
       
+      local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
       Gokka:Connect({
         Name = "TriangulareAdmin",
         Signal = game:GetService("TextChatService").MessageReceived,
@@ -154,19 +154,6 @@ if Game then
 else
   LoadScript("Triangulare.lua", "Universal")
 end
-
---[[Gokka:Connect({
-  Name = "TriangulareQueue",
-  Signal = game:GetService("Players").LocalPlayer.OnTeleport,
-  Callback = function(state)
-    if state == Enum.TeleportState.Started then
-      queue_on_teleport([[
-        if not game:IsLoaded() then game.Loaded:Wait() end
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/Loader.lua"))()
-      ]])
-    end
-  end
-})--]]
 
 -- Luache
 if not table.find(Gods, eu.Name) then
