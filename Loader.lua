@@ -1,12 +1,7 @@
 -- Load Script
 local KeySystem = false
 local function LoadScript(path, name)
-  local Initialize
-  if KeySystem then
-    Initialize = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Initialize.lua")
-  else
-    Initialize = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Test.lua")
-  end
+  local Initialize = game:HttpGet(KeySystem and "https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Initialize.lua" or "https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Test.lua")
   
   local Script = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/" .. game:GetService("HttpService"):UrlEncode(path), true)
   local Credits = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Credits.lua")
