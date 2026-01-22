@@ -229,7 +229,7 @@ Tabs.Visuals:Toggle({
     
     if not state then return Set(false) end
     while getgenv().PlayerESP do
-      Set(true)
+      pcall(Set, true)
     task.wait(1) end
   end
 })
