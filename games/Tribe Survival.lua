@@ -126,29 +126,33 @@ LexSP:RegisterListener({
   Name = "NPCs",
   
   Validate = function(obj)
-    local name = obj.Name:lower()
-    if string.find(name, "trap") or name == "landmine" then
-      local MyTribe, Owner = eu:GetAttribute("ActiveTribe"), obj.Owner.Value
-      
-      if Owner == eu or MyTribe and Owner:GetAttribute("ActiveTribe") == MyTribe then return end
-      
-      for _, child in next, obj:GetChildren() do
-        pcall(function()
-          if child.Name == "Visual" then
-            child.Transparency = 0
-          end
-        end)
+    local ok = pcall(function()
+      local name = obj.Name:lower()
+      if string.find(name, "trap") or name == "landmine" then
+        local MyTribe, Owner = eu:GetAttribute("ActiveTribe"), obj.Owner.Value
+        
+        if Owner == eu or MyTribe and Owner:GetAttribute("ActiveTribe") == MyTribe then return end
+        
+        for _, child in next, obj:GetChildren() do
+          pcall(function()
+            if child.Name == "Visual" then
+              child.Transparency = 0
+            end
+          end)
+        end
+        
+        return true, {
+          TextLabel = {
+            Text = Owner.Name,
+            Adornee = obj,
+            
+            TextSize = 10
+          },
+        }
       end
-      
-      return true, {
-        TextLabel = {
-          Text = Owner.Name,
-          Adornee = obj,
-          
-          TextSize = 10
-        },
-      }
-    end
+    end)
+    if ok then return true end
+    return false
   end
 })
 
