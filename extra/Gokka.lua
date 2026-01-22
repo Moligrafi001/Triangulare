@@ -3,8 +3,10 @@ local Gokka = {}
 getgenv().GokkaConnections = getgenv().GokkaConnections or {}
 
 function Gokka:Connect(obj)
-  local name, parent, signal, callback = obj.Name, obj.Parent, obj.Signal, obj.Callback
-  signal = parent[signal]
+  local name, signal, callback = obj.Name, obj.Signal, obj.Callback
+  if obj.Parent then
+    signal = obj.Parent[signal]
+  end
 
 	local connections = getgenv().GokkaConnections
 	if connections[name] then connections[name]:Disconnect() end
