@@ -148,7 +148,7 @@ function Lib:BasicESP(data)
   }--]]
 end
 
-local Gokka = loadstring(readfile("Gokka.lua"))()
+local Gokka = loadstring(game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Gokka.lua"))()
 function Lib:RegisterListener(data)
   local from, name, validate = data.From, data.Name, data.Validate
   
