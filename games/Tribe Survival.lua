@@ -183,6 +183,7 @@ do
     Title = "Equip Food",
     Desc = "Equips food before eating and unequips it.",
     Value = false,
+    Locked = true,
     Callback = function(state)
       Settings.Pretend = state
     end
@@ -191,6 +192,7 @@ do
     Title = "Equip Time",
     Value = tostring(Settings.Pretend.Hold),
     Placeholder = "In seconds, e.g.: 0.25",
+    Locked = true,
     Callback = function(input)
       Settings.Pretend.Hold = tonumber(input) or 0.09
     end
