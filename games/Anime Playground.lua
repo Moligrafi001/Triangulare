@@ -77,14 +77,6 @@ local cuzinho = whitelist:Dropdown({
   end
 })
 whitelist:Button({
-  Title = "Refresh List",
-  Icon = "refresh-ccw",
-  Callback = function()
-    cuzinho:Refresh(whitelisteds)
-  end
-})
-
-whitelist:Button({
   Title = "Blacklist Player",
   Desc = "Removes the selected player from the whitelist",
   Icon = "gavel",
@@ -118,16 +110,17 @@ plist = whitelist:Dropdown({
   end
 })
 whitelist:Button({
-  Title = "Refresh List",
-  Icon = "refresh-ccw",
-  Callback = function()
-    plist:Refresh(GetPlayers())
-  end
-})
-whitelist:Button({
   Title = "Whitelist Player",
   Icon = "smile-plus",
   Callback = function()
+    if table.find(whitelisteds, towhite) then return end
     table.insert(whitelisteds, towhite)
   end
 })
+
+task.spawn(function()
+  while true do
+    cuzinho:Refresh(whitelisteds)
+    plist:Refresh(GetPlayers())
+  task.wait(1) end
+end)
