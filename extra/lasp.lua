@@ -114,6 +114,9 @@ function Lib:BasicESP(data)
     
     local beam = Folder:FindFirstChild("Tracer")
     if beam then
+      if not beam.Attachment0 then
+        beam.Attachment0 = origin
+      end
       for key, value in next, section do
         if not table.find(Blacklist, key) and not table.find({ "From", "To" }, key) and beam[key] ~= value then
           beam[key] = value
