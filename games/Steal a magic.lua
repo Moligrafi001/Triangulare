@@ -1,6 +1,7 @@
 -- Global Values
 getgenv().AutoCollect = false
 getgenv().AutoLock = false
+getgenv().AutoUnlock = false
 
 -- Locals
 local eu = game:GetService("Players").LocalPlayer
@@ -88,6 +89,21 @@ Tabs.Menu:Toggle({
   end
 })
 Tabs.Menu:Section({ Title = "Advanced" })
+Tabs.Menu:Toggle({
+  Title = "Auto Unlock",
+  Desc = "Automatically unlocks the selected plot.",
+  Value = false,
+  Callback = function(state)
+    getgenv().AutoUnlock = state
+    
+    while getgenv().AutoUnlock do
+      pcall(function()
+        local b = eu.PlayerGui.Main.UnLOckBseeThnn.Buy
+        firesignal(b.MouseButton1Click)
+      end)
+    task.wait(1) end
+  end
+})
 Tabs.Menu:Button({
   Title = "Force Prompts",
   Desc = "Force steal prompts to enable.",
