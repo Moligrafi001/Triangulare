@@ -126,6 +126,8 @@ LexSP:RegisterListener({
   Name = "NPCs",
   
   Validate = function(obj)
+    if not obj then return end
+    
     local name = obj.Name:lower()
     if string.find(name, "trap") or name == "landmine" then
       local MyTribe, Owner = eu:GetAttribute("ActiveTribe"), obj.Owner.Value
