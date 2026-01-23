@@ -81,9 +81,7 @@ whitelist:Button({
   Desc = "Removes the selected player from the whitelist",
   Icon = "gavel",
   Callback = function()
-    local index = table.find(whitelisteds, selectedplayer)
-    if not index then return end
-    table.remove(whitelisteds, index)
+    table.remove(whitelisteds, table.find(whitelisteds, selectedplayer))
     cuzinho:Refresh(whitelisteds)
   end
 })
@@ -125,5 +123,5 @@ whitelist:Button({
 task.spawn(function()
   while true do
     plist:Refresh(GetPlayers())
-  task.wait(10) end
+  task.wait(1) end
 end)
