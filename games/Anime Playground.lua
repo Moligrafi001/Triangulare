@@ -15,7 +15,7 @@ Window:SelectTab(1)
 -- Hit Aura
 local hitaura = Tabs.Menu:Section({ Title = "Hit Aura", Icon = "hand-fist", Opened = true })
 
-local hitrange, whitelisteds = 40, {}
+local hitrange, whitelisteds = 30, {}
 
 hitaura:Toggle({
   Title = "Hit Aura",
@@ -51,12 +51,12 @@ hitaura:Slider({
   Desc = "Max range to hit",
   Step = 1,
   Value = {
-    Min = 1,
-    Max = 20,
-    Default = hitrange / 2
+    Min = 5,
+    Max = 30,
+    Default = hitrange
   },
   Callback = function(value)
-    hitrange = value * 2
+    hitrange = value
   end
 })
 
