@@ -1,8 +1,9 @@
 -- Global Values
 getgenv().HitAura = false
+getgenv().DestAura = false
 
 -- Locals
-local Players = game:GetService("Players")
+local ReplicatedStorage, Players = game:GetService("ReplicatedStorage"), game:GetService("Players")
 local eu = Players.LocalPlayer
 
 -- Tabs
@@ -38,7 +39,7 @@ hitaura:Toggle({
       pcall(function()
         for _, enemy in pairs(GetNearby()) do
           pcall(function()
-            game:GetService("ReplicatedStorage").Library.Network.SendData:FireServer("PunchHitEnemy_RE", enemy)
+            ReplicatedStorage.Library.Network.SendData:FireServer("PunchHitEnemy_RE", enemy)
           end)
         end
       end)
@@ -56,6 +57,22 @@ hitaura:Slider({
   },
   Callback = function(value)
     hitrange = value * 2
+  end
+})
+
+hitaura:Divider()
+
+hitaura:Toggle({
+  Title = "Destructive Aura",
+  Desc = "Breaks things around you",
+  Callback = function(state)
+    getgenv().DestAura = state
+    
+    while getgenv().DestAura do
+      pcall(function()
+        ReplicatedStorage.Library.Network.SendData:FireServer("PunchCasted_RE")
+      end)
+    task.wait(0.1) end
   end
 })
 
