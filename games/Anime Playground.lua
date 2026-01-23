@@ -121,7 +121,7 @@ whitelist:Button({
 })
 
 task.spawn(function()
-  while true do
+  while task.wait(10) do
     plist:Refresh(GetPlayers())
-  task.wait(1) end
+  end
 end)
