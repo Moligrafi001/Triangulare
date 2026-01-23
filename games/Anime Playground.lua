@@ -90,6 +90,7 @@ whitelist:Divider()
 
 local plist, towhite
 
+local ptable = {}
 local function GetPlayers()
   local players = {}
   for _, p in pairs(Players:GetPlayers()) do
@@ -122,6 +123,10 @@ whitelist:Button({
 
 task.spawn(function()
   while task.wait(10) do
-    plist:Refresh(GetPlayers())
+    local newlist = GetPlayers()
+    if ptable ~= newlist then
+      ptable = newlist
+      plist:Refresh(GetPlayers())
+    end
   end
 end)
