@@ -121,38 +121,41 @@ Gokka:Connect({
   end
 })
 
-LexSP:RegisterListener({
-  From = workspace.Structures,
-  Name = "NPCs",
-  
-  Validate = function(obj)
-    if not obj then return end
-    
-    local name = obj.Name:lower()
-    if string.find(name, "trap") or name == "landmine" then
-      local MyTribe, Owner = eu:GetAttribute("ActiveTribe"), obj.Owner.Value
+task.spawn(function()
+  local attempt
+  repeat attempt = pcall(function()
+    LexSP:RegisterListener({
+      From = workspace.Structures,
+      Name = "NPCs",
       
-      if Owner == eu or MyTribe and Owner:GetAttribute("ActiveTribe") == MyTribe then return end
-      
-      for _, child in next, obj:GetChildren() do
-        pcall(function()
-          if child.Name == "Visual" then
-            child.Transparency = 0
-          end
-        end)
-      end
-      
-      return true, {
-        TextLabel = {
-          Text = Owner.Name,
-          Adornee = obj,
+      Validate = function(obj)
+        local name = obj.Name:lower()
+        if string.find(name, "trap") or name == "landmine" then
+          local MyTribe, Owner = eu:GetAttribute("ActiveTribe"), obj.Owner.Value
           
-          TextSize = 10
-        },
-      }
-    end
-  end
-})
+          if Owner == eu or MyTribe and Owner:GetAttribute("ActiveTribe") == MyTribe then return end
+          
+          for _, child in next, obj:GetChildren() do
+            pcall(function()
+              if child.Name == "Visual" then
+                child.Transparency = 0
+              end
+            end)
+          end
+          
+          return true, {
+            TextLabel = {
+              Text = Owner.Name,
+              Adornee = obj,
+              
+              TextSize = 10
+            },
+          }
+        end
+      end
+    })
+  end) task.wait(0.39) until attempt
+end)
 
 -- Tabs
 local Tabs = {
