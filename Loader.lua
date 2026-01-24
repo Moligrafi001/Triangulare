@@ -92,7 +92,11 @@ local SupportedGames = {
   [7957168819] = {"games/2 Player Fast Food Tycoon.lua", "2 Player Fast Food Tycoon"},
   [9341457358] = {"games/Save The People.lua", "Save The People"},
   [9363735110] = {"games/Escape Tsunami For Brainrots.lua", "Escape Tsunami For Brainrots"},
+  
+  -- Tribe Survival
   [6938955762] = {"games/Tribe Survival.lua", "Tribe Survival"},
+  [7334132838] = {"games/Tribe Survival.lua", "Tribe Survival"},
+  
   [8198700786] = {"games/Anime Playground.lua", "Anime Playground"},
 }
 local Game = SupportedGames[game.GameId] or SupportedGames[game.PlaceId]
