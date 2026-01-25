@@ -1,13 +1,20 @@
 -- Load Script
 local KeySystem = false
 local function LoadScript(path, name)
-  local done, r1, r2, r3 = 0
+  local done, repo = 0, "https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/"
+  local URLs = {
+    lib = "https://github.com/Footagesus/WindUI/releases/latest/download/main.lua",
+    init = repo .. "extra/" .. (KeySystem and "Initialize.lua" or "Test.lua"),
+    script = repo .. game:GetService("HttpService"):UrlEncode(path),
+    credits = repo .. "extra/Credits.lua"
+  }
   
   local function Proceed()
     done = done + 1
-    if done ~= 3 then return end
+    if done ~= 4 then return end
     loadstring(string.format([[
-      local InitializeName = %q
+      -- Library
+      local WindUI, InitializeName = loadstring(%q)(), %q
       %s
       Window:EditOpenButton({
         Title = "Triangulare",
@@ -24,25 +31,22 @@ local function LoadScript(path, name)
           Duration = 7
         })
       end
+      
+      -- Script
       do
         %s
       end
+      
+      -- Credits
       %s
-    ]], name, r1, r2, r3))()
+    ]], URLs.lib, name, URLs.init, URLs.script, URLs.credits))()
   end
-  
-  task.spawn(function()
-    r1 = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/" .. (KeySystem and "Initialize.lua" or "Test.lua"))
-    Proceed()
-  end)
-  task.spawn(function()
-    r2 = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/" .. game:GetService("HttpService"):UrlEncode(path), true)
-    Proceed()
-  end)
-  task.spawn(function()
-    r3 = game:HttpGet("https://raw.githubusercontent.com/Moligrafi001/Triangulare/main/extra/Credits.lua")
-    Proceed()
-  end)
+  for key, url in URLs do
+    task.spawn(function()
+      URLs[key] = game:HttpGet(url)
+      Proceed()
+    end)
+  end
 end
 
 -- Locals
