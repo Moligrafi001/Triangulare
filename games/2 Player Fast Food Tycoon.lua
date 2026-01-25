@@ -13,7 +13,7 @@ local Settings = {
 task.spawn(function()
   while true do
     local Plot = Settings.Plot
-    if Plot and not (Plot.Owner1.Value == eu or Plot.Owner2.Value == eu) or not Plot then
+    if Plot and not (Plot:FindFirstChild("Owner1") and Plot.Owner1.Value == eu or Plot:FindFirstChild("Owner2") and Plot.Owner2.Value == eu) or not Plot then
       Settings.Plot = (function()
         for _, plot in next, workspace.Tycoons:GetChildren() do
           local own1 = plot:FindFirstChild("Owner1")
