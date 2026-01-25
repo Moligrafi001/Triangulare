@@ -11,18 +11,16 @@ local Settings = {
 
 -- Load
 task.spawn(function()
-  while not Settings.Plot do
+  while true do
     for _, plot in next, workspace.Tycoons:GetChildren() do
       local own1 = plot:FindFirstChild("Owner1")
       if own1 and own1.Value == eu then
         Settings.Plot = plot.Player1
-        return
       end
       
       local own2 = plot:FindFirstChild("Owner2")
-      if own2 and own1.Value == eu then
+      if own2 and own2.Value == eu then
         Settings.Plot = plot.Player2
-        return
       end
     end
   task.wait(1) end
