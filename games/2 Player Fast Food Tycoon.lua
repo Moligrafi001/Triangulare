@@ -18,6 +18,7 @@ task.spawn(function()
         local own1 = plot:FindFirstChild("Owner1")
         if own1 and own1.Value == eu then
           Settings.Plot = plot.Player1
+          break
         end
         
         local own2 = plot:FindFirstChild("Owner2")
