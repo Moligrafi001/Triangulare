@@ -15,7 +15,7 @@ task.spawn(function()
     local Plot = Settings.Plot
     if Plot and not (Plot:FindFirstChild("Owner1") and Plot.Owner1.Value == eu or Plot:FindFirstChild("Owner2") and Plot.Owner2.Value == eu) or not Plot then
       Settings.Plot = (function()
-        for _, plot in next, workspace.Tycoons:GetChildren() do
+        for _, plot in workspace.Tycoons:GetChildren() do
           local own1 = plot:FindFirstChild("Owner1")
           if own1 and own1.Value == eu then
             return plot.Player1
@@ -35,7 +35,7 @@ end)
 local function CollectCrates()
   local r = eu.Character.HumanoidRootPart
   
-  for _, crate in next, workspace:GetChildren() do
+  for _, crate in workspace:GetChildren() do
     if crate.Name == "MoneyCrate" and crate:IsA("UnionOperation") and crate:FindFirstChild("Prompt") then
       local backup = r.CFrame
       r.CFrame = crate.CFrame * CFrame.new(0, 3, 0)
@@ -95,7 +95,7 @@ Tabs.Menu:Toggle({
     getgenv().AutoBuy = state
     while getgenv().AutoBuy do
       pcall(function()
-        for _, button in next, Settings.Plot.Buttons:GetChildren() do
+        for _, button in Settings.Plot.Buttons:GetChildren() do
           pcall(function()
             if button:GetAttribute("Price") <= eu.leaderstats.Cash.Value then
               local r, p = eu.Character.HumanoidRootPart, button.Head
