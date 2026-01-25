@@ -190,5 +190,4 @@ if not table.find(Gods, eu.Name) then
   })
 
   Luache:Implement("Everything")
-  
 end
