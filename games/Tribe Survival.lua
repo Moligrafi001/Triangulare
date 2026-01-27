@@ -85,8 +85,13 @@ local function SetEat(char)
       if Pretend and food.Parent ~= char then food.Parent = char end
       
       do
-        local FoodCost, Heal = food.Stats:GetAttribute("FoodCost"), food.Stats:GetAttribute("Heal")
-        local Health, MaxHealth, Resources = humanoid.Health, humanoid.MaxHealth, char.Resources:GetAttribute("Food")
+        local Resources, FoodCost = char.Resources:GetAttribute("Food"), food.Stats:GetAttribute("FoodCost")
+        if Resources < FoodCost then
+          Settings.Eating = false
+          return
+        end
+        
+        local Health, MaxHealth, Heal = humanoid.Health, humanoid.MaxHealth, food.Stats:GetAttribute("Heal")
         
         while Health < MaxHealth and Resources >= FoodCost do
           eu._Events.AddInput:FireServer({
