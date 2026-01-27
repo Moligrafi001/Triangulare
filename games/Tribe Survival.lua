@@ -93,7 +93,11 @@ local function SetEat(char)
           ["ButtonR2"] = 1
         })
         while Health < MaxHealth and Resources >= FoodCost do
-          food.FoodScripts.Eat:InvokeServer()
+          local attempt = food.FoodScripts.Eat:InvokeServer()
+          if not attempt then
+            Settings.Eating = false
+            return
+          end
           
           Resources, Health = Resources - FoodCost, Health + Heal
         task.wait() end
