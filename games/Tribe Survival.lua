@@ -88,11 +88,12 @@ local function SetEat(char)
         local FoodCost, Heal = food.Stats:GetAttribute("FoodCost"), food.Stats:GetAttribute("Heal")
         local Health, MaxHealth, Resources = humanoid.Health, humanoid.MaxHealth, char.Resources:GetAttribute("Food")
         
-        eu._Events.AddInput:FireServer({
-          ["ButtonX"] = 1,
-          ["ButtonR2"] = 1
-        })
         while Health < MaxHealth and Resources >= FoodCost do
+          eu._Events.AddInput:FireServer({
+            ["ButtonX"] = 1,
+            ["ButtonR2"] = 1
+          })
+        
           local attempt = food.FoodScripts.Eat:InvokeServer()
           if not attempt then
             Settings.Eating = false
