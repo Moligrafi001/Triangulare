@@ -34,7 +34,22 @@ local function LoadScript(path, name)
       
       -- Script
       do
-        %s
+        local ok, err = pcall(function()
+          loadstring(%q)()
+        end)
+        
+        if not ok then
+          setclipboard("-- FATAL ERROR REPORT --\n" .. tostring(err))
+          
+          warn("Critical Error: " .. tostring(err))
+          
+          WindUI:Notify({
+            Title = "Critical Bug!",
+            Content = "This is not normal behavior. The error log was copied to your clipboard, please report it in our server!",
+            Icon = "bug-play",
+            Duration = 9
+          })
+        end
       end
       
       -- Credits
