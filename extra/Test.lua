@@ -121,7 +121,7 @@ task.spawn(function()
     Icon = "shield-check",
     Duration = 5
   })
-  task.wait(300)
+  task.wait(math.random(300, 600))
   WindUI:Notify({
     Title = "Enjoying the script?",
     Content = "Consider donating or showcasing to support our work! Feel free to report any issues or suggest new features!",
