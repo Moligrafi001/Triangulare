@@ -18,24 +18,15 @@ local attacks = (function()
   local names = {}
   
   for _, obj in ReplicatedStorage.WeaponEvents:GetChildren() do
-    if obj.Name:find("Attack") then
+    if obj.Name:find("Attack") and not obj.Name:find("Special") then
       table.insert(names, obj.Name)
     end
   end
   
   return names
 end)()
-local selected, sword = ReplicatedStorage.WeaponEvents:FindFirstChild(attacks[1]), nil
+local selected, sword, cooldown = ReplicatedStorage.WeaponEvents:FindFirstChild(attacks[1]), nil, 0.05
 
-killaura:Dropdown({
-  Title = "Selected Sword",
-  Values = attacks,
-  Value = selected.Name,
-  Callback = function(option)
-    selected = ReplicatedStorage.WeaponEvents:FindFirstChild(option)
-  end
-
-})
 killaura:Toggle({
   Title = "Kill Aura",
   Desc = "Kills enemies around you",
@@ -52,6 +43,25 @@ killaura:Toggle({
         
         selected:FireServer(sword.Handle.Swing, sword.Handle.HitSound, sword.Handle:FindFirstChildOfClass("Attachment"), sword.Highlight)
       end)
-    task.wait(0.05) end
+    task.wait(cooldown) end
+  end
+})
+
+killaura:Divider()
+
+killaura:Dropdown({
+  Title = "Selected Sword Damage",
+  Values = attacks,
+  Value = selected.Name,
+  Callback = function(option)
+    selected = ReplicatedStorage.WeaponEvents:FindFirstChild(option)
+  end
+})
+killaura:Input({
+  Title = "Hit Cooldown",
+  Value = tostring(cooldown),
+  Placeholder = "Numbers only, ex.: 0.1",
+  Callback = function(input)
+    cooldown = tonumber(input) or 1
   end
 })
