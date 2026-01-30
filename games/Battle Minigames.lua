@@ -36,7 +36,7 @@ killaura:Toggle({
     
     while getgenv().KillAura do
       pcall(function()
-        if not sword or not sword.Parent then
+        if not sword or not sword.Parent or not (sword.Parent == eu.Backpack or sword.Parent == eu.Character) then
           sword = eu.Character:FindFirstChildOfClass("Tool")
           if not sword then return end
         end
