@@ -60,7 +60,7 @@ killaura:Dropdown({
 killaura:Input({
   Title = "Hit Cooldown",
   Value = tostring(cooldown),
-  Placeholder = "Numbers only, ex.: 0.1",
+  Placeholder = "In seconds, e.g.: 0.1",
   Callback = function(input)
     cooldown = tonumber(input) or 1
   end
