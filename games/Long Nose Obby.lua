@@ -22,12 +22,13 @@ local Tabs = {
 Window:SelectTab(1)
 
 -- Menu
-Tabs.Menu:Button({
+local section = Tabs.Menu:Section({ Title = "Checkpoint", Icon = "square-code", Opened = true })
+section:Button({
   Title = "Skip Stage",
   Desc = "Skips the current stage",
   Callback = SkipStage
 })
-Tabs.Menu:Toggle({
+section:Toggle({
   Title = "Auto Skip",
   Desc = "Automatically skips stages",
   Value = false,
