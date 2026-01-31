@@ -128,7 +128,7 @@ devs:Paragraph({
 })
 devs:Paragraph({
   Title = T.CoDevsTitle,
-  Desc = "Discord: @_prismx\nDiscord: @zylxex",
+  Desc = "Discord: @workwithmoney\nDiscord: @zylxex",
 })
 local server = credits:Section({ Title = T.DiscordSection, Icon = "server", Opened = true })
 server:Paragraph({
