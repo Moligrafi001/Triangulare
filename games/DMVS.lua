@@ -64,22 +64,13 @@ local function GetClassOf(class)
 end
 local function ReturnItem(class, where)
   if not eu.Character or not eu:GetAttribute("Game") then return end
-  local function SearchIn(parent)
-    for _, item in pairs(eu[parent]:GetChildren()) do
-      if item:IsA("Tool") and ((class == "Gun" and item:FindFirstChild("fire") and item:FindFirstChild("showBeam") and item:FindFirstChild("kill")) or (class == "Knife" and item:FindFirstChild("Slash"))) then
-        Settings.Cache[class] = item
-        return item
-      end
-    end
-  end
 
   local item = Settings.Cache[class]
-  if item and item.Parent and (where and item.Parent == eu[where] or not where and (item.Parent == eu.Backpack or item.Parent == eu.Character)) then
-    if not where or item.Parent == eu[where] then return item end
-    return
+  if item and item.Parent and (item.Parent == eu.Character or item.Parent == eu.Backpack) then
+    return item.Parent == eu[where] and item
+  else
+    return eu[where]:FindFirstChild(class == "Gun" and eu.EquippedGun.Value or class == "Knife" and eu.EquippedKnife.Value)
   end
-  
-  return where and SearchIn(where) or SearchIn("Character") or SearchIn("Backpack")
 end
 local function PlaySound(id)
   task.spawn(function()
@@ -322,7 +313,7 @@ end)
 
 -- Tabs
 local Tabs = {
-  Menu = Window:Tab({ Title = "Main", Icon = "leaf"}),
+  Menu = Window:Tab({ Title = "Main", Icon = "house"}),
   Gun = Window:Tab({ Title = "Gun", Icon = "skull"}),
   Knife = Window:Tab({ Title = "Knife", Icon = "sword"}),
   Boxes = Window:Tab({ Title = "Boxes", Icon = "box"}),
@@ -333,7 +324,7 @@ Window:SelectTab(1)
 
 -- Menu
 do
-  local section = Tabs.Menu:Section({ Title = "Player ESP", Opened = true })
+  local section = Tabs.Menu:Section({ Title = "Player ESP", Icon = "scan-eye", Opened = true })
   section:Toggle({
     Title = "Player ESP",
     Desc = "Extra Sensorial Experience.",
@@ -346,14 +337,14 @@ do
   section:Colorpicker({
     Title = "ESP Color",
     Default = CorInocente,
-    Locked = true,
     Callback = function(color)
-      CorInocente = Color3.new(color)
+      CorInocente = color
     end
   })
 end
+Tabs.Menu:Divider()
 do
-  local section = Tabs.Menu:Section({ Title = "Hitbox Expander", Opened = true })
+  local section = Tabs.Menu:Section({ Title = "Hitbox Expander", Icon = "scaling", Opened = true })
   section:Toggle({
     Title = "Expand Hitboxes",
     Desc = "Bigger hitboxes.",
@@ -397,7 +388,7 @@ end
 
 -- Gun
 do
-  local section = Tabs.Gun:Section({ Title = "Undetectable", Opened = true })
+  local section = Tabs.Gun:Section({ Title = "Undetectable", Icon = "megaphone-off", Opened = true })
   section:Toggle({
     Title = "Triggerbot",
     Desc = "Auto kill enemies in sight.",
@@ -418,8 +409,9 @@ do
     end
   })
 end
+Tabs.Gun:Divider()
 do
-  local section = Tabs.Gun:Section({ Title = "Blatant", Opened = true })
+  local section = Tabs.Gun:Section({ Title = "Blatant", Icon = "gavel", Opened = true })
   section:Button({
     Title = "Kill All",
     Desc = "Kills everyone using your gun.",
@@ -453,8 +445,9 @@ do
     end
   })
 end
+Tabs.Gun:Divider()
 do
-  local section = Tabs.Gun:Section({ Title = "Misc", Opened = true })
+  local section = Tabs.Gun:Section({ Title = "Misc", Icon = "ferris-wheel", Opened = true })
   section:Toggle({
     Title = "Spam Sound (FE)",
     Desc = "Automatically spams the shoot sound.",
@@ -481,7 +474,7 @@ end
 
 -- Knife
 do
-  local section = Tabs.Knife:Section({ Title = "Legit", Opened = true })
+  local section = Tabs.Knife:Section({ Title = "Legit", Icon = "dumbbell", Opened = true })
   section:Toggle({
     Title = "Auto Slash",
     Desc = "Auto use your knife.",
@@ -505,8 +498,9 @@ do
     end
   })
 end
+Tabs.Knife:Divider()
 do
-  local section = Tabs.Knife:Section({ Title = "Blatant", Opened = true })
+  local section = Tabs.Knife:Section({ Title = "Blatant", Icon = "gavel", Opened = true })
   section:Button({
     Title = "Kill All",
     Desc = "Kills everyone using your knife.",
@@ -543,7 +537,7 @@ end
 
 -- Boxes
 do
-  local section = Tabs.Boxes:Section({ Title = "Selected Box", Opened = true })
+  local section = Tabs.Boxes:Section({ Title = "Selected Box", Icon = "package", Opened = true })
   section:Dropdown({
     Title = "Selected Box",
     Values = { "Knife Box #1", "Knife Box #2", "Gun Box #1", "Gun Box #2", "Mythic Box #1", "Mythic Box #2", "Mythic Box #3", "Mythic Box #4" },
@@ -558,8 +552,9 @@ do
     end
   })
 end
+Tabs.Boxes:Divider()
 do
-  local section = Tabs.Boxes:Section({ Title = "Buy Box", Opened = true })
+  local section = Tabs.Boxes:Section({ Title = "Buy Box", Icon = "circle-dollar-sign", Opened = true })
   section:Button({
     Title = "Buy Box",
     Desc = "Buys the selected box if you have money.",
@@ -582,7 +577,7 @@ end
 
 -- Teleport
 do
-  local section = Tabs.Teleport:Section({ Title = "Teleport to Map", Opened = true })
+  local section = Tabs.Teleport:Section({ Title = "Teleport to Map", Icon = "map", Opened = true })
   section:Dropdown({
     Title = "Selected Map",
     Values = {"Lobby", "Hotel", "Factory", "House", "Mansion", "MilBase", "Waiting Room"},
@@ -615,8 +610,9 @@ do
     end
   })
 end
+Tabs.Teleport:Divider()
 do
-  local section = Tabs.Teleport:Section({ Title = "Teleport Tool", Opened = true })
+  local section = Tabs.Teleport:Section({ Title = "Teleport Tool", Icon = "wrench", Opened = true })
   section:Button({
     Title = "Get Teleport Tool",
     Desc = "Gives you the teleport tool.",
@@ -671,7 +667,7 @@ end
 
 -- Keybinds
 do
-  local section = Tabs.Keybinds:Section({ Title = "Keybinds", Opened = true })
+  local section = Tabs.Keybinds:Section({ Title = "Keybinds", Icon = "keyboard", Opened = true })
   for _, bind in pairs(Settings.Keybinds) do
     section:Keybind({
       Title = bind.Title,
@@ -687,8 +683,9 @@ do
     })
   end
 end
+Tabs.Keybinds:Divider()
 do
-  local section = Tabs.Keybinds:Section({ Title = "Misc", Opened = true })
+  local section = Tabs.Keybinds:Section({ Title = "Misc", Icon = "ferris-wheel", Opened = true })
   section:Toggle({
     Title = "SFX",
     Desc = "Cool sound effects.",
