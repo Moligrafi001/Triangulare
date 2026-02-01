@@ -34,9 +34,38 @@ section:Toggle({
   Value = false,
   Callback = function(state)
     getgenv().AutoSkip = state
-    
+
     while getgenv().AutoSkip do
       pcall(SkipStage)
     task.wait(0.1) end
+  end
+})
+
+ Tabs.Menu:Divider()
+ 
+ local section2 = Tabs.Menu:Section({ Title = "Teleport to Stage", Icon = "shell", Opened = true })
+local selected = "1"
+section2:Dropdown({
+  Title = "Selected Stage",
+  Values = (function()
+    local stages = {}
+    
+    for i = 0, #workspace.Checkpoints:GetChildren() do
+      table.insert(stages, stage.Name)
+    end
+    
+    return stages
+  end)(),
+  Value = selected,
+  Callback = function(option)
+    selected = option
+  end
+})
+section2:Divider()
+section2:Button({
+  Title = "Teleport",
+  Desc = "Teleports you to the stage of your choice",
+  Callback = function()
+    TeleportToLevel(selected)
   end
 })
