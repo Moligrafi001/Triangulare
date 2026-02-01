@@ -50,8 +50,8 @@ section2:Dropdown({
   Values = (function()
     local stages = {}
     
-    for _, stage in workspace.Checkpoints:GetChildren() do
-      table.insert(stages, stage.Name)
+    for i = 0, #workspace.Checkpoints:GetChildren() do
+      table.insert(stages, tostring(i))
     end
     
     return stages
