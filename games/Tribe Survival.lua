@@ -99,7 +99,7 @@ local function SetEat(char)
             ["ButtonR2"] = 1
           })
         
-          local attempt = food.FoodScripts.Eat:InvokeServer()
+          local attempt = food.FoodScripts.Eat:InvokeServer("{ef344612-38da-495c-9ea3-101bc4bf9c09} ", 618.569012634005, true, false)
           if not attempt then
             Settings.Eating = false
             return
