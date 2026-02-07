@@ -88,7 +88,7 @@ do
       local name = arcade.Name
       arcade = require(arcade)
       
-      local final = string.format("%s [ %s ]", name, arcade.Price)
+      local final = string.format("%s [ %s ]", name, arcade.Price or "???")
       if not table.find(Values, final) then
         table.insert(Values, final)
       end
