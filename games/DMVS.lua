@@ -39,7 +39,6 @@ local Settings = {
     Gun = nil
   }
 }
-local HitSize = 5
 local CorInocente = Color3.new(1, 0.5, 0)
 
 -- Almost
@@ -345,13 +344,16 @@ end
 Tabs.Menu:Divider()
 do
   local section = Tabs.Menu:Section({ Title = "Hitbox Expander", Icon = "scaling", Opened = true })
+  
+  local HitSize = 5
+  
   section:Toggle({
     Title = "Expand Hitboxes",
     Desc = "Bigger hitboxes.",
     Value = false,
     Callback = function(state)
       getgenv().HitBox = state
-      while getgenv().HitBox and wait(1) do
+      while getgenv().HitBox do
         pcall(function()
           for _, enemy in pairs(GetClassOf("Enemies")) do
             local char = enemy.Character
@@ -363,7 +365,7 @@ do
             end
           end
         end)
-      end
+      task.wait(1) end
       if not getgenv().HitBox then
         for _, enemy in pairs(GetClassOf("Enemies")) do
           local char = enemy.Character
@@ -395,9 +397,9 @@ do
     Value = false,
     Callback = function(state)
       getgenv().Triggerbot = state
-      while getgenv().Triggerbot and task.wait(0.01) do
+      while getgenv().Triggerbot do
         Trigger()
-      end
+      task.wait(0.01) end
     end
   })
   section:Input({
@@ -425,9 +427,9 @@ do
     Value = false,
     Callback = function(state)
       getgenv().AutoGun = state
-      while getgenv().AutoGun and task.wait(1) do
+      while getgenv().AutoGun do
         KillGun()
-      end
+      task.wait(1) end
     end
   })
   section:Toggle({
@@ -436,12 +438,12 @@ do
     Value = false,
     Callback = function(state)
       getgenv().PullGun = state
-      while getgenv().PullGun and task.wait(0.25) do
+      while getgenv().PullGun do
         pcall(function()
           local Gun = ReturnItem("Gun", "Backpack")
           if Gun then Gun.Parent = eu.Character end
         end)
-      end
+      task.wait(0.25) end
     end
   })
 end
@@ -454,12 +456,12 @@ do
     Value = false,
     Callback = function(state)
       getgenv().GunSound = state
-      while getgenv().GunSound and task.wait(Settings.SpamSoundCooldown) do
+      while getgenv().GunSound do
         pcall(function()
           local Gun = ReturnItem("Gun", "Character")
           if Gun then Gun.fire:FireServer() end
         end)
-      end
+      task.wait(Settings.SpamSoundCooldown) end
     end
   })
   section:Input({
@@ -481,12 +483,12 @@ do
     Value = false,
     Callback = function(state)
       getgenv().AutoSlash = state
-      while getgenv().AutoSlash and task.wait(Settings.Slash.Cooldown) do
+      while getgenv().AutoSlash do
         pcall(function()
           local Knife = ReturnItem("Knife", "Character")
           if Knife then Knife.Slash:FireServer() end
         end)
-      end
+      task.wait(Settings.Slash.Cooldown) end
     end
   })
   section:Input({
@@ -566,11 +568,11 @@ do
     Value = false,
     Callback = function(state)
       getgenv().AutoBuy = state
-      while getgenv().AutoBuy and task.wait(1) do
+      while getgenv().AutoBuy do
         pcall(function()
           BuyBox()
         end)
-      end
+      task.wait(1) end
     end
   })
 end
@@ -633,7 +635,7 @@ do
     Value = false,
     Callback = function(state)
       getgenv().AutoTPe = state
-      while getgenv().AutoTPe and task.wait() do
+      while getgenv().AutoTPe do
         pcall(function()
           local function ToolsLoaded()
             local Gun = ReturnItem("Gun")
@@ -652,7 +654,7 @@ do
             end
           end
         end)
-      end
+      task.wait() end
     end
   })
   section:Dropdown({
