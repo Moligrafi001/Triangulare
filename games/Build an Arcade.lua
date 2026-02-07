@@ -13,7 +13,7 @@ local Settings = {
 task.spawn(function()
   Settings.Plot = (function()
     for _, plot in next, workspace.Plots:GetChildren() do
-      if plot.Owner == eu then
+      if plot.Owner.Value == eu then
         Settings.Plot = plot
       end
     end
