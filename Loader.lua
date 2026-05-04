@@ -95,6 +95,7 @@ local SupportedGames = {
   [7294208165] = { "games/24 Hours in Elevator.lua" },
   [7750682571] = { "games/2 Player Labubu Tycoon.lua" },
   [7691800287] = { "games/Stick Battles.lua" },
+  [9758688665] = { "games/Steal a Brainrot Base.lua" },
   [7037847546] = { "games/Critical Fantasy.lua" },
   [7911733012] = { "games/Steal a magic.lua" },
   [3261957210] = { "games/Thanos Simulator.lua" },
