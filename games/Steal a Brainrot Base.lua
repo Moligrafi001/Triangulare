@@ -149,27 +149,6 @@ ProtectSection:Button({
 local InfoTab = Window:Tab({ Title = "INFO", Icon = "solar:info-square-bold", Border = true })
 local InfoSec = InfoTab:Section({ Title = "📌 STEAL THE BRAINROT BASE", Opened = true })
 
-InfoSec:Section({ Title = "⚙ PET ACCESS", TextSize = 18 })
-InfoSec:Section({ Title = "Enable All Proximity Prompts", TextSize = 15, TextTransparency = 0.35 })
-InfoSec:Section({ Title = "Enables all prompts from Base1 to Base13", TextSize = 14, TextTransparency = 0.5 })
-InfoSec:Section({ Title = "Each base has Slot1 to Slot10", TextSize = 14, TextTransparency = 0.5 })
-InfoSec:Space()
-
-InfoSec:Section({ Title = "🛡️ PROTECTIONS", TextSize = 18 })
-InfoSec:Section({ Title = "Remove Guards & Lasers", TextSize = 15, TextTransparency = 0.35 })
-InfoSec:Section({ Title = "Deletes all LocalNPCs (base guards)", TextSize = 14, TextTransparency = 0.5 })
-InfoSec:Section({ Title = "Deletes all lasers from Base1 to Base13", TextSize = 14, TextTransparency = 0.5 })
-InfoSec:Space()
-
-InfoSec:Section({ Title = "📂 PATH STRUCTURE", TextSize = 18 })
-InfoSec:Section({ Title = "Workspace.Bases.BaseX.Slots.SlotX.Spawn.SpawnedItem.Part.ProximityPrompt", TextSize = 14, TextTransparency = 0.5 })
-InfoSec:Space()
-
-InfoSec:Section({ Title = "🎮 CONTROLS", TextSize = 18 })
-InfoSec:Section({ Title = "Right Shift → Open/Close GUI", TextSize = 15, TextTransparency = 0.35 })
-InfoSec:Section({ Title = "Click buttons to activate features", TextSize = 14, TextTransparency = 0.5 })
-InfoSec:Space()
-
 InfoSec:Section({ Title = "📢 CREDITS", TextSize = 18 })
 InfoSec:Section({ Title = "Game: Steal The Brainrot Base", TextSize = 15, TextTransparency = 0.35 })
 InfoSec:Section({ Title = "Discord: discord-baranqqs", TextSize = 15, TextTransparency = 0.35 })
