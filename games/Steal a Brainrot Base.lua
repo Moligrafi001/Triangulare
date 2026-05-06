@@ -6,21 +6,17 @@ game:GetService("UserInputService").InputBegan:Connect(function(input)
     end
 end)
 
+
 local watchedSpawns = {}
 
 local function EnablePromptFromSpawn(spawn)
     local spawnedItem = spawn:FindFirstChild("SpawnedItem")
     if not spawnedItem then return false end
-
     local part = spawnedItem:FindFirstChild("Part")
     if not part then return false end
-
     local prompt = part:FindFirstChild("ProximityPrompt")
     if not prompt then return false end
-
     prompt.Enabled = true
-
-    
     task.spawn(function()
         while prompt and prompt.Parent do
             if not prompt.Enabled then
@@ -29,48 +25,33 @@ local function EnablePromptFromSpawn(spawn)
             task.wait(0.2)
         end
     end)
-
     return true
 end
 
 local function WatchSpawn(baseNum, slotNum)
     local base = workspace:FindFirstChild("Bases"):FindFirstChild("Base" .. baseNum)
     if not base then return false end
-
     local slots = base:FindFirstChild("Slots")
     if not slots then return false end
-
     local slot = slots:FindFirstChild("Slot" .. slotNum)
     if not slot then return false end
-
     local spawn = slot:FindFirstChild("Spawn")
     if not spawn then return false end
-
-    
     EnablePromptFromSpawn(spawn)
-
-   
-    if watchedSpawns[spawn] then
-        return true
-    end
-
+    if watchedSpawns[spawn] then return true end
     watchedSpawns[spawn] = true
-
-    
     spawn.ChildAdded:Connect(function(child)
         if child.Name == "SpawnedItem" then
             task.wait(0.1)
             EnablePromptFromSpawn(spawn)
         end
     end)
-
     return true
 end
 
 local function EnableAllPrompts()
     local count = 0
     local failed = 0
-
     for base = 1, 13 do
         for slot = 1, 10 do
             if WatchSpawn(base, slot) then
@@ -78,40 +59,69 @@ local function EnableAllPrompts()
             else
                 failed = failed + 1
             end
-
             task.wait()
         end
     end
-
     return count, failed
 end
 
-local success, failed = EnableAllPrompts()
-print("Enabled:", success, "Failed:", failed)
 
-local MainTab = Window:Tab({ Title = "MAIN", Icon = "solar:home-bold", Border = true })
+local eu = game:GetService("Players").LocalPlayer
 
-local AccessSection = MainTab:Section({ Title = "🐾 PET ACCESS", Opened = true })
+local function CollectItems()
+    local r = eu.Character and eu.Character:FindFirstChild("HumanoidRootPart")
+    if not r then return 0 end
+    
+    local plotName = "Plot_" .. eu.Name
+    local plot = workspace:FindFirstChild(plotName)
+    if not plot then return 0 end
+    
+    local collected = 0
+    
+    for floorNum = 1, 30 do
+        local floor = plot:FindFirstChild("Floor" .. floorNum)
+        if floor then
+            local slots = floor:FindFirstChild("Slots")
+            if slots then
+                for _, slot in pairs(slots:GetChildren()) do
+                    if slot:GetAttribute("HasItem") then
+                        local collectButton = slot:FindFirstChild("CollectButton")
+                        if collectButton then
+                            local touchPart = collectButton:FindFirstChild("Touch")
+                            if touchPart then
+                                firetouchinterest(r, touchPart, 1)
+                                firetouchinterest(r, touchPart, 0)
+                                collected = collected + 1
+                                task.wait(0.05)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    
+    return collected
+end
 
-AccessSection:Button({
-    Title = "🔓 ENABLE ALL PROXIMITY PROMPTS",
-    Desc = "Enables all prompts from Base1-13, Slot1-10",
-    Icon = "solar:hand-palm-bold",
+
+local MainTab = Window:Tab({ Title = "PET", Icon = "solar:brain-bold", Border = true })
+local MainSection = MainTab:Section({ Title = "ACCESS", Opened = true })
+MainSection:Button({
+    Title = "ENABLE ALL",
     Color = Color3.fromRGB(52, 199, 89),
     Justify = "Center",
     Callback = function()
         local count, failed = EnableAllPrompts()
-        WindUI:Notify({ Title = "✅ PROMPTS ENABLED", Content = count .. " activated, " .. failed .. " failed", Duration = 3, Icon = "solar:check-circle-bold" })
+        WindUI:Notify({ Title = "DONE", Content = count .. " / " .. failed, Duration = 2 })
     end
 })
 
-local ProtectSection = MainTab:Section({ Title = "🛡️ PROTECTIONS", Opened = true })
-
+local ProtectTab = Window:Tab({ Title = "CLEAN", Icon = "solar:shield-bold", Border = true })
+local ProtectSection = ProtectTab:Section({ Title = "REMOVE", Opened = true })
 ProtectSection:Button({
-    Title = "🧹 REMOVE GUARDS & LASERS",
-    Desc = "Removes LocalNPCs and all lasers from Base1-13",
-    Icon = "solar:trash-bin-trash-bold",
-    Color = Color3.fromRGB(255, 80, 80),
+    Title = "GUARDS & LASERS",
+    Color = Color3.fromRGB(239, 79, 29),
     Justify = "Center",
     Callback = function()
         local guardCount = 0
@@ -124,7 +134,6 @@ ProtectSection:Button({
                 end
             end
         end
-        
         local laserCount = 0
         local bases = workspace:FindFirstChild("Bases")
         if bases then
@@ -141,28 +150,73 @@ ProtectSection:Button({
                 end
             end
         end
-        
-        WindUI:Notify({ Title = "🗑️ REMOVED", Content = guardCount .. " guards, " .. laserCount .. " lasers", Duration = 3, Icon = "solar:trash-bin-trash-bold" })
+        WindUI:Notify({ Title = "DONE", Content = guardCount .. " / " .. laserCount, Duration = 2 })
     end
 })
 
-local InfoTab = Window:Tab({ Title = "INFO", Icon = "solar:info-square-bold", Border = true })
-local InfoSec = InfoTab:Section({ Title = "📌 STEAL THE BRAINROT BASE", Opened = true })
-
-InfoSec:Section({ Title = "📢 CREDITS", TextSize = 18 })
-InfoSec:Section({ Title = "Game: Steal The Brainrot Base", TextSize = 15, TextTransparency = 0.35 })
-InfoSec:Section({ Title = "Discord: discord-baranqqs", TextSize = 15, TextTransparency = 0.35 })
-InfoSec:Section({ Title = "Version: 2.0", TextSize = 14, TextTransparency = 0.5 })
-
-InfoTab:Space()
-InfoTab:Button({
-    Title = "❌ DESTROY GUI",
-    Icon = "solar:trash-bin-trash-bold",
-    Color = Color3.fromRGB(239, 79, 29),
+local CollectTab = Window:Tab({ Title = "FARM", Icon = "solar:dollar-bold", Border = true })
+local CollectSection = CollectTab:Section({ Title = "AUTO", Opened = true })
+CollectSection:Button({
+    Title = "COLLECT ALL",
+    Color = Color3.fromRGB(52, 199, 89),
     Justify = "Center",
     Callback = function()
-        Window:Destroy()
+        local count = CollectItems()
+        WindUI:Notify({ Title = "DONE", Content = count .. " collected", Duration = 2 })
     end
 })
 
-WindUI:Notify({ Title = "STEAL THE BRAINROT BASE", Content = "Ready | Right Shift to toggle", Duration = 3, Icon = "solar:brain-bold" })
+local TeleportTab = Window:Tab({ Title = "TP", Icon = "solar:map-point-bold", Border = true })
+local TeleportSection = TeleportTab:Section({ Title = "LOCATIONS", Opened = true })
+
+TeleportSection:Button({
+    Title = "LAB",
+    Color = Color3.fromRGB(0, 122, 255),
+    Justify = "Center",
+    Callback = function()
+        local char = eu.Character
+        if char then
+            local root = char:FindFirstChild("HumanoidRootPart")
+            if root then
+                root.CFrame = CFrame.new(3, -179, 220)
+                WindUI:Notify({ Title = "DONE", Content = "Laboratory", Duration = 1 })
+            end
+        end
+    end
+})
+
+TeleportSection:Space()
+TeleportSection:Button({
+    Title = "EASTER",
+    Color = Color3.fromRGB(255, 200, 100),
+    Justify = "Center",
+    Callback = function()
+        local char = eu.Character
+        if char then
+            local root = char:FindFirstChild("HumanoidRootPart")
+            if root then
+                root.CFrame = CFrame.new(4, -115, 222)
+                WindUI:Notify({ Title = "DONE", Content = "Easter", Duration = 1 })
+            end
+        end
+    end
+})
+
+TeleportSection:Space()
+TeleportSection:Button({
+    Title = "SPAWN",
+    Color = Color3.fromRGB(100, 200, 100),
+    Justify = "Center",
+    Callback = function()
+        local char = eu.Character
+        if char then
+            local root = char:FindFirstChild("HumanoidRootPart")
+            if root then
+                root.CFrame = CFrame.new(1, 3, 4)
+                WindUI:Notify({ Title = "DONE", Content = "Spawn", Duration = 1 })
+            end
+        end
+    end
+})
+
+WindUI:Notify({ Title = "READY", Content = "Right Shift", Duration = 2 })
