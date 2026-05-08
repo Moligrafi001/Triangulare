@@ -229,7 +229,7 @@ TeleportSection:Button({
         if char then
             local root = char:FindFirstChild("HumanoidRootPart")
             if root then
-                root.CFrame = CFrame.new(-345, 200, 250)
+                root.CFrame = CFrame.new(1, 15, 452)
                 WindUI:Notify({ Title = "DONE", Content = "Ancient Knight's Base", Duration = 1 })
             end
         end
