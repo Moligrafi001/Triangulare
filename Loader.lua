@@ -79,7 +79,7 @@ local SupportedGames = {
   [7155018773] = { "games/DMVS.lua", "[Testing] DMvsS" },
   
   [7606156849] = { "games/Make a Sprunki Tycoon.lua", "Make a Sprunki Tycoon!" },
-  [9876258060] = { "games/Coding Similator 2.lua", "Coding sim 2" },
+  [9876258060] = { "games/Coding Similator 2.lua", "Coding Similator 2" },
   [7118588325] = { "games/Fast Food Simulator.lua" }, 
   [4931927012] = { "games/Basketball Legends.lua" },
   [4430449940] = { "games/Saber Showdown.lua" },
