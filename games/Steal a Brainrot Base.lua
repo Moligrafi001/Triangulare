@@ -219,4 +219,21 @@ TeleportSection:Button({
     end
 })
 
+TeleportSection:Space()
+TeleportSection:Button({
+    Title = "🏰 ANCIENT KNIGHT'S BASE",
+    Color = Color3.fromRGB(150, 100, 200),
+    Justify = "Center",
+    Callback = function()
+        local char = eu.Character
+        if char then
+            local root = char:FindFirstChild("HumanoidRootPart")
+            if root then
+                root.CFrame = CFrame.new(-345, 200, 250)
+                WindUI:Notify({ Title = "DONE", Content = "Ancient Knight's Base", Duration = 1 })
+            end
+        end
+    end
+})
+
 WindUI:Notify({ Title = "READY", Content = "Right Shift", Duration = 2 })
