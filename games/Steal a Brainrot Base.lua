@@ -236,4 +236,4 @@ TeleportSection:Button({
     end
 })
 
-WindUI:Notify({ Title = "READY", Content = "Right Shift to toggle GUI", Duration = 2 })
+WindUI:Notify({ Title = "READY", Content = "Right Shift to toggle GUI", Duration = 3 })
