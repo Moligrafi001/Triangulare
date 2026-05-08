@@ -179,7 +179,7 @@ TeleportSection:Button({
             local root = char:FindFirstChild("HumanoidRootPart")
             if root then
                 root.CFrame = CFrame.new(3, -179, 220)
-                WindUI:Notify({ Title = "DONE", Content = "Laboratory", Duration = 1 })
+                WindUI:Notify({ Title = "TELEPORTED", Content = "Laboratory", Duration = 1 })
             end
         end
     end
@@ -196,7 +196,7 @@ TeleportSection:Button({
             local root = char:FindFirstChild("HumanoidRootPart")
             if root then
                 root.CFrame = CFrame.new(4, -115, 222)
-                WindUI:Notify({ Title = "DONE", Content = "Easter", Duration = 1 })
+                WindUI:Notify({ Title = "TELEPORTED", Content = "Easter Base", Duration = 1 })
             end
         end
     end
@@ -213,7 +213,7 @@ TeleportSection:Button({
             local root = char:FindFirstChild("HumanoidRootPart")
             if root then
                 root.CFrame = CFrame.new(1, 3, 4)
-                WindUI:Notify({ Title = "DONE", Content = "Spawn", Duration = 1 })
+                WindUI:Notify({ Title = "TELEPORTED", Content = "Spawn", Duration = 1 })
             end
         end
     end
@@ -221,7 +221,7 @@ TeleportSection:Button({
 
 TeleportSection:Space()
 TeleportSection:Button({
-    Title = "🏰 ANCIENT KNIGHT'S BASE",
+    Title = "ANCIENT KNIGHT",
     Color = Color3.fromRGB(150, 100, 200),
     Justify = "Center",
     Callback = function()
@@ -229,11 +229,11 @@ TeleportSection:Button({
         if char then
             local root = char:FindFirstChild("HumanoidRootPart")
             if root then
-                root.CFrame = CFrame.new(1, 15, 452)
-                WindUI:Notify({ Title = "DONE", Content = "Ancient Knight's Base", Duration = 1 })
+                root.CFrame = CFrame.new(-1.2341821193695068, 15.80724048614502, 470.8062438964844)
+                WindUI:Notify({ Title = "TELEPORTED", Content = "Ancient Knight's Base", Duration = 1 })
             end
         end
     end
 })
 
-WindUI:Notify({ Title = "READY", Content = "Right Shift", Duration = 2 })
+WindUI:Notify({ Title = "READY", Content = "Right Shift to toggle GUI", Duration = 2 })
